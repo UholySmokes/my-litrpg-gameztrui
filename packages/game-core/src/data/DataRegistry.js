@@ -4,6 +4,20 @@
  * Implements the Facade pattern to hide the complexity of multiple registry files.
  */
 
+import { applyVoidGeneratorPatches, loadVoidGeneratorData } from "./voidverse-adapter.js";
+
+// Apply VoidGenerator content patches at module load time.
+// Safe to call even if the JSON files are absent — adapter logs a warning and skips.
+let _patched = false;
+async function ensureVoidGeneratorPatch() {
+  if (_patched) return;
+  _patched = true;
+  await loadVoidGeneratorData();
+  applyVoidGeneratorPatches();
+}
+// Fire and forget — races/classes/items are extended before first game use.
+ensureVoidGeneratorPatch().catch(console.warn);
+
 import {
   races,
   getRaceEvolutionOptions,

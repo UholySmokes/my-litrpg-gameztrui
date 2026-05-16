@@ -1,0 +1,3549 @@
+[
+  {
+    "id": "aelithelemental",
+    "name": "AelIthelemental",
+    "description": "The mysterious elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Dexterity": 1,
+      "Charisma": 1
+    },
+    "traits": [
+      "Natural armor",
+      "Longevity",
+      "Increased movement speed",
+      "Darkvision",
+      "Natural armor"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_GOOD",
+      "CHAOTIC_EVIL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Legendary",
+    "region": "Sapphire Coast",
+    "culturalTraits": [
+      "Desert survivors"
+    ],
+    "physicalTraits": [
+      "Tentacled",
+      "Tall and slender",
+      "Scales"
+    ],
+    "weaknesses": [
+      "Running water weakness",
+      "Fire vulnerability"
+    ],
+    "favoredClasses": [
+      "Ranger",
+      "Druid",
+      "Warlock"
+    ]
+  },
+  {
+    "id": "orcori",
+    "name": "OrcOri",
+    "description": "The proud people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Constitution": 1,
+      "Charisma": 2
+    },
+    "traits": [
+      "Resistance to poison",
+      "Shape shifting",
+      "Natural armor",
+      "Craftsmanship",
+      "Amphibious"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan",
+      "Undercommon"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "NEUTRAL_GOOD",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Uncommon",
+    "region": "Elemental Chaos",
+    "culturalTraits": [
+      "Clan-based culture",
+      "Religious devotion"
+    ],
+    "physicalTraits": [
+      "Fragile appearance"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Monk",
+      "Scholar",
+      "Barbarian",
+      "Paladin"
+    ]
+  },
+  {
+    "id": "ithithfolk",
+    "name": "IthIthfolk",
+    "description": "The nomadic beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Wisdom": 3
+    },
+    "traits": [
+      "Craftsmanship",
+      "Regeneration"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "CHAOTIC_EVIL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Rare",
+    "region": "Arcane Archipelago",
+    "culturalTraits": [
+      "Nomadic lifestyle"
+    ],
+    "physicalTraits": [
+      "Horns"
+    ],
+    "weaknesses": [
+      "Cold sensitivity"
+    ],
+    "favoredClasses": [
+      "Druid"
+    ]
+  },
+  {
+    "id": "moraenspawn",
+    "name": "MorAenspawn",
+    "description": "The mysterious monsters are known for their unique place in the world.",
+    "type": "MONSTROUS",
+    "size": "TINY",
+    "baseSpeed": 24,
+    "abilityBonuses": {
+      "Intelligence": 1,
+      "Constitution": 1,
+      "Dexterity": 3
+    },
+    "traits": [
+      "Craftsmanship",
+      "Flight",
+      "Longevity",
+      "Shape shifting",
+      "Invisibility"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "NEUTRAL_GOOD",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Common",
+    "region": "Crystal Desert",
+    "culturalTraits": [
+      "Matriarchal tradition",
+      "Artistic expression",
+      "Warrior culture"
+    ],
+    "physicalTraits": [
+      "Muscular build",
+      "Tail"
+    ],
+    "weaknesses": [
+      "Limited regeneration"
+    ],
+    "favoredClasses": [
+      "Necromancer",
+      "Monk",
+      "Illusionist",
+      "Warrior"
+    ]
+  },
+  {
+    "id": "faevarelemental",
+    "name": "FaeVarelemental",
+    "description": "The proud elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "TINY",
+    "baseSpeed": 25,
+    "abilityBonuses": {
+      "Charisma": 2,
+      "Strength": 2,
+      "Intelligence": 1
+    },
+    "traits": [
+      "Darkvision",
+      "Flight",
+      "Magical affinity",
+      "Enhanced senses"
+    ],
+    "languages": [
+      "Common",
+      "Elvish",
+      "Undercommon"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "CHAOTIC_EVIL",
+      "LAWFUL_NEUTRAL",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Rare",
+    "region": "Elemental Chaos",
+    "culturalTraits": [
+      "Arctic adaptability"
+    ],
+    "physicalTraits": [
+      "Tall and slender",
+      "Horns",
+      "Glowing markings"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Barbarian"
+    ]
+  },
+  {
+    "id": "duneth",
+    "name": "DunEth",
+    "description": "The mysterious people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 32,
+    "abilityBonuses": {
+      "Strength": 3
+    },
+    "traits": [
+      "Natural armor",
+      "Craftsmanship",
+      "Resistance to magic",
+      "Resistance to magic"
+    ],
+    "languages": [
+      "Common",
+      "Abyssal",
+      "Infernal"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_EVIL",
+      "LAWFUL_EVIL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Legendary",
+    "region": "Elemental Chaos",
+    "culturalTraits": [
+      "Merchant empire",
+      "Nomadic lifestyle",
+      "Merchant empire"
+    ],
+    "physicalTraits": [
+      "Tail",
+      "Wings"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Necromancer",
+      "Scholar",
+      "Cleric",
+      "Bard"
+    ]
+  },
+  {
+    "id": "morari",
+    "name": "MorAri",
+    "description": "The ancient people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 32,
+    "abilityBonuses": {
+      "Wisdom": 1,
+      "Strength": 1
+    },
+    "traits": [
+      "Regeneration"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "CHAOTIC_EVIL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Rare",
+    "region": "Abyssal Depths",
+    "culturalTraits": [
+      "Nomadic lifestyle",
+      "Arctic adaptability"
+    ],
+    "physicalTraits": [
+      "Glowing markings"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Artificer",
+      "Scout"
+    ]
+  },
+  {
+    "id": "faenor",
+    "name": "FaeNor",
+    "description": "The proud people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Intelligence": 3,
+      "Strength": 3
+    },
+    "traits": [
+      "Increased movement speed"
+    ],
+    "languages": [
+      "Common",
+      "Gnomish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Legendary",
+    "region": "Emerald Isles",
+    "culturalTraits": [
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Tentacled"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Bard",
+      "Rogue",
+      "Scholar",
+      "Illusionist"
+    ]
+  },
+  {
+    "id": "xenvar",
+    "name": "XenVar",
+    "description": "The nomadic people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Strength": 1
+    },
+    "traits": [
+      "Longevity",
+      "Keen hearing"
+    ],
+    "languages": [
+      "Common",
+      "Orcish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "LAWFUL_EVIL",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Very Rare",
+    "region": "Verdant Vale",
+    "culturalTraits": [
+      "Seafaring people",
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Glowing markings",
+      "Thick hide",
+      "Fur-covered"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Druid",
+      "Mage",
+      "Illusionist"
+    ]
+  },
+  {
+    "id": "moreln",
+    "name": "MorEln",
+    "description": "The ancient people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "HUGE",
+    "baseSpeed": 49,
+    "abilityBonuses": {
+      "Wisdom": 2
+    },
+    "traits": [
+      "Magical affinity",
+      "Enhanced senses",
+      "Increased movement speed",
+      "Magical affinity",
+      "Natural armor"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "200-500 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Common",
+    "region": "Dragon's Spine",
+    "culturalTraits": [
+      "Nomadic lifestyle",
+      "Magical scholarship",
+      "Magical scholarship"
+    ],
+    "physicalTraits": [
+      "Muscular build"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Necromancer",
+      "Warlock",
+      "Monk",
+      "Druid"
+    ]
+  },
+  {
+    "id": "morethelemental",
+    "name": "MorEthelemental",
+    "description": "The ancient elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "TINY",
+    "baseSpeed": 24,
+    "abilityBonuses": {
+      "Intelligence": 1,
+      "Charisma": 3,
+      "Constitution": 2
+    },
+    "traits": [
+      "Natural armor",
+      "Darkvision",
+      "Night vision"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan",
+      "Elvish"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "CHAOTIC_EVIL",
+      "TRUE_NEUTRAL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Dragon's Spine",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Clan-based culture"
+    ],
+    "physicalTraits": [
+      "Wings"
+    ],
+    "weaknesses": [
+      "Iron weakness"
+    ],
+    "favoredClasses": [
+      "Illusionist",
+      "Sorcerer",
+      "Necromancer",
+      "Warrior"
+    ]
+  },
+  {
+    "id": "lumorielemental",
+    "name": "LumOrielemental",
+    "description": "The proud elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "LARGE",
+    "baseSpeed": 38,
+    "abilityBonuses": {
+      "Constitution": 1,
+      "Strength": 3
+    },
+    "traits": [
+      "Resistance to magic",
+      "Flight",
+      "Amphibious",
+      "Natural weapons",
+      "Telepathy"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "TRUE_NEUTRAL",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Common",
+    "region": "Abyssal Depths",
+    "culturalTraits": [
+      "Religious devotion",
+      "Seafaring people"
+    ],
+    "physicalTraits": [
+      "Tall and slender"
+    ],
+    "weaknesses": [
+      "Iron weakness"
+    ],
+    "favoredClasses": [
+      "Paladin",
+      "Scholar",
+      "Illusionist"
+    ]
+  },
+  {
+    "id": "umbarirevenant",
+    "name": "UmbArirevenant",
+    "description": "The warlike undead are known for their unique place in the world.",
+    "type": "UNDEAD",
+    "size": "SMALL",
+    "baseSpeed": 26,
+    "abilityBonuses": {
+      "Strength": 3
+    },
+    "traits": [
+      "Craftsmanship",
+      "Increased movement speed"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "CHAOTIC_GOOD",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Rare",
+    "region": "Obsidian Wastes",
+    "culturalTraits": [
+      "Scientific advancement"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Feathered"
+    ],
+    "weaknesses": [
+      "Holy water vulnerability",
+      "Fire vulnerability"
+    ],
+    "favoredClasses": [
+      "Ranger",
+      "Bard",
+      "Paladin",
+      "Paladin"
+    ]
+  },
+  {
+    "id": "hallinfolk",
+    "name": "HalLinfolk",
+    "description": "The mysterious beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Charisma": 3,
+      "Dexterity": 3,
+      "Strength": 2
+    },
+    "traits": [
+      "Keen hearing"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_NEUTRAL",
+      "TRUE_NEUTRAL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Eldrin Forest",
+    "culturalTraits": [
+      "Nomadic lifestyle",
+      "Forest guardians",
+      "Mountain dwellers"
+    ],
+    "physicalTraits": [
+      "Muscular build",
+      "Tentacled"
+    ],
+    "weaknesses": [
+      "Magic susceptibility"
+    ],
+    "favoredClasses": [
+      "Illusionist",
+      "Warlock",
+      "Warrior",
+      "Cleric"
+    ]
+  },
+  {
+    "id": "vexith",
+    "name": "VexIth",
+    "description": "The nomadic people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Strength": 3
+    },
+    "traits": [
+      "Invisibility",
+      "Telepathy",
+      "Longevity",
+      "Magical affinity"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "TRUE_NEUTRAL",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Very Rare",
+    "region": "Eldrin Forest",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Artistic expression",
+      "Arctic adaptability"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Wings",
+      "Claws"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Warlock"
+    ]
+  },
+  {
+    "id": "ylviorispawn",
+    "name": "YlviOrispawn",
+    "description": "The nomadic monsters are known for their unique place in the world.",
+    "type": "MONSTROUS",
+    "size": "MEDIUM",
+    "baseSpeed": 35,
+    "abilityBonuses": {
+      "Wisdom": 2,
+      "Charisma": 2,
+      "Constitution": 2
+    },
+    "traits": [
+      "Craftsmanship",
+      "Resistance to magic",
+      "Natural weapons"
+    ],
+    "languages": [
+      "Common",
+      "Giant"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "TRUE_NEUTRAL",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Legendary",
+    "region": "Arcane Archipelago",
+    "culturalTraits": [
+      "Seafaring people"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Claws"
+    ],
+    "weaknesses": [
+      "Limited regeneration",
+      "Magic susceptibility"
+    ],
+    "favoredClasses": [
+      "Scholar",
+      "Scholar",
+      "Scholar"
+    ]
+  },
+  {
+    "id": "thalsynelemental",
+    "name": "ThalSynelemental",
+    "description": "The mysterious elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "MEDIUM",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Charisma": 1,
+      "Constitution": 3
+    },
+    "traits": [
+      "Telepathy",
+      "Natural armor",
+      "Regeneration",
+      "Amphibious",
+      "Regeneration"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_GOOD",
+      "LAWFUL_NEUTRAL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Legendary",
+    "region": "Arcane Archipelago",
+    "culturalTraits": [
+      "Desert survivors"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Tail"
+    ],
+    "weaknesses": [
+      "Running water weakness"
+    ],
+    "favoredClasses": [
+      "Ranger",
+      "Warrior"
+    ]
+  },
+  {
+    "id": "faenortreant",
+    "name": "FaeNortreant",
+    "description": "The ancient plants are known for their unique place in the world.",
+    "type": "PLANT",
+    "size": "HUGE",
+    "baseSpeed": 44,
+    "abilityBonuses": {
+      "Dexterity": 3,
+      "Wisdom": 2
+    },
+    "traits": [
+      "Craftsmanship"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "200-500 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "NEUTRAL_EVIL",
+      "CHAOTIC_EVIL"
+    ],
+    "rarity": "Legendary",
+    "region": "Celestial Peaks",
+    "culturalTraits": [
+      "Artistic expression",
+      "Scientific advancement"
+    ],
+    "physicalTraits": [
+      "Claws",
+      "Fangs"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Scholar",
+      "Monk",
+      "Bard",
+      "Monk"
+    ]
+  },
+  {
+    "id": "thalsyngolem",
+    "name": "ThalSyngolem",
+    "description": "The ancient constructs are known for their unique place in the world.",
+    "type": "CONSTRUCT",
+    "size": "GARGANTUAN",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Constitution": 2,
+      "Strength": 3
+    },
+    "traits": [
+      "Regeneration",
+      "Flight",
+      "Telepathy"
+    ],
+    "languages": [
+      "Common",
+      "Infernal"
+    ],
+    "lifespan": "500-1000+ years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Clan-based culture"
+    ],
+    "physicalTraits": [
+      "Claws",
+      "Horns"
+    ],
+    "weaknesses": [
+      "Invitation required",
+      "Running water weakness"
+    ],
+    "favoredClasses": [
+      "Druid"
+    ]
+  },
+  {
+    "id": "vexarifolk",
+    "name": "VexArifolk",
+    "description": "The nomadic beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 32,
+    "abilityBonuses": {
+      "Intelligence": 2,
+      "Constitution": 2,
+      "Wisdom": 3
+    },
+    "traits": [
+      "Regeneration",
+      "Keen hearing",
+      "Regeneration",
+      "Flight",
+      "Longevity"
+    ],
+    "languages": [
+      "Common",
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "CHAOTIC_GOOD",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Celestial Peaks",
+    "culturalTraits": [
+      "Honor-bound society",
+      "Scientific advancement",
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Tall and slender",
+      "Muscular build",
+      "Claws"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Paladin",
+      "Mage",
+      "Monk",
+      "Fighter"
+    ]
+  },
+  {
+    "id": "rivlinfolk",
+    "name": "RivLinfolk",
+    "description": "The proud beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 31,
+    "abilityBonuses": {
+      "Intelligence": 2,
+      "Strength": 2
+    },
+    "traits": [
+      "Craftsmanship"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "LAWFUL_GOOD",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Uncommon",
+    "region": "Frostfang Tundra",
+    "culturalTraits": [
+      "Magical scholarship"
+    ],
+    "physicalTraits": [
+      "Feathered"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Cleric",
+      "Druid",
+      "Scholar",
+      "Monk"
+    ]
+  },
+  {
+    "id": "halxorgolem",
+    "name": "HalXorgolem",
+    "description": "The nomadic constructs are known for their unique place in the world.",
+    "type": "CONSTRUCT",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Dexterity": 2
+    },
+    "traits": [
+      "Darkvision"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "NEUTRAL_GOOD",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Common",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Religious devotion",
+      "Warrior culture"
+    ],
+    "physicalTraits": [
+      "Fragile appearance",
+      "Short and stout",
+      "Wings"
+    ],
+    "weaknesses": [
+      "Running water weakness",
+      "Magic susceptibility"
+    ],
+    "favoredClasses": [
+      "Rogue",
+      "Necromancer",
+      "Warlock"
+    ]
+  },
+  {
+    "id": "sylori",
+    "name": "SylOri",
+    "description": "The proud people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "SMALL",
+    "baseSpeed": 26,
+    "abilityBonuses": {
+      "Constitution": 3,
+      "Intelligence": 3,
+      "Dexterity": 3
+    },
+    "traits": [
+      "Flight",
+      "Craftsmanship",
+      "Keen hearing",
+      "Night vision",
+      "Longevity"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan",
+      "Goblin"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "TRUE_NEUTRAL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Elemental Chaos",
+    "culturalTraits": [
+      "Magical scholarship",
+      "Magical scholarship"
+    ],
+    "physicalTraits": [
+      "Tail",
+      "Horns",
+      "Tall and slender"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Warlock",
+      "Paladin",
+      "Artificer",
+      "Druid"
+    ]
+  },
+  {
+    "id": "morithfolk",
+    "name": "MorIthfolk",
+    "description": "The nomadic beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Wisdom": 1,
+      "Strength": 1
+    },
+    "traits": [
+      "Keen hearing",
+      "Craftsmanship",
+      "Regeneration",
+      "Keen hearing"
+    ],
+    "languages": [
+      "Common",
+      "Gnomish",
+      "Abyssal"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "TRUE_NEUTRAL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Very Rare",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Seafaring people"
+    ],
+    "physicalTraits": [
+      "Wings",
+      "Glowing markings",
+      "Wings"
+    ],
+    "weaknesses": [
+      "Name vulnerability"
+    ],
+    "favoredClasses": [
+      "Barbarian",
+      "Scholar",
+      "Monk"
+    ]
+  },
+  {
+    "id": "jorori",
+    "name": "JorOri",
+    "description": "The warlike people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Constitution": 1,
+      "Charisma": 3
+    },
+    "traits": [
+      "Natural weapons",
+      "Natural weapons"
+    ],
+    "languages": [
+      "Common",
+      "Abyssal",
+      "Goblin"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "NEUTRAL_GOOD",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Rare",
+    "region": "Frostfang Tundra",
+    "culturalTraits": [
+      "Matriarchal tradition",
+      "Seafaring people"
+    ],
+    "physicalTraits": [
+      "Thick hide"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Mage",
+      "Mage",
+      "Illusionist"
+    ]
+  },
+  {
+    "id": "goryra",
+    "name": "GorYra",
+    "description": "The ancient people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "TINY",
+    "baseSpeed": 23,
+    "abilityBonuses": {
+      "Strength": 1,
+      "Wisdom": 2,
+      "Intelligence": 2
+    },
+    "traits": [
+      "Increased movement speed",
+      "Flight"
+    ],
+    "languages": [
+      "Common",
+      "Elvish"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "NEUTRAL_GOOD",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Uncommon",
+    "region": "Crystal Desert",
+    "culturalTraits": [
+      "Seafaring people",
+      "Clan-based culture",
+      "Nomadic lifestyle"
+    ],
+    "physicalTraits": [
+      "Claws"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Necromancer",
+      "Fighter"
+    ]
+  },
+  {
+    "id": "lumwinfolk",
+    "name": "LumWinfolk",
+    "description": "The mysterious beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "SMALL",
+    "baseSpeed": 26,
+    "abilityBonuses": {
+      "Constitution": 3,
+      "Wisdom": 3,
+      "Strength": 1
+    },
+    "traits": [
+      "Flight",
+      "Natural armor"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "CHAOTIC_EVIL",
+      "NEUTRAL_GOOD",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Common",
+    "region": "Sapphire Coast",
+    "culturalTraits": [
+      "Merchant empire",
+      "Magical scholarship"
+    ],
+    "physicalTraits": [
+      "Multiple eyes",
+      "Short and stout"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Sorcerer",
+      "Scholar",
+      "Rogue"
+    ]
+  },
+  {
+    "id": "kelyraelemental",
+    "name": "KelYraelemental",
+    "description": "The ancient elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "MEDIUM",
+    "baseSpeed": 31,
+    "abilityBonuses": {
+      "Intelligence": 1,
+      "Wisdom": 1
+    },
+    "traits": [
+      "Flight",
+      "Resistance to magic"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "TRUE_NEUTRAL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Common",
+    "region": "Emerald Isles",
+    "culturalTraits": [
+      "Seafaring people",
+      "Merchant empire",
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Glowing markings",
+      "Fangs"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Scout"
+    ]
+  },
+  {
+    "id": "wynithrevenant",
+    "name": "WynIthrevenant",
+    "description": "The proud undead are known for their unique place in the world.",
+    "type": "UNDEAD",
+    "size": "MEDIUM",
+    "baseSpeed": 31,
+    "abilityBonuses": {
+      "Strength": 1
+    },
+    "traits": [
+      "Darkvision",
+      "Flight",
+      "Increased movement speed",
+      "Enhanced senses",
+      "Keen hearing"
+    ],
+    "languages": [
+      "Common",
+      "Giant",
+      "Abyssal"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "NEUTRAL_EVIL",
+      "NEUTRAL_GOOD"
+    ],
+    "rarity": "Very Rare",
+    "region": "Obsidian Wastes",
+    "culturalTraits": [
+      "Mountain dwellers",
+      "Mountain dwellers"
+    ],
+    "physicalTraits": [
+      "Fragile appearance",
+      "Scales",
+      "Horns"
+    ],
+    "weaknesses": [
+      "Invitation required"
+    ],
+    "favoredClasses": [
+      "Fighter",
+      "Illusionist",
+      "Mage"
+    ]
+  },
+  {
+    "id": "morithfolk",
+    "name": "MorIthfolk",
+    "description": "The nomadic beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 35,
+    "abilityBonuses": {
+      "Strength": 2,
+      "Wisdom": 1,
+      "Charisma": 3
+    },
+    "traits": [
+      "Longevity",
+      "Increased movement speed",
+      "Natural weapons",
+      "Magical affinity"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "LAWFUL_GOOD",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Rare",
+    "region": "Shadowfen Marsh",
+    "culturalTraits": [
+      "Scientific advancement"
+    ],
+    "physicalTraits": [
+      "Fangs",
+      "Glowing markings"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Bard"
+    ]
+  },
+  {
+    "id": "lumvarrevenant",
+    "name": "LumVarrevenant",
+    "description": "The nomadic undead are known for their unique place in the world.",
+    "type": "UNDEAD",
+    "size": "MEDIUM",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Wisdom": 2
+    },
+    "traits": [
+      "Regeneration"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "NEUTRAL_EVIL",
+      "TRUE_NEUTRAL"
+    ],
+    "rarity": "Legendary",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Forest guardians",
+      "Religious devotion"
+    ],
+    "physicalTraits": [
+      "Glowing markings",
+      "Feathered"
+    ],
+    "weaknesses": [
+      "Name vulnerability"
+    ],
+    "favoredClasses": [
+      "Fighter",
+      "Druid"
+    ]
+  },
+  {
+    "id": "gorionspawn",
+    "name": "GorIonspawn",
+    "description": "The proud monsters are known for their unique place in the world.",
+    "type": "MONSTROUS",
+    "size": "SMALL",
+    "baseSpeed": 29,
+    "abilityBonuses": {
+      "Intelligence": 2,
+      "Wisdom": 2,
+      "Strength": 2
+    },
+    "traits": [
+      "Keen hearing",
+      "Resistance to magic",
+      "Night vision"
+    ],
+    "languages": [
+      "Common",
+      "Abyssal",
+      "Draconic"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "CHAOTIC_EVIL",
+      "LAWFUL_EVIL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Rare",
+    "region": "Arcane Archipelago",
+    "culturalTraits": [
+      "Merchant empire"
+    ],
+    "physicalTraits": [
+      "Tail"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Mage",
+      "Warlock",
+      "Artificer",
+      "Fighter"
+    ]
+  },
+  {
+    "id": "xenurifolk",
+    "name": "XenUrifolk",
+    "description": "The nomadic beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "LARGE",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Strength": 1,
+      "Wisdom": 3,
+      "Constitution": 1,
+      "Intelligence": 1
+    },
+    "traits": [
+      "Night vision",
+      "Darkvision",
+      "Resistance to magic",
+      "Longevity",
+      "Resistance to magic"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "CHAOTIC_NEUTRAL",
+      "LAWFUL_EVIL",
+      "NEUTRAL_GOOD"
+    ],
+    "rarity": "Rare",
+    "region": "Arcane Archipelago",
+    "culturalTraits": [
+      "Religious devotion",
+      "Arctic adaptability",
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Glowing markings",
+      "Short and stout"
+    ],
+    "weaknesses": [
+      "Holy water vulnerability",
+      "Silver vulnerability"
+    ],
+    "favoredClasses": [
+      "Bard",
+      "Rogue",
+      "Scout"
+    ]
+  },
+  {
+    "id": "xenori",
+    "name": "XenOri",
+    "description": "The warlike people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "HUGE",
+    "baseSpeed": 43,
+    "abilityBonuses": {
+      "Dexterity": 3,
+      "Constitution": 1,
+      "Strength": 2
+    },
+    "traits": [
+      "Invisibility",
+      "Longevity",
+      "Resistance to magic"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "200-500 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "CHAOTIC_GOOD",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Common",
+    "region": "Celestial Peaks",
+    "culturalTraits": [
+      "Magical scholarship",
+      "Warrior culture"
+    ],
+    "physicalTraits": [
+      "Glowing markings"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Bard",
+      "Scholar"
+    ]
+  },
+  {
+    "id": "rivithelemental",
+    "name": "RivIthelemental",
+    "description": "The proud elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Intelligence": 2
+    },
+    "traits": [
+      "Enhanced senses",
+      "Natural armor",
+      "Night vision",
+      "Invisibility",
+      "Amphibious"
+    ],
+    "languages": [
+      "Common",
+      "Celestial",
+      "Gnomish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Very Rare",
+    "region": "Ironpeak Mountains",
+    "culturalTraits": [
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Wings",
+      "Multiple eyes",
+      "Multiple eyes"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Monk",
+      "Warrior",
+      "Mage",
+      "Artificer"
+    ]
+  },
+  {
+    "id": "jorxor",
+    "name": "JorXor",
+    "description": "The nomadic people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "GARGANTUAN",
+    "baseSpeed": 31,
+    "abilityBonuses": {
+      "Dexterity": 3,
+      "Constitution": 3
+    },
+    "traits": [
+      "Resistance to poison",
+      "Increased movement speed"
+    ],
+    "languages": [
+      "Common",
+      "Halfling"
+    ],
+    "lifespan": "500-1000+ years",
+    "alignments": [
+      "CHAOTIC_NEUTRAL",
+      "CHAOTIC_GOOD",
+      "NEUTRAL_GOOD"
+    ],
+    "rarity": "Rare",
+    "region": "Obsidian Wastes",
+    "culturalTraits": [
+      "Forest guardians",
+      "Matriarchal tradition",
+      "Nomadic lifestyle"
+    ],
+    "physicalTraits": [
+      "Wings"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Paladin",
+      "Monk",
+      "Artificer"
+    ]
+  },
+  {
+    "id": "morori",
+    "name": "MorOri",
+    "description": "The ancient people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "HUGE",
+    "baseSpeed": 44,
+    "abilityBonuses": {
+      "Strength": 1,
+      "Dexterity": 3,
+      "Charisma": 3,
+      "Intelligence": 3
+    },
+    "traits": [
+      "Natural armor",
+      "Shape shifting",
+      "Darkvision"
+    ],
+    "languages": [
+      "Common",
+      "Infernal"
+    ],
+    "lifespan": "200-500 years",
+    "alignments": [
+      "CHAOTIC_NEUTRAL",
+      "TRUE_NEUTRAL",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Rare",
+    "region": "Ironpeak Mountains",
+    "culturalTraits": [
+      "Nomadic lifestyle",
+      "Desert survivors",
+      "Honor-bound society"
+    ],
+    "physicalTraits": [
+      "Horns",
+      "Feathered",
+      "Muscular build"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Sorcerer",
+      "Scout",
+      "Cleric",
+      "Ranger"
+    ]
+  },
+  {
+    "id": "lumsyn",
+    "name": "LumSyn",
+    "description": "The mysterious people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Strength": 1
+    },
+    "traits": [
+      "Resistance to magic",
+      "Shape shifting",
+      "Night vision",
+      "Invisibility",
+      "Craftsmanship"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "NEUTRAL_EVIL",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Rare",
+    "region": "Eldrin Forest",
+    "culturalTraits": [
+      "Mountain dwellers",
+      "Nomadic lifestyle",
+      "Desert survivors"
+    ],
+    "physicalTraits": [
+      "Feathered",
+      "Wings"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Barbarian"
+    ]
+  },
+  {
+    "id": "nymelnspawn",
+    "name": "NymElnspawn",
+    "description": "The warlike monsters are known for their unique place in the world.",
+    "type": "MONSTROUS",
+    "size": "LARGE",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Constitution": 1,
+      "Strength": 3,
+      "Dexterity": 3
+    },
+    "traits": [
+      "Darkvision",
+      "Increased movement speed",
+      "Telepathy",
+      "Regeneration",
+      "Resistance to magic"
+    ],
+    "languages": [
+      "Common",
+      "Orcish",
+      "Elvish"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_NEUTRAL",
+      "CHAOTIC_NEUTRAL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Elemental Chaos",
+    "culturalTraits": [
+      "Honor-bound society",
+      "Seafaring people",
+      "Religious devotion"
+    ],
+    "physicalTraits": [
+      "Thick hide"
+    ],
+    "weaknesses": [
+      "Cold sensitivity",
+      "Iron weakness"
+    ],
+    "favoredClasses": [
+      "Warrior"
+    ]
+  },
+  {
+    "id": "nymeth",
+    "name": "NymEth",
+    "description": "The proud people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Strength": 1,
+      "Constitution": 1,
+      "Dexterity": 3
+    },
+    "traits": [
+      "Magical affinity",
+      "Resistance to poison",
+      "Natural armor",
+      "Keen hearing"
+    ],
+    "languages": [
+      "Common",
+      "Halfling"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "NEUTRAL_EVIL",
+      "CHAOTIC_EVIL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Celestial Peaks",
+    "culturalTraits": [
+      "Merchant empire"
+    ],
+    "physicalTraits": [
+      "Multiple eyes",
+      "Fangs",
+      "Tall and slender"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Artificer"
+    ]
+  },
+  {
+    "id": "ylviorifolk",
+    "name": "YlviOrifolk",
+    "description": "The warlike beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "SMALL",
+    "baseSpeed": 29,
+    "abilityBonuses": {
+      "Charisma": 2,
+      "Strength": 1,
+      "Constitution": 3,
+      "Dexterity": 1
+    },
+    "traits": [
+      "Flight",
+      "Craftsmanship"
+    ],
+    "languages": [
+      "Common",
+      "Draconic",
+      "Celestial"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "NEUTRAL_EVIL",
+      "CHAOTIC_EVIL"
+    ],
+    "rarity": "Legendary",
+    "region": "Sapphire Coast",
+    "culturalTraits": [
+      "Artistic expression"
+    ],
+    "physicalTraits": [
+      "Fragile appearance",
+      "Fur-covered",
+      "Claws"
+    ],
+    "weaknesses": [
+      "Silver vulnerability"
+    ],
+    "favoredClasses": [
+      "Warlock",
+      "Scholar",
+      "Fighter",
+      "Scout"
+    ]
+  },
+  {
+    "id": "mornorrevenant",
+    "name": "MorNorrevenant",
+    "description": "The ancient undead are known for their unique place in the world.",
+    "type": "UNDEAD",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Charisma": 2,
+      "Constitution": 1
+    },
+    "traits": [
+      "Natural armor"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "CHAOTIC_NEUTRAL",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Legendary",
+    "region": "Eldrin Forest",
+    "culturalTraits": [
+      "Arctic adaptability",
+      "Arctic adaptability",
+      "Mountain dwellers"
+    ],
+    "physicalTraits": [
+      "Fragile appearance",
+      "Claws",
+      "Wings"
+    ],
+    "weaknesses": [
+      "Running water weakness",
+      "Sunlight sensitivity"
+    ],
+    "favoredClasses": [
+      "Sorcerer",
+      "Barbarian",
+      "Cleric"
+    ]
+  },
+  {
+    "id": "ithurispawn",
+    "name": "IthUrispawn",
+    "description": "The warlike monsters are known for their unique place in the world.",
+    "type": "MONSTROUS",
+    "size": "SMALL",
+    "baseSpeed": 25,
+    "abilityBonuses": {
+      "Dexterity": 1,
+      "Constitution": 3
+    },
+    "traits": [
+      "Longevity",
+      "Craftsmanship"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan",
+      "Giant"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "LAWFUL_GOOD",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Rare",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Mountain dwellers"
+    ],
+    "physicalTraits": [
+      "Tall and slender",
+      "Scales"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Rogue",
+      "Ranger",
+      "Warrior",
+      "Rogue"
+    ]
+  },
+  {
+    "id": "ithmartreant",
+    "name": "IthMartreant",
+    "description": "The nomadic plants are known for their unique place in the world.",
+    "type": "PLANT",
+    "size": "SMALL",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Intelligence": 2,
+      "Dexterity": 2,
+      "Constitution": 3
+    },
+    "traits": [
+      "Natural armor",
+      "Increased movement speed",
+      "Resistance to magic",
+      "Enhanced senses",
+      "Increased movement speed"
+    ],
+    "languages": [
+      "Common",
+      "Elvish",
+      "Goblin"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "NEUTRAL_EVIL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Very Rare",
+    "region": "Verdant Vale",
+    "culturalTraits": [
+      "Artistic expression"
+    ],
+    "physicalTraits": [
+      "Fragile appearance",
+      "Wings",
+      "Claws"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Artificer",
+      "Necromancer",
+      "Sorcerer"
+    ]
+  },
+  {
+    "id": "orcxor",
+    "name": "OrcXor",
+    "description": "The ancient people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Strength": 1
+    },
+    "traits": [
+      "Natural weapons",
+      "Resistance to magic",
+      "Flight"
+    ],
+    "languages": [
+      "Common",
+      "Draconic"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "LAWFUL_EVIL",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Uncommon",
+    "region": "Sapphire Coast",
+    "culturalTraits": [
+      "Merchant empire",
+      "Nomadic lifestyle",
+      "Arctic adaptability"
+    ],
+    "physicalTraits": [
+      "Wings",
+      "Muscular build",
+      "Tail"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Scout"
+    ]
+  },
+  {
+    "id": "elvlin",
+    "name": "ElvLin",
+    "description": "The warlike people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "SMALL",
+    "baseSpeed": 28,
+    "abilityBonuses": {
+      "Wisdom": 2,
+      "Charisma": 3,
+      "Intelligence": 2,
+      "Strength": 2
+    },
+    "traits": [
+      "Telepathy"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "CHAOTIC_NEUTRAL",
+      "NEUTRAL_GOOD",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Common",
+    "region": "Frostfang Tundra",
+    "culturalTraits": [
+      "Magical scholarship",
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Muscular build",
+      "Tail",
+      "Multiple eyes"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Bard",
+      "Warlock",
+      "Paladin"
+    ]
+  },
+  {
+    "id": "xenori",
+    "name": "XenOri",
+    "description": "The proud people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "SMALL",
+    "baseSpeed": 26,
+    "abilityBonuses": {
+      "Constitution": 2,
+      "Charisma": 3
+    },
+    "traits": [
+      "Regeneration",
+      "Resistance to poison"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "CHAOTIC_GOOD",
+      "NEUTRAL_GOOD"
+    ],
+    "rarity": "Uncommon",
+    "region": "Elemental Chaos",
+    "culturalTraits": [
+      "Desert survivors",
+      "Desert survivors",
+      "Artistic expression"
+    ],
+    "physicalTraits": [
+      "Fangs",
+      "Horns",
+      "Horns"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Scholar",
+      "Rogue"
+    ]
+  },
+  {
+    "id": "xenkinfolk",
+    "name": "XenKinfolk",
+    "description": "The ancient beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "SMALL",
+    "baseSpeed": 29,
+    "abilityBonuses": {
+      "Wisdom": 1,
+      "Constitution": 3,
+      "Strength": 2
+    },
+    "traits": [
+      "Night vision",
+      "Increased movement speed",
+      "Increased movement speed",
+      "Invisibility"
+    ],
+    "languages": [
+      "Common",
+      "Elvish"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "CHAOTIC_EVIL",
+      "LAWFUL_EVIL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Legendary",
+    "region": "Shadowfen Marsh",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Honor-bound society",
+      "Desert survivors"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Horns",
+      "Glowing markings"
+    ],
+    "weaknesses": [
+      "Iron weakness",
+      "Sunlight sensitivity"
+    ],
+    "favoredClasses": [
+      "Cleric",
+      "Warlock",
+      "Rogue",
+      "Necromancer"
+    ]
+  },
+  {
+    "id": "dunethelemental",
+    "name": "DunEthelemental",
+    "description": "The proud elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "MEDIUM",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Intelligence": 3,
+      "Wisdom": 3,
+      "Dexterity": 2,
+      "Constitution": 2
+    },
+    "traits": [
+      "Longevity",
+      "Telepathy",
+      "Increased movement speed",
+      "Telepathy"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_EVIL",
+      "LAWFUL_EVIL",
+      "TRUE_NEUTRAL"
+    ],
+    "rarity": "Rare",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Magical scholarship",
+      "Religious devotion"
+    ],
+    "physicalTraits": [
+      "Horns"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Barbarian",
+      "Sorcerer"
+    ]
+  },
+  {
+    "id": "ylvimarelemental",
+    "name": "YlviMarelemental",
+    "description": "The warlike elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "TINY",
+    "baseSpeed": 22,
+    "abilityBonuses": {
+      "Wisdom": 3,
+      "Strength": 2
+    },
+    "traits": [
+      "Shape shifting",
+      "Telepathy",
+      "Resistance to magic",
+      "Magical affinity",
+      "Natural armor"
+    ],
+    "languages": [
+      "Common",
+      "Giant",
+      "Celestial"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "LAWFUL_GOOD",
+      "CHAOTIC_NEUTRAL",
+      "TRUE_NEUTRAL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Frostfang Tundra",
+    "culturalTraits": [
+      "Artistic expression",
+      "Desert survivors"
+    ],
+    "physicalTraits": [
+      "Feathered"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Rogue",
+      "Sorcerer"
+    ]
+  },
+  {
+    "id": "umbthar",
+    "name": "UmbThar",
+    "description": "The mysterious people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "SMALL",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Charisma": 2
+    },
+    "traits": [
+      "Resistance to magic",
+      "Shape shifting",
+      "Resistance to magic",
+      "Enhanced senses",
+      "Enhanced senses"
+    ],
+    "languages": [
+      "Common",
+      "Halfling",
+      "Sylvan"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "LAWFUL_GOOD",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Rare",
+    "region": "Abyssal Depths",
+    "culturalTraits": [
+      "Nomadic lifestyle",
+      "Desert survivors",
+      "Magical scholarship"
+    ],
+    "physicalTraits": [
+      "Fangs",
+      "Feathered"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Sorcerer",
+      "Artificer"
+    ]
+  },
+  {
+    "id": "ylviwin",
+    "name": "YlviWin",
+    "description": "The warlike people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Intelligence": 3,
+      "Wisdom": 2,
+      "Dexterity": 1
+    },
+    "traits": [
+      "Resistance to magic",
+      "Flight",
+      "Increased movement speed",
+      "Keen hearing",
+      "Invisibility"
+    ],
+    "languages": [
+      "Common",
+      "Elvish",
+      "Gnomish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "NEUTRAL_GOOD",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Rare",
+    "region": "Emerald Isles",
+    "culturalTraits": [
+      "Matriarchal tradition",
+      "Religious devotion",
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Feathered"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Barbarian",
+      "Warrior",
+      "Scout",
+      "Mage"
+    ]
+  },
+  {
+    "id": "nymethfolk",
+    "name": "NymEthfolk",
+    "description": "The nomadic beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "SMALL",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Strength": 2,
+      "Dexterity": 1,
+      "Constitution": 1,
+      "Charisma": 3
+    },
+    "traits": [
+      "Resistance to magic",
+      "Resistance to magic",
+      "Increased movement speed"
+    ],
+    "languages": [
+      "Common",
+      "Undercommon"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "NEUTRAL_EVIL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Legendary",
+    "region": "Eldrin Forest",
+    "culturalTraits": [
+      "Honor-bound society"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Thick hide"
+    ],
+    "weaknesses": [
+      "Limited regeneration",
+      "Name vulnerability"
+    ],
+    "favoredClasses": [
+      "Cleric",
+      "Sorcerer",
+      "Bard",
+      "Sorcerer"
+    ]
+  },
+  {
+    "id": "jornor",
+    "name": "JorNor",
+    "description": "The warlike people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Strength": 1,
+      "Intelligence": 3,
+      "Wisdom": 1,
+      "Charisma": 3
+    },
+    "traits": [
+      "Regeneration",
+      "Resistance to magic",
+      "Amphibious",
+      "Longevity",
+      "Darkvision"
+    ],
+    "languages": [
+      "Common",
+      "Draconic",
+      "Orcish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "NEUTRAL_GOOD",
+      "CHAOTIC_EVIL"
+    ],
+    "rarity": "Rare",
+    "region": "Ironpeak Mountains",
+    "culturalTraits": [
+      "Arctic adaptability",
+      "Arctic adaptability",
+      "Artistic expression"
+    ],
+    "physicalTraits": [
+      "Tall and slender",
+      "Tail",
+      "Glowing markings"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Fighter"
+    ]
+  },
+  {
+    "id": "aellynfolk",
+    "name": "AelLynfolk",
+    "description": "The ancient beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 32,
+    "abilityBonuses": {
+      "Constitution": 1
+    },
+    "traits": [
+      "Telepathy"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_EVIL",
+      "CHAOTIC_NEUTRAL",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Very Rare",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Warrior culture",
+      "Matriarchal tradition"
+    ],
+    "physicalTraits": [
+      "Muscular build"
+    ],
+    "weaknesses": [
+      "Invitation required",
+      "Sunlight sensitivity"
+    ],
+    "favoredClasses": [
+      "Druid",
+      "Mage",
+      "Druid"
+    ]
+  },
+  {
+    "id": "lumthar",
+    "name": "LumThar",
+    "description": "The proud people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Wisdom": 2,
+      "Constitution": 2,
+      "Charisma": 1
+    },
+    "traits": [
+      "Telepathy"
+    ],
+    "languages": [
+      "Common",
+      "Elvish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "NEUTRAL_EVIL",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Rare",
+    "region": "Crystal Desert",
+    "culturalTraits": [
+      "Merchant empire",
+      "Desert survivors"
+    ],
+    "physicalTraits": [
+      "Tentacled",
+      "Muscular build"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Rogue",
+      "Scout",
+      "Paladin",
+      "Illusionist"
+    ]
+  },
+  {
+    "id": "faeion",
+    "name": "FaeIon",
+    "description": "The proud people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Charisma": 2,
+      "Constitution": 2,
+      "Wisdom": 3
+    },
+    "traits": [
+      "Enhanced senses",
+      "Night vision",
+      "Invisibility",
+      "Night vision"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "TRUE_NEUTRAL",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Common",
+    "region": "Abyssal Depths",
+    "culturalTraits": [
+      "Forest guardians",
+      "Mountain dwellers",
+      "Arctic adaptability"
+    ],
+    "physicalTraits": [
+      "Scales",
+      "Tall and slender",
+      "Thick hide"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Mage",
+      "Ranger",
+      "Rogue",
+      "Bard"
+    ]
+  },
+  {
+    "id": "nymlynhybrid",
+    "name": "NymLynhybrid",
+    "description": "The proud hybrids are known for their unique place in the world.",
+    "type": "HYBRID",
+    "size": "LARGE",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Wisdom": 1,
+      "Charisma": 2,
+      "Constitution": 2
+    },
+    "traits": [
+      "Natural armor",
+      "Resistance to magic",
+      "Magical affinity",
+      "Invisibility"
+    ],
+    "languages": [
+      "Common",
+      "Draconic"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "LAWFUL_GOOD",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Very Rare",
+    "region": "Shadowfen Marsh",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Arctic adaptability"
+    ],
+    "physicalTraits": [
+      "Tentacled"
+    ],
+    "weaknesses": [
+      "Invitation required"
+    ],
+    "favoredClasses": [
+      "Sorcerer",
+      "Artificer"
+    ]
+  },
+  {
+    "id": "gorion",
+    "name": "GorIon",
+    "description": "The mysterious people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 35,
+    "abilityBonuses": {
+      "Dexterity": 3,
+      "Intelligence": 1,
+      "Charisma": 2
+    },
+    "traits": [
+      "Craftsmanship"
+    ],
+    "languages": [
+      "Common",
+      "Goblin",
+      "Goblin"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "CHAOTIC_NEUTRAL",
+      "CHAOTIC_EVIL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Ironpeak Mountains",
+    "culturalTraits": [
+      "Artistic expression"
+    ],
+    "physicalTraits": [
+      "Feathered"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Warrior",
+      "Barbarian",
+      "Illusionist",
+      "Barbarian"
+    ]
+  },
+  {
+    "id": "gorxorfolk",
+    "name": "GorXorfolk",
+    "description": "The proud beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "LARGE",
+    "baseSpeed": 40,
+    "abilityBonuses": {
+      "Strength": 2
+    },
+    "traits": [
+      "Keen hearing",
+      "Magical affinity",
+      "Longevity",
+      "Longevity"
+    ],
+    "languages": [
+      "Common",
+      "Elvish",
+      "Dwarvish"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "NEUTRAL_GOOD",
+      "NEUTRAL_EVIL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Legendary",
+    "region": "Obsidian Wastes",
+    "culturalTraits": [
+      "Scientific advancement"
+    ],
+    "physicalTraits": [
+      "Scales",
+      "Thick hide",
+      "Claws"
+    ],
+    "weaknesses": [
+      "Sunlight sensitivity",
+      "Holy water vulnerability"
+    ],
+    "favoredClasses": [
+      "Sorcerer",
+      "Paladin"
+    ]
+  },
+  {
+    "id": "zoreth",
+    "name": "ZorEth",
+    "description": "The warlike people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Wisdom": 2,
+      "Strength": 2,
+      "Dexterity": 3
+    },
+    "traits": [
+      "Flight",
+      "Resistance to magic",
+      "Amphibious",
+      "Craftsmanship",
+      "Natural armor"
+    ],
+    "languages": [
+      "Common",
+      "Giant",
+      "Dwarvish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "CHAOTIC_GOOD",
+      "CHAOTIC_NEUTRAL"
+    ],
+    "rarity": "Legendary",
+    "region": "Eldrin Forest",
+    "culturalTraits": [
+      "Clan-based culture"
+    ],
+    "physicalTraits": [
+      "Tentacled"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Scout",
+      "Warrior"
+    ]
+  },
+  {
+    "id": "umbkinfolk",
+    "name": "UmbKinfolk",
+    "description": "The nomadic beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "LARGE",
+    "baseSpeed": 36,
+    "abilityBonuses": {
+      "Intelligence": 1,
+      "Charisma": 2,
+      "Constitution": 2
+    },
+    "traits": [
+      "Increased movement speed"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "NEUTRAL_EVIL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Rare",
+    "region": "Celestial Peaks",
+    "culturalTraits": [
+      "Mountain dwellers"
+    ],
+    "physicalTraits": [
+      "Horns",
+      "Wings",
+      "Tail"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Necromancer",
+      "Illusionist",
+      "Cleric"
+    ]
+  },
+  {
+    "id": "rivorifolk",
+    "name": "RivOrifolk",
+    "description": "The mysterious beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 31,
+    "abilityBonuses": {
+      "Intelligence": 1,
+      "Dexterity": 1,
+      "Strength": 2
+    },
+    "traits": [
+      "Longevity",
+      "Regeneration",
+      "Enhanced senses",
+      "Telepathy"
+    ],
+    "languages": [
+      "Common",
+      "Gnomish",
+      "Draconic"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "CHAOTIC_EVIL",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Very Rare",
+    "region": "Dragon's Spine",
+    "culturalTraits": [
+      "Desert survivors",
+      "Honor-bound society"
+    ],
+    "physicalTraits": [
+      "Tail"
+    ],
+    "weaknesses": [
+      "Invitation required",
+      "Silver vulnerability"
+    ],
+    "favoredClasses": [
+      "Barbarian",
+      "Mage"
+    ]
+  },
+  {
+    "id": "sylxor",
+    "name": "SylXor",
+    "description": "The warlike people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Constitution": 3,
+      "Strength": 1,
+      "Intelligence": 1
+    },
+    "traits": [
+      "Shape shifting",
+      "Invisibility",
+      "Increased movement speed"
+    ],
+    "languages": [
+      "Common",
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "CHAOTIC_NEUTRAL",
+      "CHAOTIC_EVIL"
+    ],
+    "rarity": "Rare",
+    "region": "Ironpeak Mountains",
+    "culturalTraits": [
+      "Arctic adaptability",
+      "Desert survivors"
+    ],
+    "physicalTraits": [
+      "Tentacled",
+      "Fragile appearance",
+      "Thick hide"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Fighter"
+    ]
+  },
+  {
+    "id": "umblynfolk",
+    "name": "UmbLynfolk",
+    "description": "The nomadic beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 31,
+    "abilityBonuses": {
+      "Dexterity": 3,
+      "Wisdom": 2
+    },
+    "traits": [
+      "Increased movement speed",
+      "Increased movement speed",
+      "Increased movement speed",
+      "Resistance to magic",
+      "Telepathy"
+    ],
+    "languages": [
+      "Common",
+      "Infernal"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_EVIL",
+      "CHAOTIC_GOOD",
+      "CHAOTIC_NEUTRAL"
+    ],
+    "rarity": "Legendary",
+    "region": "Obsidian Wastes",
+    "culturalTraits": [
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Multiple eyes",
+      "Horns",
+      "Glowing markings"
+    ],
+    "weaknesses": [
+      "Limited regeneration",
+      "Cold sensitivity"
+    ],
+    "favoredClasses": [
+      "Warrior",
+      "Barbarian",
+      "Warlock",
+      "Cleric"
+    ]
+  },
+  {
+    "id": "lumyrafolk",
+    "name": "LumYrafolk",
+    "description": "The warlike beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "LARGE",
+    "baseSpeed": 40,
+    "abilityBonuses": {
+      "Wisdom": 2
+    },
+    "traits": [
+      "Regeneration",
+      "Increased movement speed",
+      "Keen hearing"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "CHAOTIC_GOOD",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Common",
+    "region": "Celestial Peaks",
+    "culturalTraits": [
+      "Clan-based culture",
+      "Nomadic lifestyle",
+      "Honor-bound society"
+    ],
+    "physicalTraits": [
+      "Horns",
+      "Claws"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Druid",
+      "Scout",
+      "Necromancer",
+      "Artificer"
+    ]
+  },
+  {
+    "id": "dunurirevenant",
+    "name": "DunUrirevenant",
+    "description": "The proud undead are known for their unique place in the world.",
+    "type": "UNDEAD",
+    "size": "TINY",
+    "baseSpeed": 25,
+    "abilityBonuses": {
+      "Wisdom": 2,
+      "Charisma": 2
+    },
+    "traits": [
+      "Shape shifting",
+      "Telepathy",
+      "Enhanced senses",
+      "Night vision",
+      "Craftsmanship"
+    ],
+    "languages": [
+      "Common",
+      "Infernal"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "NEUTRAL_EVIL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Verdant Vale",
+    "culturalTraits": [
+      "Seafaring people",
+      "Nomadic lifestyle",
+      "Seafaring people"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Glowing markings"
+    ],
+    "weaknesses": [
+      "Invitation required"
+    ],
+    "favoredClasses": [
+      "Illusionist",
+      "Monk",
+      "Sorcerer"
+    ]
+  },
+  {
+    "id": "ylvivar",
+    "name": "YlviVar",
+    "description": "The mysterious people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "LARGE",
+    "baseSpeed": 38,
+    "abilityBonuses": {
+      "Intelligence": 2,
+      "Dexterity": 2,
+      "Strength": 2,
+      "Charisma": 1
+    },
+    "traits": [
+      "Night vision",
+      "Flight",
+      "Keen hearing"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "CHAOTIC_EVIL",
+      "TRUE_NEUTRAL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Ironpeak Mountains",
+    "culturalTraits": [
+      "Merchant empire",
+      "Magical scholarship",
+      "Nomadic lifestyle"
+    ],
+    "physicalTraits": [
+      "Short and stout"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Bard",
+      "Mage"
+    ]
+  },
+  {
+    "id": "morsyn",
+    "name": "MorSyn",
+    "description": "The nomadic people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "SMALL",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Charisma": 1
+    },
+    "traits": [
+      "Craftsmanship"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "NEUTRAL_EVIL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Rare",
+    "region": "Obsidian Wastes",
+    "culturalTraits": [
+      "Warrior culture",
+      "Honor-bound society"
+    ],
+    "physicalTraits": [
+      "Feathered"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Paladin"
+    ]
+  },
+  {
+    "id": "dunmarfolk",
+    "name": "DunMarfolk",
+    "description": "The warlike beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Dexterity": 3,
+      "Constitution": 1,
+      "Strength": 2,
+      "Wisdom": 3
+    },
+    "traits": [
+      "Telepathy"
+    ],
+    "languages": [
+      "Common",
+      "Abyssal"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "CHAOTIC_GOOD",
+      "CHAOTIC_EVIL"
+    ],
+    "rarity": "Very Rare",
+    "region": "Verdant Vale",
+    "culturalTraits": [
+      "Artistic expression"
+    ],
+    "physicalTraits": [
+      "Horns"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Monk",
+      "Paladin",
+      "Warrior",
+      "Warlock"
+    ]
+  },
+  {
+    "id": "ylviaen",
+    "name": "YlviAen",
+    "description": "The nomadic people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "LARGE",
+    "baseSpeed": 35,
+    "abilityBonuses": {
+      "Wisdom": 3,
+      "Intelligence": 2
+    },
+    "traits": [
+      "Telepathy",
+      "Natural armor",
+      "Shape shifting",
+      "Resistance to poison",
+      "Enhanced senses"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "100-200 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_GOOD",
+      "TRUE_NEUTRAL"
+    ],
+    "rarity": "Very Rare",
+    "region": "Frostfang Tundra",
+    "culturalTraits": [
+      "Artistic expression",
+      "Seafaring people"
+    ],
+    "physicalTraits": [
+      "Multiple eyes",
+      "Tall and slender"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Barbarian",
+      "Bard",
+      "Mage"
+    ]
+  },
+  {
+    "id": "rivkinelemental",
+    "name": "RivKinelemental",
+    "description": "The mysterious elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "MEDIUM",
+    "baseSpeed": 33,
+    "abilityBonuses": {
+      "Intelligence": 3,
+      "Wisdom": 3
+    },
+    "traits": [
+      "Resistance to poison",
+      "Amphibious",
+      "Invisibility"
+    ],
+    "languages": [
+      "Common",
+      "Orcish",
+      "Orcish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "CHAOTIC_GOOD",
+      "NEUTRAL_EVIL",
+      "CHAOTIC_NEUTRAL"
+    ],
+    "rarity": "Very Rare",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Desert survivors",
+      "Artistic expression"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Feathered",
+      "Muscular build"
+    ],
+    "weaknesses": [
+      "Invitation required",
+      "Name vulnerability"
+    ],
+    "favoredClasses": [
+      "Rogue",
+      "Cleric",
+      "Mage"
+    ]
+  },
+  {
+    "id": "ithwinspawn",
+    "name": "IthWinspawn",
+    "description": "The ancient monsters are known for their unique place in the world.",
+    "type": "MONSTROUS",
+    "size": "SMALL",
+    "baseSpeed": 29,
+    "abilityBonuses": {
+      "Dexterity": 2,
+      "Wisdom": 2
+    },
+    "traits": [
+      "Natural weapons"
+    ],
+    "languages": [
+      "Common",
+      "Sylvan",
+      "Abyssal"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "NEUTRAL_EVIL",
+      "LAWFUL_GOOD",
+      "NEUTRAL_EVIL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Shadowfen Marsh",
+    "culturalTraits": [
+      "Desert survivors",
+      "Magical scholarship"
+    ],
+    "physicalTraits": [
+      "Fangs"
+    ],
+    "weaknesses": [
+      "Cold sensitivity",
+      "Sunlight sensitivity"
+    ],
+    "favoredClasses": [
+      "Monk",
+      "Warrior",
+      "Druid",
+      "Rogue"
+    ]
+  },
+  {
+    "id": "nymion",
+    "name": "NymIon",
+    "description": "The mysterious people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "SMALL",
+    "baseSpeed": 30,
+    "abilityBonuses": {
+      "Strength": 2
+    },
+    "traits": [
+      "Amphibious"
+    ],
+    "languages": [
+      "Common",
+      "Dwarvish"
+    ],
+    "lifespan": "50-100 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "CHAOTIC_NEUTRAL",
+      "LAWFUL_EVIL"
+    ],
+    "rarity": "Very Rare",
+    "region": "Arcane Archipelago",
+    "culturalTraits": [
+      "Forest guardians",
+      "Clan-based culture"
+    ],
+    "physicalTraits": [
+      "Thick hide",
+      "Wings",
+      "Fragile appearance"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Illusionist",
+      "Fighter"
+    ]
+  },
+  {
+    "id": "jorarispawn",
+    "name": "JorArispawn",
+    "description": "The mysterious monsters are known for their unique place in the world.",
+    "type": "MONSTROUS",
+    "size": "MEDIUM",
+    "baseSpeed": 32,
+    "abilityBonuses": {
+      "Constitution": 2
+    },
+    "traits": [
+      "Longevity",
+      "Craftsmanship",
+      "Shape shifting",
+      "Regeneration",
+      "Regeneration"
+    ],
+    "languages": [
+      "Common",
+      "Draconic"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "NEUTRAL_GOOD",
+      "LAWFUL_GOOD"
+    ],
+    "rarity": "Very Rare",
+    "region": "Celestial Peaks",
+    "culturalTraits": [
+      "Nomadic lifestyle"
+    ],
+    "physicalTraits": [
+      "Muscular build"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Scholar"
+    ]
+  },
+  {
+    "id": "zorelnspawn",
+    "name": "ZorElnspawn",
+    "description": "The mysterious monsters are known for their unique place in the world.",
+    "type": "MONSTROUS",
+    "size": "TINY",
+    "baseSpeed": 24,
+    "abilityBonuses": {
+      "Charisma": 1,
+      "Intelligence": 2
+    },
+    "traits": [
+      "Craftsmanship",
+      "Natural weapons"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "TRUE_NEUTRAL",
+      "LAWFUL_NEUTRAL",
+      "CHAOTIC_NEUTRAL"
+    ],
+    "rarity": "Legendary",
+    "region": "Celestial Peaks",
+    "culturalTraits": [
+      "Religious devotion",
+      "Mountain dwellers",
+      "Nomadic lifestyle"
+    ],
+    "physicalTraits": [
+      "Thick hide",
+      "Feathered"
+    ],
+    "weaknesses": [
+      "Cold sensitivity"
+    ],
+    "favoredClasses": [
+      "Mage",
+      "Illusionist",
+      "Paladin"
+    ]
+  },
+  {
+    "id": "quenvarelemental",
+    "name": "QuenVarelemental",
+    "description": "The warlike elementals are known for their unique place in the world.",
+    "type": "ELEMENTAL",
+    "size": "TINY",
+    "baseSpeed": 23,
+    "abilityBonuses": {
+      "Strength": 2,
+      "Charisma": 3,
+      "Intelligence": 3,
+      "Constitution": 3
+    },
+    "traits": [
+      "Longevity",
+      "Resistance to magic",
+      "Amphibious",
+      "Shape shifting"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_NEUTRAL",
+      "TRUE_NEUTRAL"
+    ],
+    "rarity": "Uncommon",
+    "region": "Elemental Chaos",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Honor-bound society"
+    ],
+    "physicalTraits": [
+      "Claws",
+      "Claws",
+      "Thick hide"
+    ],
+    "weaknesses": [
+      "Silver vulnerability"
+    ],
+    "favoredClasses": [
+      "Druid",
+      "Warlock",
+      "Rogue"
+    ]
+  },
+  {
+    "id": "elvvarfolk",
+    "name": "ElvVarfolk",
+    "description": "The proud beastkin are known for their unique place in the world.",
+    "type": "BEASTKIN",
+    "size": "MEDIUM",
+    "baseSpeed": 32,
+    "abilityBonuses": {
+      "Strength": 2,
+      "Intelligence": 3
+    },
+    "traits": [
+      "Increased movement speed",
+      "Natural armor",
+      "Natural weapons",
+      "Craftsmanship",
+      "Natural weapons"
+    ],
+    "languages": [
+      "Common",
+      "Orcish"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_GOOD",
+      "LAWFUL_NEUTRAL",
+      "LAWFUL_NEUTRAL"
+    ],
+    "rarity": "Common",
+    "region": "Astral Plane",
+    "culturalTraits": [
+      "Scientific advancement",
+      "Nomadic lifestyle"
+    ],
+    "physicalTraits": [
+      "Fur-covered",
+      "Tail",
+      "Feathered"
+    ],
+    "weaknesses": [
+      "Fire vulnerability",
+      "Cold sensitivity"
+    ],
+    "favoredClasses": [
+      "Scholar",
+      "Illusionist",
+      "Barbarian",
+      "Sorcerer"
+    ]
+  },
+  {
+    "id": "thalsyn",
+    "name": "ThalSyn",
+    "description": "The proud people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "MEDIUM",
+    "baseSpeed": 34,
+    "abilityBonuses": {
+      "Strength": 3,
+      "Intelligence": 2,
+      "Dexterity": 2,
+      "Constitution": 2
+    },
+    "traits": [
+      "Regeneration"
+    ],
+    "languages": [
+      "Common",
+      "Dwarvish",
+      "Common"
+    ],
+    "lifespan": "70-120 years",
+    "alignments": [
+      "LAWFUL_EVIL",
+      "TRUE_NEUTRAL",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Uncommon",
+    "region": "Obsidian Wastes",
+    "culturalTraits": [
+      "Forest guardians"
+    ],
+    "physicalTraits": [
+      "Feathered",
+      "Glowing markings",
+      "Horns"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Artificer",
+      "Artificer",
+      "Scholar"
+    ]
+  },
+  {
+    "id": "nymyan",
+    "name": "NymYan",
+    "description": "The nomadic people are known for their unique place in the world.",
+    "type": "HUMANOID",
+    "size": "TINY",
+    "baseSpeed": 21,
+    "abilityBonuses": {
+      "Charisma": 3,
+      "Intelligence": 1
+    },
+    "traits": [
+      "Increased movement speed",
+      "Magical affinity",
+      "Increased movement speed",
+      "Natural armor",
+      "Increased movement speed"
+    ],
+    "languages": [
+      "Common"
+    ],
+    "lifespan": "30-50 years",
+    "alignments": [
+      "LAWFUL_NEUTRAL",
+      "NEUTRAL_GOOD",
+      "CHAOTIC_GOOD"
+    ],
+    "rarity": "Common",
+    "region": "Frostfang Tundra",
+    "culturalTraits": [
+      "Desert survivors",
+      "Mountain dwellers",
+      "Honor-bound society"
+    ],
+    "physicalTraits": [
+      "Glowing markings",
+      "Glowing markings",
+      "Tall and slender"
+    ],
+    "weaknesses": [],
+    "favoredClasses": [
+      "Illusionist"
+    ]
+  }
+]

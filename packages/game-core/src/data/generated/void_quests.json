@@ -1,0 +1,3926 @@
+[
+  {
+    "id": "retrieve_the_cursed_tower",
+    "title": "Retrieve the Cursed Tower",
+    "type": "RITUAL",
+    "difficulty": "DANGEROUS",
+    "setting": "ELEMENTAL",
+    "description": "A legendary persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve item",
+      "Objective 2: Discover location",
+      "Objective 3: Deliver person",
+      "Objective 4: Discover item"
+    ],
+    "complications": [
+      "Moral choice"
+    ],
+    "rewards": [
+      "2476 gold",
+      "Reputation"
+    ],
+    "client": "Merchant",
+    "location": "Obsidian Wastes",
+    "duration": "1 week",
+    "dangers": [
+      "Curse",
+      "Curse",
+      "Poison"
+    ],
+    "npcs": [
+      "Captain Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_eternal_artifact",
+    "title": "Defeat the Eternal Artifact",
+    "type": "FETCH",
+    "difficulty": "LEGENDARY",
+    "setting": "UNDERWATER",
+    "description": "A hard political quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate location",
+      "Objective 2: Retrieve person",
+      "Objective 3: Investigate person"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Trapped"
+    ],
+    "rewards": [
+      "4182 gold",
+      "Magic item"
+    ],
+    "client": "Lord",
+    "location": "Frostfang Tundra",
+    "duration": "1 month",
+    "dangers": [
+      "Allies turned enemies",
+      "Poison"
+    ],
+    "npcs": [
+      "Priest Gwen",
+      "Priest Bram",
+      "Guide Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_cursed_key",
+    "title": "Investigate the Cursed Key",
+    "type": "POLITICAL",
+    "difficulty": "DANGEROUS",
+    "setting": "WILDERNESS",
+    "description": "A easy persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve item",
+      "Objective 2: Defeat location"
+    ],
+    "complications": [
+      "Moral choice"
+    ],
+    "rewards": [
+      "284 gold",
+      "Quest unlock"
+    ],
+    "client": "Soldier",
+    "location": "Emerald Isles",
+    "duration": "1 month",
+    "dangers": [
+      "Monsters",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Spy Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_forgotten_village",
+    "title": "Survive the Forgotten Village",
+    "type": "INVESTIGATE",
+    "difficulty": "HARD",
+    "setting": "ABYSSAL",
+    "description": "A moderate fetch quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver person",
+      "Objective 2: Retrieve target",
+      "Objective 3: Destroy location"
+    ],
+    "complications": [
+      "Moral choice"
+    ],
+    "rewards": [
+      "1601 gold",
+      "Quest unlock"
+    ],
+    "client": "Lord",
+    "location": "Celestial Peaks",
+    "duration": "1 month",
+    "dangers": [
+      "Environmental hazard",
+      "Allies turned enemies",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Captain Anna",
+      "Priest Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_forgotten_tomb",
+    "title": "The Forgotten Tomb",
+    "type": "HEIST",
+    "difficulty": "TRIVIAL",
+    "setting": "PLANAR",
+    "description": "A moderate escort quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve person",
+      "Objective 2: Investigate location"
+    ],
+    "complications": [
+      "Weather",
+      "Betrayal"
+    ],
+    "rewards": [
+      "1851 gold",
+      "Reputation"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Emerald Isles",
+    "duration": "1 week",
+    "dangers": [
+      "Poison"
+    ],
+    "npcs": [
+      "Spy Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_bright_dungeon",
+    "title": "Investigate the Bright Dungeon",
+    "type": "CHALLENGE",
+    "difficulty": "TRIVIAL",
+    "setting": "WILDERNESS",
+    "description": "A easy investigate quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover person",
+      "Objective 2: Investigate item",
+      "Objective 3: Protect target",
+      "Objective 4: Escort item"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Trapped"
+    ],
+    "rewards": [
+      "154 gold",
+      "Reputation"
+    ],
+    "client": "Farmer",
+    "location": "Sapphire Coast",
+    "duration": "1 month",
+    "dangers": [
+      "Traps"
+    ],
+    "npcs": [
+      "Captain Cole",
+      "Elder Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_eternal_dungeon",
+    "title": "The Eternal Dungeon",
+    "type": "PERSUADE",
+    "difficulty": "EASY",
+    "setting": "CELESTIAL",
+    "description": "A trivial fetch quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver item",
+      "Objective 2: Escort item"
+    ],
+    "complications": [
+      "Betrayal"
+    ],
+    "rewards": [
+      "2545 gold",
+      "Reputation"
+    ],
+    "client": "Old woman",
+    "location": "Emerald Isles",
+    "duration": "3 months",
+    "dangers": [
+      "Magic",
+      "Environmental hazard",
+      "Magic"
+    ],
+    "npcs": [
+      "Noble Eli",
+      "Spy Hale",
+      "Elder Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_hidden_ritual",
+    "title": "Escape the Hidden Ritual",
+    "type": "HEIST",
+    "difficulty": "DANGEROUS",
+    "setting": "PLANAR",
+    "description": "A hard kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat item",
+      "Objective 2: Destroy item",
+      "Objective 3: Escort person"
+    ],
+    "complications": [
+      "Ambush",
+      "Time limit"
+    ],
+    "rewards": [
+      "4781 gold",
+      "Reputation"
+    ],
+    "client": "Innkeeper",
+    "location": "Obsidian Wastes",
+    "duration": "1 week",
+    "dangers": [
+      "Monsters",
+      "Traps",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Captain Eli",
+      "Noble Cole",
+      "Guide Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_storm_tower",
+    "title": "Survive the Storm Tower",
+    "type": "SURVIVE",
+    "difficulty": "HARD",
+    "setting": "UNDERDARK",
+    "description": "A moderate escort quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect target",
+      "Objective 2: Destroy location"
+    ],
+    "complications": [
+      "Hidden enemy",
+      "Moral choice",
+      "Betrayal"
+    ],
+    "rewards": [
+      "118 gold",
+      "Quest unlock"
+    ],
+    "client": "Lord",
+    "location": "Emerald Isles",
+    "duration": "1 week",
+    "dangers": [
+      "Magic",
+      "Environmental hazard",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Merchant Eli",
+      "Noble Eli",
+      "Captain Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_lost_mine",
+    "title": "The Lost Mine",
+    "type": "ESCORT",
+    "difficulty": "MODERATE",
+    "setting": "PLANAR",
+    "description": "A trivial fetch quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver target",
+      "Objective 2: Destroy person",
+      "Objective 3: Defeat target"
+    ],
+    "complications": [
+      "Trapped",
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "2370 gold",
+      "Experience"
+    ],
+    "client": "Soldier",
+    "location": "Crystal Desert",
+    "duration": "1 day",
+    "dangers": [
+      "Magic",
+      "Traps",
+      "Curse"
+    ],
+    "npcs": [
+      "Servant Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_hidden_beast",
+    "title": "The Hidden Beast",
+    "type": "PERSUADE",
+    "difficulty": "MODERATE",
+    "setting": "UNDERWATER",
+    "description": "A legendary defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy location",
+      "Objective 2: Retrieve person",
+      "Objective 3: Deliver person"
+    ],
+    "complications": [
+      "Weather"
+    ],
+    "rewards": [
+      "2691 gold",
+      "Experience"
+    ],
+    "client": "Lord",
+    "location": "Abyssal Depths",
+    "duration": "1 week",
+    "dangers": [
+      "Traps",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Priest Eli",
+      "Guide Bram",
+      "Guide Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_last_village",
+    "title": "Survive the Last Village",
+    "type": "RITUAL",
+    "difficulty": "HARD",
+    "setting": "WILDERNESS",
+    "description": "A easy investigate quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect person",
+      "Objective 2: Discover person",
+      "Objective 3: Destroy location"
+    ],
+    "complications": [
+      "Weather",
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "276 gold",
+      "Experience"
+    ],
+    "client": "Guild Master",
+    "location": "Elemental Chaos",
+    "duration": "3 months",
+    "dangers": [
+      "Poison"
+    ],
+    "npcs": [
+      "Guide Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_first_forest",
+    "title": "Escape the First Forest",
+    "type": "RESCUE",
+    "difficulty": "DANGEROUS",
+    "setting": "ABYSSAL",
+    "description": "A dangerous heist quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat location",
+      "Objective 2: Escort location",
+      "Objective 3: Defeat location"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Ambush",
+      "Betrayal"
+    ],
+    "rewards": [
+      "498 gold",
+      "Title"
+    ],
+    "client": "Merchant",
+    "location": "Obsidian Wastes",
+    "duration": "1 day",
+    "dangers": [
+      "Environmental hazard",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Spy Anna",
+      "Captain Anna",
+      "Priest Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_last_ritual",
+    "title": "Defend the Last Ritual",
+    "type": "RESCUE",
+    "difficulty": "EASY",
+    "setting": "URBAN",
+    "description": "A moderate defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat location",
+      "Objective 2: Investigate target",
+      "Objective 3: Retrieve target"
+    ],
+    "complications": [
+      "Betrayal"
+    ],
+    "rewards": [
+      "4308 gold",
+      "Magic item"
+    ],
+    "client": "Priest",
+    "location": "Frostfang Tundra",
+    "duration": "1 day",
+    "dangers": [
+      "Monsters",
+      "Poison"
+    ],
+    "npcs": [
+      "Noble Gwen",
+      "Elder Bram",
+      "Guide Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_eternal_village",
+    "title": "Defeat the Eternal Village",
+    "type": "POLITICAL",
+    "difficulty": "DANGEROUS",
+    "setting": "UNDERDARK",
+    "description": "A dangerous defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve location",
+      "Objective 2: Escort target",
+      "Objective 3: Escort item"
+    ],
+    "complications": [
+      "Time limit",
+      "Trapped",
+      "Time limit"
+    ],
+    "rewards": [
+      "3950 gold",
+      "Quest unlock"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Verdant Vale",
+    "duration": "1 day",
+    "dangers": [
+      "Allies turned enemies",
+      "Magic",
+      "Curse"
+    ],
+    "npcs": [
+      "Servant Gwen",
+      "Captain Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_void_weapon",
+    "title": "Survive the Void Weapon",
+    "type": "RESCUE",
+    "difficulty": "TRIVIAL",
+    "setting": "UNDERDARK",
+    "description": "A hard kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy target",
+      "Objective 2: Deliver target",
+      "Objective 3: Discover target",
+      "Objective 4: Protect item"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Moral choice"
+    ],
+    "rewards": [
+      "124 gold",
+      "Favor"
+    ],
+    "client": "Old woman",
+    "location": "Shadowfen Marsh",
+    "duration": "1 week",
+    "dangers": [
+      "Curse",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Captain Cole",
+      "Merchant Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_dark_ritual",
+    "title": "Escape the Dark Ritual",
+    "type": "PERSUADE",
+    "difficulty": "LEGENDARY",
+    "setting": "URBAN",
+    "description": "A moderate ritual quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver location",
+      "Objective 2: Retrieve location",
+      "Objective 3: Destroy location",
+      "Objective 4: Escort person"
+    ],
+    "complications": [
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "4873 gold",
+      "Experience"
+    ],
+    "client": "Old woman",
+    "location": "Celestial Peaks",
+    "duration": "3 months",
+    "dangers": [
+      "Monsters"
+    ],
+    "npcs": [
+      "Merchant Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_ancient_key",
+    "title": "A Ancient Key",
+    "type": "PERSUADE",
+    "difficulty": "LEGENDARY",
+    "setting": "CELESTIAL",
+    "description": "A moderate ritual quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate target",
+      "Objective 2: Escort location"
+    ],
+    "complications": [
+      "Betrayal",
+      "Ambush"
+    ],
+    "rewards": [
+      "2101 gold",
+      "Magic item"
+    ],
+    "client": "Guild Master",
+    "location": "Arcane Archipelago",
+    "duration": "1 day",
+    "dangers": [
+      "Poison",
+      "Magic"
+    ],
+    "npcs": [
+      "Elder Cole",
+      "Spy Bram",
+      "Noble Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_cursed_key",
+    "title": "Defeat the Cursed Key",
+    "type": "ESCORT",
+    "difficulty": "MODERATE",
+    "setting": "CELESTIAL",
+    "description": "A hard defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate item",
+      "Objective 2: Escort location",
+      "Objective 3: Investigate target"
+    ],
+    "complications": [
+      "Ambush",
+      "Betrayal",
+      "Time limit"
+    ],
+    "rewards": [
+      "322 gold",
+      "Favor"
+    ],
+    "client": "Guild Master",
+    "location": "Obsidian Wastes",
+    "duration": "3 months",
+    "dangers": [
+      "Environmental hazard",
+      "Poison",
+      "Monsters"
+    ],
+    "npcs": [
+      "Merchant Hale",
+      "Priest Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_first_weapon",
+    "title": "Defend the First Weapon",
+    "type": "INVESTIGATE",
+    "difficulty": "MODERATE",
+    "setting": "ASTRAL",
+    "description": "A dangerous heist quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort target",
+      "Objective 2: Discover location",
+      "Objective 3: Destroy target",
+      "Objective 4: Retrieve item"
+    ],
+    "complications": [
+      "Moral choice",
+      "Betrayal",
+      "Betrayal"
+    ],
+    "rewards": [
+      "4135 gold",
+      "Favor"
+    ],
+    "client": "Guild Master",
+    "location": "Celestial Peaks",
+    "duration": "1 month",
+    "dangers": [
+      "Traps"
+    ],
+    "npcs": [
+      "Guide Gwen",
+      "Spy Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "retrieve_the_iron_weapon",
+    "title": "Retrieve the Iron Weapon",
+    "type": "EXPLORE",
+    "difficulty": "TRIVIAL",
+    "setting": "ABYSSAL",
+    "description": "A dangerous escort quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver location",
+      "Objective 2: Defeat target",
+      "Objective 3: Discover person",
+      "Objective 4: Defeat target"
+    ],
+    "complications": [
+      "Weather",
+      "Moral choice"
+    ],
+    "rewards": [
+      "1692 gold",
+      "Title"
+    ],
+    "client": "Guild Master",
+    "location": "Crystal Desert",
+    "duration": "1 week",
+    "dangers": [
+      "Poison",
+      "Curse",
+      "Magic"
+    ],
+    "npcs": [
+      "Elder Dara",
+      "Noble Bram",
+      "Elder Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_ancient_crypt",
+    "title": "A Ancient Crypt",
+    "type": "HEIST",
+    "difficulty": "DANGEROUS",
+    "setting": "CELESTIAL",
+    "description": "A easy explore quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat target",
+      "Objective 2: Defeat location",
+      "Objective 3: Investigate person",
+      "Objective 4: Destroy location"
+    ],
+    "complications": [
+      "Time limit",
+      "Ambush"
+    ],
+    "rewards": [
+      "503 gold",
+      "Magic item"
+    ],
+    "client": "Priest",
+    "location": "Shadowfen Marsh",
+    "duration": "3 months",
+    "dangers": [
+      "Curse",
+      "Curse",
+      "Monsters"
+    ],
+    "npcs": [
+      "Noble Anna",
+      "Servant Gwen",
+      "Merchant Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "retrieve_the_bright_crypt",
+    "title": "Retrieve the Bright Crypt",
+    "type": "KILL",
+    "difficulty": "HARD",
+    "setting": "WILDERNESS",
+    "description": "A dangerous heist quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect item",
+      "Objective 2: Protect location",
+      "Objective 3: Defeat item"
+    ],
+    "complications": [
+      "Betrayal"
+    ],
+    "rewards": [
+      "4871 gold",
+      "Magic item"
+    ],
+    "client": "Priest",
+    "location": "Sapphire Coast",
+    "duration": "1 day",
+    "dangers": [
+      "Poison"
+    ],
+    "npcs": [
+      "Priest Anna",
+      "Captain Anna",
+      "Merchant Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_cursed_temple",
+    "title": "The Cursed Temple",
+    "type": "DELIVER",
+    "difficulty": "MODERATE",
+    "setting": "PLANAR",
+    "description": "A legendary heist quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver item",
+      "Objective 2: Destroy location"
+    ],
+    "complications": [
+      "Betrayal",
+      "Betrayal",
+      "Betrayal"
+    ],
+    "rewards": [
+      "2099 gold",
+      "Experience"
+    ],
+    "client": "Priest",
+    "location": "Emerald Isles",
+    "duration": "1 month",
+    "dangers": [
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Guide Fenn",
+      "Guide Dara",
+      "Guide Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_bright_forest",
+    "title": "A Bright Forest",
+    "type": "FETCH",
+    "difficulty": "MODERATE",
+    "setting": "ELEMENTAL",
+    "description": "A legendary survive quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver target",
+      "Objective 2: Investigate item",
+      "Objective 3: Investigate person"
+    ],
+    "complications": [
+      "Time limit",
+      "Betrayal",
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "1212 gold",
+      "Magic item"
+    ],
+    "client": "Priest",
+    "location": "Astral Plane",
+    "duration": "3 months",
+    "dangers": [
+      "Poison",
+      "Allies turned enemies",
+      "Monsters"
+    ],
+    "npcs": [
+      "Noble Anna"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_hidden_temple",
+    "title": "Survive the Hidden Temple",
+    "type": "EXPLORE",
+    "difficulty": "TRIVIAL",
+    "setting": "DUNGEON",
+    "description": "A moderate political quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy location",
+      "Objective 2: Defeat location",
+      "Objective 3: Destroy location",
+      "Objective 4: Defeat item"
+    ],
+    "complications": [
+      "Weather"
+    ],
+    "rewards": [
+      "1560 gold",
+      "Reputation"
+    ],
+    "client": "Innkeeper",
+    "location": "Shadowfen Marsh",
+    "duration": "1 day",
+    "dangers": [
+      "Magic",
+      "Monsters",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Elder Fenn",
+      "Guide Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_crystal_artifact",
+    "title": "Escape the Crystal Artifact",
+    "type": "CHALLENGE",
+    "difficulty": "DANGEROUS",
+    "setting": "ELEMENTAL",
+    "description": "A hard ritual quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat target",
+      "Objective 2: Destroy person",
+      "Objective 3: Discover location",
+      "Objective 4: Deliver item"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Time limit"
+    ],
+    "rewards": [
+      "1130 gold",
+      "Magic item"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Elemental Chaos",
+    "duration": "1 month",
+    "dangers": [
+      "Traps"
+    ],
+    "npcs": [
+      "Guide Fenn",
+      "Servant Anna",
+      "Guide Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_hidden_key",
+    "title": "Investigate the Hidden Key",
+    "type": "RITUAL",
+    "difficulty": "LEGENDARY",
+    "setting": "PLANAR",
+    "description": "A trivial kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect person",
+      "Objective 2: Escort location",
+      "Objective 3: Discover target"
+    ],
+    "complications": [
+      "Ambush",
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "353 gold",
+      "Title"
+    ],
+    "client": "Farmer",
+    "location": "Abyssal Depths",
+    "duration": "1 week",
+    "dangers": [
+      "Monsters",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Guide Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "retrieve_the_ancient_mine",
+    "title": "Retrieve the Ancient Mine",
+    "type": "EXPLORE",
+    "difficulty": "MODERATE",
+    "setting": "UNDERDARK",
+    "description": "A hard rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort item",
+      "Objective 2: Defeat item"
+    ],
+    "complications": [
+      "Ambush"
+    ],
+    "rewards": [
+      "1559 gold",
+      "Reputation"
+    ],
+    "client": "Soldier",
+    "location": "Arcane Archipelago",
+    "duration": "3 months",
+    "dangers": [
+      "Magic",
+      "Monsters",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Priest Anna",
+      "Guide Eli",
+      "Elder Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_last_ritual",
+    "title": "The Last Ritual",
+    "type": "SURVIVE",
+    "difficulty": "EASY",
+    "setting": "ASTRAL",
+    "description": "A trivial kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover target",
+      "Objective 2: Retrieve item",
+      "Objective 3: Investigate person",
+      "Objective 4: Protect location"
+    ],
+    "complications": [
+      "Weather"
+    ],
+    "rewards": [
+      "2369 gold",
+      "Favor"
+    ],
+    "client": "Guild Master",
+    "location": "Obsidian Wastes",
+    "duration": "1 month",
+    "dangers": [
+      "Allies turned enemies",
+      "Curse"
+    ],
+    "npcs": [
+      "Noble Eli",
+      "Elder Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_shadow_artifact",
+    "title": "Investigate the Shadow Artifact",
+    "type": "HEIST",
+    "difficulty": "EASY",
+    "setting": "PLANAR",
+    "description": "A trivial kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate person",
+      "Objective 2: Protect item",
+      "Objective 3: Destroy target",
+      "Objective 4: Escort location"
+    ],
+    "complications": [
+      "Betrayal",
+      "Betrayal",
+      "Time limit"
+    ],
+    "rewards": [
+      "4681 gold",
+      "Experience"
+    ],
+    "client": "Scholar",
+    "location": "Abyssal Depths",
+    "duration": "3 months",
+    "dangers": [
+      "Curse",
+      "Monsters",
+      "Poison"
+    ],
+    "npcs": [
+      "Elder Hale",
+      "Noble Fenn",
+      "Guide Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_iron_dungeon",
+    "title": "Investigate the Iron Dungeon",
+    "type": "HEIST",
+    "difficulty": "EASY",
+    "setting": "ASTRAL",
+    "description": "A easy ritual quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate location",
+      "Objective 2: Protect target",
+      "Objective 3: Investigate location"
+    ],
+    "complications": [
+      "Weather",
+      "Hidden enemy",
+      "Betrayal"
+    ],
+    "rewards": [
+      "2933 gold",
+      "Experience"
+    ],
+    "client": "Soldier",
+    "location": "Ironpeak Mountains",
+    "duration": "1 month",
+    "dangers": [
+      "Allies turned enemies",
+      "Environmental hazard",
+      "Traps"
+    ],
+    "npcs": [
+      "Servant Dara",
+      "Merchant Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_crystal_crown",
+    "title": "Survive the Crystal Crown",
+    "type": "DEFEND",
+    "difficulty": "DANGEROUS",
+    "setting": "URBAN",
+    "description": "A dangerous explore quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect person",
+      "Objective 2: Retrieve target",
+      "Objective 3: Destroy location"
+    ],
+    "complications": [
+      "Trapped",
+      "Insufficient supplies",
+      "Time limit"
+    ],
+    "rewards": [
+      "1523 gold",
+      "Quest unlock"
+    ],
+    "client": "Guild Master",
+    "location": "Crystal Desert",
+    "duration": "1 day",
+    "dangers": [
+      "Magic",
+      "Poison"
+    ],
+    "npcs": [
+      "Noble Bram",
+      "Merchant Anna",
+      "Servant Anna"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_bright_village",
+    "title": "A Bright Village",
+    "type": "RESCUE",
+    "difficulty": "DANGEROUS",
+    "setting": "ABYSSAL",
+    "description": "A hard heist quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect item",
+      "Objective 2: Destroy item",
+      "Objective 3: Deliver target"
+    ],
+    "complications": [
+      "Hidden enemy",
+      "Betrayal"
+    ],
+    "rewards": [
+      "420 gold",
+      "Magic item"
+    ],
+    "client": "Old woman",
+    "location": "Emerald Isles",
+    "duration": "3 months",
+    "dangers": [
+      "Allies turned enemies",
+      "Curse",
+      "Poison"
+    ],
+    "npcs": [
+      "Guide Hale",
+      "Merchant Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_bright_scroll",
+    "title": "A Bright Scroll",
+    "type": "RESCUE",
+    "difficulty": "TRIVIAL",
+    "setting": "PLANAR",
+    "description": "A dangerous deliver quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover location",
+      "Objective 2: Protect location",
+      "Objective 3: Escort person",
+      "Objective 4: Retrieve item"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "445 gold",
+      "Experience"
+    ],
+    "client": "Soldier",
+    "location": "Dragon's Spine",
+    "duration": "3 months",
+    "dangers": [
+      "Magic",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Merchant Cole",
+      "Elder Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_void_forest",
+    "title": "Investigate the Void Forest",
+    "type": "SURVIVE",
+    "difficulty": "DANGEROUS",
+    "setting": "ASTRAL",
+    "description": "A trivial deliver quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort target",
+      "Objective 2: Deliver person",
+      "Objective 3: Discover location"
+    ],
+    "complications": [
+      "Trapped"
+    ],
+    "rewards": [
+      "2413 gold",
+      "Title"
+    ],
+    "client": "Scholar",
+    "location": "Elemental Chaos",
+    "duration": "1 day",
+    "dangers": [
+      "Curse"
+    ],
+    "npcs": [
+      "Merchant Bram",
+      "Priest Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_lost_dungeon",
+    "title": "The Lost Dungeon",
+    "type": "HEIST",
+    "difficulty": "DANGEROUS",
+    "setting": "ABYSSAL",
+    "description": "A easy fetch quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat person",
+      "Objective 2: Investigate person",
+      "Objective 3: Destroy location"
+    ],
+    "complications": [
+      "Trapped",
+      "Insufficient supplies",
+      "Moral choice"
+    ],
+    "rewards": [
+      "947 gold",
+      "Reputation"
+    ],
+    "client": "Merchant",
+    "location": "Emerald Isles",
+    "duration": "3 months",
+    "dangers": [
+      "Magic",
+      "Monsters"
+    ],
+    "npcs": [
+      "Guide Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_shadow_scroll",
+    "title": "A Shadow Scroll",
+    "type": "CHALLENGE",
+    "difficulty": "EASY",
+    "setting": "WILDERNESS",
+    "description": "A moderate rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect person",
+      "Objective 2: Discover target",
+      "Objective 3: Protect target",
+      "Objective 4: Destroy target"
+    ],
+    "complications": [
+      "Hidden enemy",
+      "Time limit",
+      "Ambush"
+    ],
+    "rewards": [
+      "115 gold",
+      "Favor"
+    ],
+    "client": "Lord",
+    "location": "Celestial Peaks",
+    "duration": "3 months",
+    "dangers": [
+      "Curse"
+    ],
+    "npcs": [
+      "Guide Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "retrieve_the_cursed_mine",
+    "title": "Retrieve the Cursed Mine",
+    "type": "CHALLENGE",
+    "difficulty": "HARD",
+    "setting": "UNDERDARK",
+    "description": "A easy escort quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve item",
+      "Objective 2: Defeat location",
+      "Objective 3: Retrieve location",
+      "Objective 4: Investigate item"
+    ],
+    "complications": [
+      "Weather"
+    ],
+    "rewards": [
+      "2205 gold",
+      "Experience"
+    ],
+    "client": "Innkeeper",
+    "location": "Abyssal Depths",
+    "duration": "1 week",
+    "dangers": [
+      "Magic",
+      "Allies turned enemies",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Merchant Eli",
+      "Priest Eli",
+      "Noble Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_crystal_key",
+    "title": "Survive the Crystal Key",
+    "type": "SURVIVE",
+    "difficulty": "MODERATE",
+    "setting": "ABYSSAL",
+    "description": "A hard explore quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate target",
+      "Objective 2: Deliver location"
+    ],
+    "complications": [
+      "Hidden enemy",
+      "Time limit"
+    ],
+    "rewards": [
+      "3530 gold",
+      "Magic item"
+    ],
+    "client": "Lord",
+    "location": "Emerald Isles",
+    "duration": "1 month",
+    "dangers": [
+      "Monsters",
+      "Magic",
+      "Curse"
+    ],
+    "npcs": [
+      "Merchant Hale",
+      "Noble Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_dark_beast",
+    "title": "The Dark Beast",
+    "type": "EXPLORE",
+    "difficulty": "MODERATE",
+    "setting": "ABYSSAL",
+    "description": "A easy heist quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat person",
+      "Objective 2: Deliver person",
+      "Objective 3: Destroy location"
+    ],
+    "complications": [
+      "Weather",
+      "Weather"
+    ],
+    "rewards": [
+      "2185 gold",
+      "Magic item"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Emerald Isles",
+    "duration": "1 week",
+    "dangers": [
+      "Curse",
+      "Poison"
+    ],
+    "npcs": [
+      "Guide Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "retrieve_the_void_beast",
+    "title": "Retrieve the Void Beast",
+    "type": "INVESTIGATE",
+    "difficulty": "EASY",
+    "setting": "WILDERNESS",
+    "description": "A dangerous survive quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort target",
+      "Objective 2: Defeat location",
+      "Objective 3: Retrieve person"
+    ],
+    "complications": [
+      "Betrayal",
+      "Ambush"
+    ],
+    "rewards": [
+      "4298 gold",
+      "Favor"
+    ],
+    "client": "Old woman",
+    "location": "Shadowfen Marsh",
+    "duration": "1 week",
+    "dangers": [
+      "Poison"
+    ],
+    "npcs": [
+      "Servant Dara",
+      "Guide Cole",
+      "Spy Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_void_beast",
+    "title": "Defeat the Void Beast",
+    "type": "FETCH",
+    "difficulty": "TRIVIAL",
+    "setting": "DUNGEON",
+    "description": "A dangerous kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy location",
+      "Objective 2: Defeat item",
+      "Objective 3: Deliver person",
+      "Objective 4: Defeat item"
+    ],
+    "complications": [
+      "Time limit",
+      "Ambush",
+      "Moral choice"
+    ],
+    "rewards": [
+      "1062 gold",
+      "Quest unlock"
+    ],
+    "client": "Innkeeper",
+    "location": "Crystal Desert",
+    "duration": "1 month",
+    "dangers": [
+      "Monsters"
+    ],
+    "npcs": [
+      "Servant Anna"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "retrieve_the_lost_ritual",
+    "title": "Retrieve the Lost Ritual",
+    "type": "KILL",
+    "difficulty": "LEGENDARY",
+    "setting": "PLANAR",
+    "description": "A hard escort quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver person",
+      "Objective 2: Destroy target",
+      "Objective 3: Deliver person",
+      "Objective 4: Discover item"
+    ],
+    "complications": [
+      "Moral choice"
+    ],
+    "rewards": [
+      "4770 gold",
+      "Quest unlock"
+    ],
+    "client": "Innkeeper",
+    "location": "Verdant Vale",
+    "duration": "3 months",
+    "dangers": [
+      "Traps"
+    ],
+    "npcs": [
+      "Guide Hale",
+      "Guide Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_void_artifact",
+    "title": "Defend the Void Artifact",
+    "type": "CHALLENGE",
+    "difficulty": "HARD",
+    "setting": "ASTRAL",
+    "description": "A dangerous challenge quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover item",
+      "Objective 2: Defeat location"
+    ],
+    "complications": [
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "3079 gold",
+      "Quest unlock"
+    ],
+    "client": "Scholar",
+    "location": "Ironpeak Mountains",
+    "duration": "1 month",
+    "dangers": [
+      "Traps",
+      "Poison"
+    ],
+    "npcs": [
+      "Captain Bram",
+      "Merchant Dara",
+      "Noble Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_ancient_village",
+    "title": "Survive the Ancient Village",
+    "type": "SURVIVE",
+    "difficulty": "HARD",
+    "setting": "ABYSSAL",
+    "description": "A legendary political quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate target",
+      "Objective 2: Discover person",
+      "Objective 3: Destroy person",
+      "Objective 4: Protect item"
+    ],
+    "complications": [
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "4681 gold",
+      "Experience"
+    ],
+    "client": "Innkeeper",
+    "location": "Arcane Archipelago",
+    "duration": "1 day",
+    "dangers": [
+      "Curse",
+      "Traps"
+    ],
+    "npcs": [
+      "Noble Hale",
+      "Spy Dara",
+      "Spy Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_bright_mine",
+    "title": "A Bright Mine",
+    "type": "HEIST",
+    "difficulty": "TRIVIAL",
+    "setting": "ELEMENTAL",
+    "description": "A legendary kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort target",
+      "Objective 2: Escort target",
+      "Objective 3: Escort item"
+    ],
+    "complications": [
+      "Betrayal",
+      "Ambush"
+    ],
+    "rewards": [
+      "3524 gold",
+      "Quest unlock"
+    ],
+    "client": "Lord",
+    "location": "Abyssal Depths",
+    "duration": "3 months",
+    "dangers": [
+      "Curse"
+    ],
+    "npcs": [
+      "Servant Gwen",
+      "Elder Eli",
+      "Captain Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_hidden_ritual",
+    "title": "Investigate the Hidden Ritual",
+    "type": "INVESTIGATE",
+    "difficulty": "MODERATE",
+    "setting": "PLANAR",
+    "description": "A moderate survive quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort item",
+      "Objective 2: Deliver item",
+      "Objective 3: Protect person",
+      "Objective 4: Discover location"
+    ],
+    "complications": [
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "1158 gold",
+      "Favor"
+    ],
+    "client": "Soldier",
+    "location": "Astral Plane",
+    "duration": "3 months",
+    "dangers": [
+      "Magic"
+    ],
+    "npcs": [
+      "Merchant Cole",
+      "Noble Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_lost_temple",
+    "title": "Defeat the Lost Temple",
+    "type": "ESCORT",
+    "difficulty": "LEGENDARY",
+    "setting": "WILDERNESS",
+    "description": "A dangerous persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve target",
+      "Objective 2: Discover item",
+      "Objective 3: Retrieve person"
+    ],
+    "complications": [
+      "Time limit",
+      "Hidden enemy",
+      "Ambush"
+    ],
+    "rewards": [
+      "1628 gold",
+      "Title"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Arcane Archipelago",
+    "duration": "3 months",
+    "dangers": [
+      "Curse",
+      "Magic",
+      "Magic"
+    ],
+    "npcs": [
+      "Servant Eli",
+      "Priest Bram",
+      "Merchant Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_bright_beast",
+    "title": "Investigate the Bright Beast",
+    "type": "RESCUE",
+    "difficulty": "MODERATE",
+    "setting": "PLANAR",
+    "description": "A trivial rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy person",
+      "Objective 2: Deliver location",
+      "Objective 3: Investigate item",
+      "Objective 4: Defeat item"
+    ],
+    "complications": [
+      "Betrayal"
+    ],
+    "rewards": [
+      "1250 gold",
+      "Favor"
+    ],
+    "client": "Lord",
+    "location": "Emerald Isles",
+    "duration": "1 day",
+    "dangers": [
+      "Monsters",
+      "Monsters"
+    ],
+    "npcs": [
+      "Noble Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_dark_mine",
+    "title": "Escape the Dark Mine",
+    "type": "EXPLORE",
+    "difficulty": "DANGEROUS",
+    "setting": "WILDERNESS",
+    "description": "A easy investigate quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy location",
+      "Objective 2: Discover person",
+      "Objective 3: Deliver person"
+    ],
+    "complications": [
+      "Betrayal",
+      "Time limit",
+      "Trapped"
+    ],
+    "rewards": [
+      "2325 gold",
+      "Reputation"
+    ],
+    "client": "Lord",
+    "location": "Arcane Archipelago",
+    "duration": "3 months",
+    "dangers": [
+      "Allies turned enemies",
+      "Allies turned enemies",
+      "Curse"
+    ],
+    "npcs": [
+      "Captain Gwen",
+      "Spy Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_lost_weapon",
+    "title": "Escape the Lost Weapon",
+    "type": "POLITICAL",
+    "difficulty": "HARD",
+    "setting": "ASTRAL",
+    "description": "A legendary steal quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate location",
+      "Objective 2: Protect item"
+    ],
+    "complications": [
+      "Ambush",
+      "Time limit",
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "3007 gold",
+      "Experience"
+    ],
+    "client": "Priest",
+    "location": "Eldrin Forest",
+    "duration": "1 month",
+    "dangers": [
+      "Monsters",
+      "Magic"
+    ],
+    "npcs": [
+      "Elder Eli",
+      "Elder Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_dark_mine",
+    "title": "Survive the Dark Mine",
+    "type": "FETCH",
+    "difficulty": "LEGENDARY",
+    "setting": "UNDERDARK",
+    "description": "A moderate defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat location",
+      "Objective 2: Discover location"
+    ],
+    "complications": [
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "4519 gold",
+      "Magic item"
+    ],
+    "client": "Guild Master",
+    "location": "Obsidian Wastes",
+    "duration": "1 day",
+    "dangers": [
+      "Curse",
+      "Traps",
+      "Curse"
+    ],
+    "npcs": [
+      "Merchant Cole",
+      "Captain Gwen",
+      "Captain Anna"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_eternal_key",
+    "title": "The Eternal Key",
+    "type": "DELIVER",
+    "difficulty": "TRIVIAL",
+    "setting": "ABYSSAL",
+    "description": "A moderate political quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat person",
+      "Objective 2: Protect item"
+    ],
+    "complications": [
+      "Hidden enemy",
+      "Ambush",
+      "Weather"
+    ],
+    "rewards": [
+      "3460 gold",
+      "Reputation"
+    ],
+    "client": "Guild Master",
+    "location": "Ironpeak Mountains",
+    "duration": "1 week",
+    "dangers": [
+      "Traps",
+      "Curse",
+      "Magic"
+    ],
+    "npcs": [
+      "Merchant Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_lost_temple",
+    "title": "Defeat the Lost Temple",
+    "type": "CHALLENGE",
+    "difficulty": "DANGEROUS",
+    "setting": "ELEMENTAL",
+    "description": "A easy defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat person",
+      "Objective 2: Deliver person",
+      "Objective 3: Retrieve person",
+      "Objective 4: Discover target"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Betrayal",
+      "Betrayal"
+    ],
+    "rewards": [
+      "791 gold",
+      "Favor"
+    ],
+    "client": "Merchant",
+    "location": "Crystal Desert",
+    "duration": "1 month",
+    "dangers": [
+      "Curse",
+      "Monsters",
+      "Poison"
+    ],
+    "npcs": [
+      "Elder Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_dark_tower",
+    "title": "Defend the Dark Tower",
+    "type": "KILL",
+    "difficulty": "LEGENDARY",
+    "setting": "UNDERWATER",
+    "description": "A moderate political quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate item",
+      "Objective 2: Deliver target",
+      "Objective 3: Destroy person",
+      "Objective 4: Escort person"
+    ],
+    "complications": [
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "3441 gold",
+      "Favor"
+    ],
+    "client": "Priest",
+    "location": "Verdant Vale",
+    "duration": "1 week",
+    "dangers": [
+      "Magic"
+    ],
+    "npcs": [
+      "Noble Eli",
+      "Captain Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_shadow_dungeon",
+    "title": "Escape the Shadow Dungeon",
+    "type": "DELIVER",
+    "difficulty": "LEGENDARY",
+    "setting": "ABYSSAL",
+    "description": "A hard political quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort target",
+      "Objective 2: Destroy item",
+      "Objective 3: Investigate location",
+      "Objective 4: Protect person"
+    ],
+    "complications": [
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "4176 gold",
+      "Experience"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Ironpeak Mountains",
+    "duration": "1 week",
+    "dangers": [
+      "Traps",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Elder Bram",
+      "Merchant Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_cursed_mine",
+    "title": "Escape the Cursed Mine",
+    "type": "DELIVER",
+    "difficulty": "DANGEROUS",
+    "setting": "ELEMENTAL",
+    "description": "A legendary survive quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect target",
+      "Objective 2: Protect target"
+    ],
+    "complications": [
+      "Weather"
+    ],
+    "rewards": [
+      "3945 gold",
+      "Title"
+    ],
+    "client": "Old woman",
+    "location": "Abyssal Depths",
+    "duration": "1 day",
+    "dangers": [
+      "Magic"
+    ],
+    "npcs": [
+      "Merchant Hale",
+      "Merchant Anna"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_eternal_scroll",
+    "title": "Defend the Eternal Scroll",
+    "type": "SURVIVE",
+    "difficulty": "DANGEROUS",
+    "setting": "ELEMENTAL",
+    "description": "A legendary steal quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate person",
+      "Objective 2: Protect person",
+      "Objective 3: Discover location"
+    ],
+    "complications": [
+      "Ambush",
+      "Time limit"
+    ],
+    "rewards": [
+      "4203 gold",
+      "Magic item"
+    ],
+    "client": "Innkeeper",
+    "location": "Sapphire Coast",
+    "duration": "1 month",
+    "dangers": [
+      "Allies turned enemies",
+      "Environmental hazard",
+      "Monsters"
+    ],
+    "npcs": [
+      "Merchant Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_storm_dungeon",
+    "title": "Defeat the Storm Dungeon",
+    "type": "SURVIVE",
+    "difficulty": "EASY",
+    "setting": "URBAN",
+    "description": "A legendary deliver quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve person",
+      "Objective 2: Escort person"
+    ],
+    "complications": [
+      "Weather",
+      "Trapped"
+    ],
+    "rewards": [
+      "3823 gold",
+      "Magic item"
+    ],
+    "client": "Lord",
+    "location": "Frostfang Tundra",
+    "duration": "1 week",
+    "dangers": [
+      "Magic",
+      "Monsters"
+    ],
+    "npcs": [
+      "Priest Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_void_tomb",
+    "title": "Defeat the Void Tomb",
+    "type": "RESCUE",
+    "difficulty": "LEGENDARY",
+    "setting": "ABYSSAL",
+    "description": "A moderate fetch quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort person",
+      "Objective 2: Retrieve location",
+      "Objective 3: Destroy item"
+    ],
+    "complications": [
+      "Weather",
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "2038 gold",
+      "Magic item"
+    ],
+    "client": "Innkeeper",
+    "location": "Crystal Desert",
+    "duration": "1 month",
+    "dangers": [
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Guide Gwen",
+      "Servant Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_shadow_mine",
+    "title": "The Shadow Mine",
+    "type": "ESCORT",
+    "difficulty": "DANGEROUS",
+    "setting": "URBAN",
+    "description": "A easy deliver quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect target",
+      "Objective 2: Destroy target",
+      "Objective 3: Investigate item"
+    ],
+    "complications": [
+      "Time limit",
+      "Ambush"
+    ],
+    "rewards": [
+      "1780 gold",
+      "Title"
+    ],
+    "client": "Innkeeper",
+    "location": "Ironpeak Mountains",
+    "duration": "1 month",
+    "dangers": [
+      "Curse",
+      "Traps"
+    ],
+    "npcs": [
+      "Merchant Eli",
+      "Guide Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_dark_weapon",
+    "title": "Defend the Dark Weapon",
+    "type": "FETCH",
+    "difficulty": "MODERATE",
+    "setting": "ELEMENTAL",
+    "description": "A easy rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve location",
+      "Objective 2: Retrieve person",
+      "Objective 3: Retrieve location"
+    ],
+    "complications": [
+      "Trapped"
+    ],
+    "rewards": [
+      "2663 gold",
+      "Favor"
+    ],
+    "client": "Scholar",
+    "location": "Shadowfen Marsh",
+    "duration": "3 months",
+    "dangers": [
+      "Allies turned enemies",
+      "Monsters",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Servant Gwen",
+      "Elder Eli",
+      "Servant Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_bright_key",
+    "title": "A Bright Key",
+    "type": "SURVIVE",
+    "difficulty": "HARD",
+    "setting": "ABYSSAL",
+    "description": "A moderate ritual quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect person",
+      "Objective 2: Retrieve item",
+      "Objective 3: Destroy location"
+    ],
+    "complications": [
+      "Betrayal",
+      "Trapped",
+      "Ambush"
+    ],
+    "rewards": [
+      "2811 gold",
+      "Reputation"
+    ],
+    "client": "Scholar",
+    "location": "Verdant Vale",
+    "duration": "1 week",
+    "dangers": [
+      "Poison",
+      "Environmental hazard",
+      "Curse"
+    ],
+    "npcs": [
+      "Servant Anna",
+      "Noble Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_lost_tomb",
+    "title": "Defend the Lost Tomb",
+    "type": "PERSUADE",
+    "difficulty": "MODERATE",
+    "setting": "DUNGEON",
+    "description": "A dangerous defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver location",
+      "Objective 2: Protect person",
+      "Objective 3: Defeat person"
+    ],
+    "complications": [
+      "Moral choice"
+    ],
+    "rewards": [
+      "2973 gold",
+      "Quest unlock"
+    ],
+    "client": "Guild Master",
+    "location": "Emerald Isles",
+    "duration": "1 month",
+    "dangers": [
+      "Curse",
+      "Monsters"
+    ],
+    "npcs": [
+      "Captain Fenn",
+      "Elder Gwen",
+      "Priest Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_ancient_forest",
+    "title": "A Ancient Forest",
+    "type": "RESCUE",
+    "difficulty": "LEGENDARY",
+    "setting": "URBAN",
+    "description": "A legendary persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver person",
+      "Objective 2: Discover item",
+      "Objective 3: Discover target"
+    ],
+    "complications": [
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "3103 gold",
+      "Magic item"
+    ],
+    "client": "Lord",
+    "location": "Celestial Peaks",
+    "duration": "1 day",
+    "dangers": [
+      "Environmental hazard",
+      "Curse"
+    ],
+    "npcs": [
+      "Spy Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_void_crypt",
+    "title": "The Void Crypt",
+    "type": "RESCUE",
+    "difficulty": "LEGENDARY",
+    "setting": "UNDERDARK",
+    "description": "A legendary defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve location",
+      "Objective 2: Retrieve item",
+      "Objective 3: Deliver person",
+      "Objective 4: Investigate target"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Time limit"
+    ],
+    "rewards": [
+      "3629 gold",
+      "Title"
+    ],
+    "client": "Lord",
+    "location": "Verdant Vale",
+    "duration": "1 day",
+    "dangers": [
+      "Allies turned enemies",
+      "Traps",
+      "Curse"
+    ],
+    "npcs": [
+      "Guide Anna",
+      "Servant Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_lost_scroll",
+    "title": "Survive the Lost Scroll",
+    "type": "DEFEND",
+    "difficulty": "EASY",
+    "setting": "UNDERDARK",
+    "description": "A moderate persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect target",
+      "Objective 2: Investigate item",
+      "Objective 3: Defeat person",
+      "Objective 4: Investigate target"
+    ],
+    "complications": [
+      "Moral choice",
+      "Insufficient supplies",
+      "Weather"
+    ],
+    "rewards": [
+      "4926 gold",
+      "Title"
+    ],
+    "client": "Soldier",
+    "location": "Sapphire Coast",
+    "duration": "3 months",
+    "dangers": [
+      "Monsters",
+      "Magic",
+      "Magic"
+    ],
+    "npcs": [
+      "Spy Hale",
+      "Merchant Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_iron_ritual",
+    "title": "Defend the Iron Ritual",
+    "type": "ESCORT",
+    "difficulty": "DANGEROUS",
+    "setting": "URBAN",
+    "description": "A legendary steal quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy target",
+      "Objective 2: Retrieve location",
+      "Objective 3: Protect target"
+    ],
+    "complications": [
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "2540 gold",
+      "Title"
+    ],
+    "client": "Old woman",
+    "location": "Emerald Isles",
+    "duration": "3 months",
+    "dangers": [
+      "Traps"
+    ],
+    "npcs": [
+      "Merchant Fenn",
+      "Servant Gwen",
+      "Elder Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_last_ritual",
+    "title": "Defend the Last Ritual",
+    "type": "ESCORT",
+    "difficulty": "HARD",
+    "setting": "ABYSSAL",
+    "description": "A easy steal quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve target",
+      "Objective 2: Destroy item",
+      "Objective 3: Investigate target",
+      "Objective 4: Deliver item"
+    ],
+    "complications": [
+      "Weather"
+    ],
+    "rewards": [
+      "4556 gold",
+      "Quest unlock"
+    ],
+    "client": "Old woman",
+    "location": "Elemental Chaos",
+    "duration": "1 week",
+    "dangers": [
+      "Environmental hazard",
+      "Magic"
+    ],
+    "npcs": [
+      "Spy Bram",
+      "Spy Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_forgotten_weapon",
+    "title": "Survive the Forgotten Weapon",
+    "type": "PERSUADE",
+    "difficulty": "HARD",
+    "setting": "UNDERDARK",
+    "description": "A hard rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy person",
+      "Objective 2: Defeat person"
+    ],
+    "complications": [
+      "Trapped",
+      "Betrayal"
+    ],
+    "rewards": [
+      "3190 gold",
+      "Experience"
+    ],
+    "client": "Innkeeper",
+    "location": "Sapphire Coast",
+    "duration": "3 months",
+    "dangers": [
+      "Curse"
+    ],
+    "npcs": [
+      "Priest Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_first_dungeon",
+    "title": "A First Dungeon",
+    "type": "SURVIVE",
+    "difficulty": "DANGEROUS",
+    "setting": "ELEMENTAL",
+    "description": "A trivial deliver quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate item",
+      "Objective 2: Discover target",
+      "Objective 3: Protect target",
+      "Objective 4: Destroy item"
+    ],
+    "complications": [
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "3073 gold",
+      "Reputation"
+    ],
+    "client": "Priest",
+    "location": "Crystal Desert",
+    "duration": "3 months",
+    "dangers": [
+      "Traps",
+      "Magic",
+      "Traps"
+    ],
+    "npcs": [
+      "Captain Anna",
+      "Priest Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_eternal_beast",
+    "title": "Defend the Eternal Beast",
+    "type": "ESCORT",
+    "difficulty": "EASY",
+    "setting": "CELESTIAL",
+    "description": "A dangerous defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect item",
+      "Objective 2: Investigate location"
+    ],
+    "complications": [
+      "Betrayal",
+      "Ambush",
+      "Ambush"
+    ],
+    "rewards": [
+      "3378 gold",
+      "Experience"
+    ],
+    "client": "Farmer",
+    "location": "Arcane Archipelago",
+    "duration": "3 months",
+    "dangers": [
+      "Poison"
+    ],
+    "npcs": [
+      "Guide Bram",
+      "Elder Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_eternal_weapon",
+    "title": "The Eternal Weapon",
+    "type": "EXPLORE",
+    "difficulty": "HARD",
+    "setting": "DUNGEON",
+    "description": "A moderate steal quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover location",
+      "Objective 2: Retrieve target",
+      "Objective 3: Escort person",
+      "Objective 4: Retrieve item"
+    ],
+    "complications": [
+      "Weather",
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "1212 gold",
+      "Favor"
+    ],
+    "client": "Farmer",
+    "location": "Frostfang Tundra",
+    "duration": "1 month",
+    "dangers": [
+      "Magic"
+    ],
+    "npcs": [
+      "Captain Hale",
+      "Noble Dara",
+      "Guide Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_hidden_ritual",
+    "title": "Defend the Hidden Ritual",
+    "type": "DELIVER",
+    "difficulty": "HARD",
+    "setting": "UNDERDARK",
+    "description": "A dangerous explore quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat item",
+      "Objective 2: Escort person",
+      "Objective 3: Defeat item",
+      "Objective 4: Protect person"
+    ],
+    "complications": [
+      "Moral choice",
+      "Moral choice",
+      "Trapped"
+    ],
+    "rewards": [
+      "4700 gold",
+      "Reputation"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Emerald Isles",
+    "duration": "3 months",
+    "dangers": [
+      "Magic",
+      "Traps",
+      "Curse"
+    ],
+    "npcs": [
+      "Merchant Cole",
+      "Guide Gwen",
+      "Guide Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_lost_weapon",
+    "title": "Defeat the Lost Weapon",
+    "type": "SURVIVE",
+    "difficulty": "MODERATE",
+    "setting": "URBAN",
+    "description": "A dangerous fetch quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect location",
+      "Objective 2: Discover item",
+      "Objective 3: Protect item"
+    ],
+    "complications": [
+      "Hidden enemy",
+      "Hidden enemy",
+      "Weather"
+    ],
+    "rewards": [
+      "4025 gold",
+      "Reputation"
+    ],
+    "client": "Lord",
+    "location": "Arcane Archipelago",
+    "duration": "3 months",
+    "dangers": [
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Elder Bram",
+      "Spy Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_hidden_beast",
+    "title": "Defeat the Hidden Beast",
+    "type": "RESCUE",
+    "difficulty": "MODERATE",
+    "setting": "PLANAR",
+    "description": "A legendary ritual quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate person",
+      "Objective 2: Discover location"
+    ],
+    "complications": [
+      "Ambush",
+      "Time limit",
+      "Time limit"
+    ],
+    "rewards": [
+      "3028 gold",
+      "Reputation"
+    ],
+    "client": "Guild Master",
+    "location": "Sapphire Coast",
+    "duration": "1 day",
+    "dangers": [
+      "Environmental hazard",
+      "Monsters"
+    ],
+    "npcs": [
+      "Captain Anna",
+      "Noble Dara"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "retrieve_the_forgotten_temple",
+    "title": "Retrieve the Forgotten Temple",
+    "type": "CHALLENGE",
+    "difficulty": "LEGENDARY",
+    "setting": "UNDERWATER",
+    "description": "A easy challenge quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover item",
+      "Objective 2: Defeat person",
+      "Objective 3: Deliver target",
+      "Objective 4: Investigate target"
+    ],
+    "complications": [
+      "Moral choice"
+    ],
+    "rewards": [
+      "548 gold",
+      "Favor"
+    ],
+    "client": "Priest",
+    "location": "Frostfang Tundra",
+    "duration": "3 months",
+    "dangers": [
+      "Monsters",
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Spy Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_forgotten_mine",
+    "title": "A Forgotten Mine",
+    "type": "PERSUADE",
+    "difficulty": "TRIVIAL",
+    "setting": "CELESTIAL",
+    "description": "A easy kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate location",
+      "Objective 2: Deliver target",
+      "Objective 3: Destroy target",
+      "Objective 4: Discover item"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Ambush",
+      "Moral choice"
+    ],
+    "rewards": [
+      "3385 gold",
+      "Experience"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Emerald Isles",
+    "duration": "1 week",
+    "dangers": [
+      "Environmental hazard",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Guide Eli",
+      "Guide Dara",
+      "Spy Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_dark_forest",
+    "title": "Investigate the Dark Forest",
+    "type": "DEFEND",
+    "difficulty": "HARD",
+    "setting": "WILDERNESS",
+    "description": "A easy persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Protect location",
+      "Objective 2: Discover item"
+    ],
+    "complications": [
+      "Betrayal"
+    ],
+    "rewards": [
+      "3589 gold",
+      "Reputation"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Ironpeak Mountains",
+    "duration": "3 months",
+    "dangers": [
+      "Curse",
+      "Curse"
+    ],
+    "npcs": [
+      "Merchant Dara",
+      "Captain Dara",
+      "Priest Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_last_temple",
+    "title": "Escape the Last Temple",
+    "type": "RITUAL",
+    "difficulty": "DANGEROUS",
+    "setting": "CELESTIAL",
+    "description": "A trivial defend quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate item",
+      "Objective 2: Protect item",
+      "Objective 3: Investigate location"
+    ],
+    "complications": [
+      "Trapped"
+    ],
+    "rewards": [
+      "1337 gold",
+      "Title"
+    ],
+    "client": "Soldier",
+    "location": "Emerald Isles",
+    "duration": "3 months",
+    "dangers": [
+      "Magic",
+      "Traps",
+      "Magic"
+    ],
+    "npcs": [
+      "Guide Fenn",
+      "Merchant Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_shadow_ritual",
+    "title": "Escape the Shadow Ritual",
+    "type": "POLITICAL",
+    "difficulty": "LEGENDARY",
+    "setting": "ASTRAL",
+    "description": "A hard explore quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Destroy location",
+      "Objective 2: Defeat location",
+      "Objective 3: Defeat location"
+    ],
+    "complications": [
+      "Trapped",
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "2296 gold",
+      "Magic item"
+    ],
+    "client": "Priest",
+    "location": "Frostfang Tundra",
+    "duration": "1 month",
+    "dangers": [
+      "Poison",
+      "Magic"
+    ],
+    "npcs": [
+      "Spy Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_crystal_crypt",
+    "title": "Escape the Crystal Crypt",
+    "type": "INVESTIGATE",
+    "difficulty": "DANGEROUS",
+    "setting": "UNDERWATER",
+    "description": "A easy survive quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover person",
+      "Objective 2: Retrieve target",
+      "Objective 3: Investigate item",
+      "Objective 4: Protect location"
+    ],
+    "complications": [
+      "Insufficient supplies",
+      "Ambush",
+      "Weather"
+    ],
+    "rewards": [
+      "4039 gold",
+      "Favor"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Celestial Peaks",
+    "duration": "3 months",
+    "dangers": [
+      "Monsters"
+    ],
+    "npcs": [
+      "Spy Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_last_tower",
+    "title": "Defend the Last Tower",
+    "type": "HEIST",
+    "difficulty": "MODERATE",
+    "setting": "WILDERNESS",
+    "description": "A hard rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve person",
+      "Objective 2: Destroy item",
+      "Objective 3: Escort person",
+      "Objective 4: Investigate target"
+    ],
+    "complications": [
+      "Time limit",
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "4741 gold",
+      "Experience"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Shadowfen Marsh",
+    "duration": "1 month",
+    "dangers": [
+      "Monsters",
+      "Traps",
+      "Poison"
+    ],
+    "npcs": [
+      "Spy Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_storm_scroll",
+    "title": "Defend the Storm Scroll",
+    "type": "CHALLENGE",
+    "difficulty": "EASY",
+    "setting": "URBAN",
+    "description": "A moderate persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover person",
+      "Objective 2: Protect item"
+    ],
+    "complications": [
+      "Moral choice",
+      "Moral choice",
+      "Ambush"
+    ],
+    "rewards": [
+      "1199 gold",
+      "Magic item"
+    ],
+    "client": "Innkeeper",
+    "location": "Sapphire Coast",
+    "duration": "3 months",
+    "dangers": [
+      "Poison",
+      "Monsters"
+    ],
+    "npcs": [
+      "Elder Fenn",
+      "Elder Gwen",
+      "Elder Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_crystal_forest",
+    "title": "Defend the Crystal Forest",
+    "type": "EXPLORE",
+    "difficulty": "DANGEROUS",
+    "setting": "ASTRAL",
+    "description": "A legendary kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve target",
+      "Objective 2: Retrieve item",
+      "Objective 3: Retrieve location",
+      "Objective 4: Investigate target"
+    ],
+    "complications": [
+      "Weather",
+      "Moral choice",
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "3746 gold",
+      "Reputation"
+    ],
+    "client": "Lord",
+    "location": "Abyssal Depths",
+    "duration": "1 month",
+    "dangers": [
+      "Traps"
+    ],
+    "npcs": [
+      "Spy Hale",
+      "Servant Anna",
+      "Servant Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_lost_dungeon",
+    "title": "Survive the Lost Dungeon",
+    "type": "FETCH",
+    "difficulty": "TRIVIAL",
+    "setting": "UNDERWATER",
+    "description": "A moderate steal quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver item",
+      "Objective 2: Protect location"
+    ],
+    "complications": [
+      "Time limit",
+      "Hidden enemy",
+      "Trapped"
+    ],
+    "rewards": [
+      "1597 gold",
+      "Favor"
+    ],
+    "client": "Priest",
+    "location": "Verdant Vale",
+    "duration": "1 week",
+    "dangers": [
+      "Monsters"
+    ],
+    "npcs": [
+      "Elder Cole",
+      "Spy Bram",
+      "Spy Fenn"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defeat_the_storm_beast",
+    "title": "Defeat the Storm Beast",
+    "type": "ESCORT",
+    "difficulty": "MODERATE",
+    "setting": "URBAN",
+    "description": "A hard explore quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate person",
+      "Objective 2: Defeat item"
+    ],
+    "complications": [
+      "Betrayal",
+      "Weather"
+    ],
+    "rewards": [
+      "258 gold",
+      "Quest unlock"
+    ],
+    "client": "Priest",
+    "location": "Sapphire Coast",
+    "duration": "1 day",
+    "dangers": [
+      "Allies turned enemies",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Priest Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_first_weapon",
+    "title": "A First Weapon",
+    "type": "KILL",
+    "difficulty": "EASY",
+    "setting": "ABYSSAL",
+    "description": "A dangerous challenge quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Retrieve item",
+      "Objective 2: Investigate target",
+      "Objective 3: Discover person",
+      "Objective 4: Protect location"
+    ],
+    "complications": [
+      "Time limit"
+    ],
+    "rewards": [
+      "793 gold",
+      "Experience"
+    ],
+    "client": "Old woman",
+    "location": "Emerald Isles",
+    "duration": "1 month",
+    "dangers": [
+      "Monsters",
+      "Allies turned enemies",
+      "Monsters"
+    ],
+    "npcs": [
+      "Servant Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "a_void_weapon",
+    "title": "A Void Weapon",
+    "type": "DELIVER",
+    "difficulty": "MODERATE",
+    "setting": "UNDERDARK",
+    "description": "A trivial steal quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver item",
+      "Objective 2: Retrieve location",
+      "Objective 3: Discover target",
+      "Objective 4: Deliver person"
+    ],
+    "complications": [
+      "Trapped"
+    ],
+    "rewards": [
+      "2089 gold",
+      "Favor"
+    ],
+    "client": "Scholar",
+    "location": "Eldrin Forest",
+    "duration": "1 week",
+    "dangers": [
+      "Traps",
+      "Traps",
+      "Curse"
+    ],
+    "npcs": [
+      "Elder Anna",
+      "Priest Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_shadow_dungeon",
+    "title": "Survive the Shadow Dungeon",
+    "type": "POLITICAL",
+    "difficulty": "EASY",
+    "setting": "ELEMENTAL",
+    "description": "A easy rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort item",
+      "Objective 2: Protect target",
+      "Objective 3: Escort target",
+      "Objective 4: Discover item"
+    ],
+    "complications": [
+      "Weather",
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "2222 gold",
+      "Experience"
+    ],
+    "client": "Old woman",
+    "location": "Eldrin Forest",
+    "duration": "1 day",
+    "dangers": [
+      "Monsters",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Merchant Gwen"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_lost_forest",
+    "title": "Survive the Lost Forest",
+    "type": "RITUAL",
+    "difficulty": "DANGEROUS",
+    "setting": "ABYSSAL",
+    "description": "A easy rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat person",
+      "Objective 2: Investigate target"
+    ],
+    "complications": [
+      "Betrayal",
+      "Betrayal"
+    ],
+    "rewards": [
+      "3946 gold",
+      "Quest unlock"
+    ],
+    "client": "Innkeeper",
+    "location": "Arcane Archipelago",
+    "duration": "3 months",
+    "dangers": [
+      "Poison"
+    ],
+    "npcs": [
+      "Elder Eli",
+      "Noble Hale",
+      "Guide Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_shadow_key",
+    "title": "Escape the Shadow Key",
+    "type": "SURVIVE",
+    "difficulty": "LEGENDARY",
+    "setting": "WILDERNESS",
+    "description": "A hard persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Investigate item",
+      "Objective 2: Investigate item",
+      "Objective 3: Escort item",
+      "Objective 4: Retrieve target"
+    ],
+    "complications": [
+      "Weather",
+      "Moral choice",
+      "Betrayal"
+    ],
+    "rewards": [
+      "2096 gold",
+      "Favor"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Crystal Desert",
+    "duration": "1 month",
+    "dangers": [
+      "Curse",
+      "Allies turned enemies"
+    ],
+    "npcs": [
+      "Guide Cole",
+      "Spy Gwen",
+      "Spy Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "the_first_ritual",
+    "title": "The First Ritual",
+    "type": "CHALLENGE",
+    "difficulty": "HARD",
+    "setting": "DUNGEON",
+    "description": "A easy rescue quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort target",
+      "Objective 2: Investigate item"
+    ],
+    "complications": [
+      "Hidden enemy",
+      "Ambush"
+    ],
+    "rewards": [
+      "4736 gold",
+      "Quest unlock"
+    ],
+    "client": "Farmer",
+    "location": "Arcane Archipelago",
+    "duration": "1 month",
+    "dangers": [
+      "Curse"
+    ],
+    "npcs": [
+      "Servant Hale",
+      "Priest Hale",
+      "Guide Hale"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_ancient_ritual",
+    "title": "Investigate the Ancient Ritual",
+    "type": "DEFEND",
+    "difficulty": "DANGEROUS",
+    "setting": "ASTRAL",
+    "description": "A moderate heist quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver person",
+      "Objective 2: Discover location"
+    ],
+    "complications": [
+      "Betrayal",
+      "Hidden enemy",
+      "Moral choice"
+    ],
+    "rewards": [
+      "567 gold",
+      "Title"
+    ],
+    "client": "Innkeeper",
+    "location": "Abyssal Depths",
+    "duration": "1 day",
+    "dangers": [
+      "Traps",
+      "Monsters",
+      "Traps"
+    ],
+    "npcs": [
+      "Captain Bram",
+      "Guide Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_iron_tower",
+    "title": "Investigate the Iron Tower",
+    "type": "PERSUADE",
+    "difficulty": "HARD",
+    "setting": "ABYSSAL",
+    "description": "A trivial political quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort location",
+      "Objective 2: Investigate item",
+      "Objective 3: Investigate target",
+      "Objective 4: Investigate person"
+    ],
+    "complications": [
+      "Trapped",
+      "Ambush",
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "4469 gold",
+      "Favor"
+    ],
+    "client": "Soldier",
+    "location": "Crystal Desert",
+    "duration": "1 month",
+    "dangers": [
+      "Monsters"
+    ],
+    "npcs": [
+      "Merchant Dara",
+      "Merchant Gwen",
+      "Priest Eli"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "investigate_the_lost_crypt",
+    "title": "Investigate the Lost Crypt",
+    "type": "STEAL",
+    "difficulty": "DANGEROUS",
+    "setting": "ELEMENTAL",
+    "description": "A hard persuade quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Escort person",
+      "Objective 2: Defeat target",
+      "Objective 3: Deliver person"
+    ],
+    "complications": [
+      "Betrayal"
+    ],
+    "rewards": [
+      "535 gold",
+      "Quest unlock"
+    ],
+    "client": "Lord",
+    "location": "Crystal Desert",
+    "duration": "3 months",
+    "dangers": [
+      "Poison"
+    ],
+    "npcs": [
+      "Servant Cole"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "survive_the_dark_crypt",
+    "title": "Survive the Dark Crypt",
+    "type": "SURVIVE",
+    "difficulty": "EASY",
+    "setting": "UNDERWATER",
+    "description": "A moderate kill quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Deliver item",
+      "Objective 2: Destroy target"
+    ],
+    "complications": [
+      "Trapped",
+      "Time limit",
+      "Insufficient supplies"
+    ],
+    "rewards": [
+      "1216 gold",
+      "Reputation"
+    ],
+    "client": "Mysterious stranger",
+    "location": "Elemental Chaos",
+    "duration": "1 month",
+    "dangers": [
+      "Curse"
+    ],
+    "npcs": [
+      "Guide Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "defend_the_crystal_key",
+    "title": "Defend the Crystal Key",
+    "type": "ESCORT",
+    "difficulty": "LEGENDARY",
+    "setting": "CELESTIAL",
+    "description": "A moderate political quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Discover item",
+      "Objective 2: Retrieve person"
+    ],
+    "complications": [
+      "Ambush",
+      "Weather"
+    ],
+    "rewards": [
+      "2142 gold",
+      "Magic item"
+    ],
+    "client": "Farmer",
+    "location": "Sapphire Coast",
+    "duration": "1 week",
+    "dangers": [
+      "Curse",
+      "Poison",
+      "Poison"
+    ],
+    "npcs": [
+      "Guide Dara",
+      "Captain Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  },
+  {
+    "id": "escape_the_bright_dungeon",
+    "title": "Escape the Bright Dungeon",
+    "type": "ESCORT",
+    "difficulty": "LEGENDARY",
+    "setting": "CELESTIAL",
+    "description": "A legendary steal quest.",
+    "premise": "The adventurer is hired to complete a dangerous task.",
+    "objectives": [
+      "Objective 1: Defeat target",
+      "Objective 2: Deliver person",
+      "Objective 3: Deliver person"
+    ],
+    "complications": [
+      "Moral choice",
+      "Hidden enemy"
+    ],
+    "rewards": [
+      "730 gold",
+      "Magic item"
+    ],
+    "client": "Merchant",
+    "location": "Astral Plane",
+    "duration": "3 months",
+    "dangers": [
+      "Environmental hazard"
+    ],
+    "npcs": [
+      "Priest Gwen",
+      "Guide Bram"
+    ],
+    "secret": "There is more than meets the eye.",
+    "alternativeResolution": "Might be resolved through diplomacy, stealth, or violence.",
+    "moralChoice": "Kill or spare the villain.",
+    "timePressure": "Limited time to complete.",
+    "failureConsequences": "Reputation loss.",
+    "successBonus": "Extra reward."
+  }
+]

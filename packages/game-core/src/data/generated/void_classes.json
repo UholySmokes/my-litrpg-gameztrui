@@ -1,0 +1,1913 @@
+[
+  {
+    "id": "illusionist",
+    "name": "Illusionist",
+    "description": "The Illusionist is a warrior class.",
+    "role": "SUPPORT",
+    "magicType": "PSIONIC",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Wisdom"
+    ],
+    "hitDie": 12,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Strength",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Intimidation",
+      "Insight",
+      "Stealth"
+    ],
+    "startingEquipment": [
+      "Helm",
+      "Armor",
+      "Shield"
+    ],
+    "level1Features": [
+      "Spellcasting: Enhances ability",
+      "Ki: Enhances ability",
+      "Evocation: Grants bonus",
+      "Enchantment: Grants bonus",
+      "Second Wind: Unlocks power"
+    ],
+    "difficulty": "EASY",
+    "versatility": 1,
+    "powerLevel": 2,
+    "commonRaces": [
+      "Fighter",
+      "Fighter",
+      "Illusionist",
+      "Artificer"
+    ],
+    "lore": "The Illusionist tradition spans centuries of history."
+  },
+  {
+    "id": "mage_heart",
+    "name": "Mage Heart",
+    "description": "The Mage Heart is a rogue class.",
+    "role": "MAGE",
+    "magicType": "RUNIC",
+    "primaryAbility": "Intelligence",
+    "secondaryAbilities": [
+      "Constitution",
+      "Wisdom",
+      "Strength"
+    ],
+    "hitDie": 6,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Investigation",
+      "Animal Handling",
+      "Arcana",
+      "Investigation",
+      "Survival"
+    ],
+    "startingEquipment": [
+      "Amulet",
+      "Longsword",
+      "Dagger",
+      "Belt"
+    ],
+    "level1Features": [
+      "Power Attack: Grants bonus",
+      "Evocation: Grants bonus",
+      "Smite: Unlocks power",
+      "Trap Sense: Enhances ability"
+    ],
+    "difficulty": "EASY",
+    "versatility": 3,
+    "powerLevel": 3,
+    "commonRaces": [
+      "Fighter",
+      "Illusionist"
+    ],
+    "lore": "The Mage Heart tradition spans centuries of history."
+  },
+  {
+    "id": "warlock",
+    "name": "Warlock",
+    "description": "The Warlock is a rogue class.",
+    "role": "MAGE",
+    "magicType": "PSIONIC",
+    "primaryAbility": "Charisma",
+    "secondaryAbilities": [
+      "Strength",
+      "Strength"
+    ],
+    "hitDie": 12,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Constitution",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Nature",
+      "Acrobatics",
+      "Investigation",
+      "Religion",
+      "Sleight of Hand"
+    ],
+    "startingEquipment": [
+      "Armor",
+      "Wand"
+    ],
+    "level1Features": [
+      "Ki: Grants bonus",
+      "Necromancy: Unlocks power",
+      "Necromancy: Enhances ability",
+      "Spellcasting: Unlocks power",
+      "Second Wind: Grants bonus"
+    ],
+    "difficulty": "EASY",
+    "versatility": 1,
+    "powerLevel": 5,
+    "commonRaces": [
+      "Fighter",
+      "Ranger"
+    ],
+    "lore": "The Warlock tradition spans centuries of history."
+  },
+  {
+    "id": "fighter",
+    "name": "Fighter",
+    "description": "The Fighter is a mage class.",
+    "role": "MAGE",
+    "magicType": "NONE",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Constitution",
+      "Constitution"
+    ],
+    "hitDie": 6,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Dexterity",
+      "Intelligence"
+    ],
+    "skillChoices": [
+      "Survival",
+      "Survival",
+      "Stealth",
+      "Persuasion",
+      "Athletics"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Armor"
+    ],
+    "level1Features": [
+      "Evocation: Unlocks power",
+      "Smite: Enhances ability"
+    ],
+    "difficulty": "VERY_HARD",
+    "versatility": 1,
+    "powerLevel": 5,
+    "commonRaces": [
+      "Fighter",
+      "Rogue",
+      "Illusionist",
+      "Bard"
+    ],
+    "lore": "The Fighter tradition spans centuries of history."
+  },
+  {
+    "id": "necromancer",
+    "name": "Necromancer",
+    "description": "The Necromancer is a leader class.",
+    "role": "ROGUE",
+    "magicType": "DIVINE",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Constitution",
+      "Intelligence"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Constitution"
+    ],
+    "skillChoices": [
+      "Medicine",
+      "Sleight of Hand",
+      "Arcana",
+      "Perception",
+      "Investigation"
+    ],
+    "startingEquipment": [
+      "Boots",
+      "Amulet"
+    ],
+    "level1Features": [
+      "Evocation: Unlocks power",
+      "Healing Word: Enhances ability",
+      "Spellcasting: Grants bonus",
+      "Second Wind: Grants bonus",
+      "Ki: Enhances ability"
+    ],
+    "difficulty": "EXPERT",
+    "versatility": 4,
+    "powerLevel": 6,
+    "commonRaces": [
+      "Warlock",
+      "Scout",
+      "Ranger",
+      "Sorcerer"
+    ],
+    "lore": "The Necromancer tradition spans centuries of history."
+  },
+  {
+    "id": "warlock_heart",
+    "name": "Warlock Heart",
+    "description": "The Warlock Heart is a healer class.",
+    "role": "CRAFTER",
+    "magicType": "ELEMENTAL",
+    "primaryAbility": "Dexterity",
+    "secondaryAbilities": [
+      "Constitution",
+      "Constitution"
+    ],
+    "hitDie": 12,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Constitution"
+    ],
+    "skillChoices": [
+      "Perception",
+      "Athletics",
+      "Insight",
+      "Survival",
+      "History"
+    ],
+    "startingEquipment": [
+      "Gloves",
+      "Wand",
+      "Longsword",
+      "Boots"
+    ],
+    "level1Features": [
+      "Enchantment: Grants bonus",
+      "Lay on Hands: Enhances ability",
+      "Trap Sense: Unlocks power",
+      "Spellcasting: Enhances ability",
+      "Necromancy: Enhances ability"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 3,
+    "powerLevel": 4,
+    "commonRaces": [
+      "Ranger",
+      "Scout",
+      "Fighter"
+    ],
+    "lore": "The Warlock Heart tradition spans centuries of history."
+  },
+  {
+    "id": "rogue",
+    "name": "Rogue",
+    "description": "The Rogue is a crafter class.",
+    "role": "LEADER",
+    "magicType": "PSIONIC",
+    "primaryAbility": "Wisdom",
+    "secondaryAbilities": [
+      "Intelligence",
+      "Wisdom",
+      "Strength"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Dexterity",
+      "Charisma"
+    ],
+    "skillChoices": [
+      "History",
+      "Animal Handling",
+      "Performance",
+      "Nature"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Longsword",
+      "Staff"
+    ],
+    "level1Features": [
+      "Healing Word: Unlocks power",
+      "Enchantment: Unlocks power",
+      "Wild Shape: Unlocks power",
+      "Enchantment: Unlocks power"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 4,
+    "powerLevel": 6,
+    "commonRaces": [
+      "Scholar",
+      "Necromancer",
+      "Ranger",
+      "Barbarian"
+    ],
+    "lore": "The Rogue tradition spans centuries of history."
+  },
+  {
+    "id": "warrior",
+    "name": "Warrior",
+    "description": "The Warrior is a support class.",
+    "role": "LEADER",
+    "magicType": "ARCANE",
+    "primaryAbility": "Strength",
+    "secondaryAbilities": [
+      "Dexterity",
+      "Constitution",
+      "Constitution"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "Heavy"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Wisdom",
+      "Intelligence"
+    ],
+    "skillChoices": [
+      "Sleight of Hand",
+      "Athletics",
+      "Religion",
+      "Religion"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Shield",
+      "Longsword"
+    ],
+    "level1Features": [
+      "Power Attack: Enhances ability",
+      "Necromancy: Grants bonus"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 2,
+    "powerLevel": 9,
+    "commonRaces": [
+      "Illusionist",
+      "Paladin"
+    ],
+    "lore": "The Warrior tradition spans centuries of history."
+  },
+  {
+    "id": "warlock_caller",
+    "name": "Warlock Caller",
+    "description": "The Warlock Caller is a healer class.",
+    "role": "LEADER",
+    "magicType": "DIVINE",
+    "primaryAbility": "Dexterity",
+    "secondaryAbilities": [
+      "Charisma",
+      "Intelligence",
+      "Intelligence"
+    ],
+    "hitDie": 6,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Wisdom",
+      "Intelligence"
+    ],
+    "skillChoices": [
+      "Acrobatics",
+      "Insight",
+      "Insight",
+      "Investigation",
+      "Arcana"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Gloves",
+      "Helm",
+      "Wand"
+    ],
+    "level1Features": [
+      "Rage: Enhances ability",
+      "Healing Word: Enhances ability",
+      "Spellcasting: Enhances ability"
+    ],
+    "difficulty": "VERY_HARD",
+    "versatility": 5,
+    "powerLevel": 6,
+    "commonRaces": [
+      "Fighter",
+      "Cleric",
+      "Barbarian",
+      "Barbarian"
+    ],
+    "lore": "The Warlock Caller tradition spans centuries of history."
+  },
+  {
+    "id": "scholar_path",
+    "name": "Scholar Path",
+    "description": "The Scholar Path is a support class.",
+    "role": "MAGE",
+    "magicType": "DIVINE",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Dexterity"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Constitution",
+      "Charisma"
+    ],
+    "skillChoices": [
+      "Stealth",
+      "Performance",
+      "Persuasion"
+    ],
+    "startingEquipment": [
+      "Dagger",
+      "Ring",
+      "Potion",
+      "Potion"
+    ],
+    "level1Features": [
+      "Lay on Hands: Unlocks power",
+      "Wild Shape: Unlocks power",
+      "Evasion: Unlocks power"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 5,
+    "powerLevel": 3,
+    "commonRaces": [
+      "Sorcerer",
+      "Ranger",
+      "Paladin",
+      "Warlock"
+    ],
+    "lore": "The Scholar Path tradition spans centuries of history."
+  },
+  {
+    "id": "scholar_path",
+    "name": "Scholar Path",
+    "description": "The Scholar Path is a hybrid class.",
+    "role": "WARRIOR",
+    "magicType": "RUNIC",
+    "primaryAbility": "Dexterity",
+    "secondaryAbilities": [
+      "Intelligence"
+    ],
+    "hitDie": 12,
+    "armorProficiencies": [
+      "Heavy"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Intelligence"
+    ],
+    "skillChoices": [
+      "Sleight of Hand",
+      "History",
+      "Arcana",
+      "Acrobatics",
+      "Intimidation"
+    ],
+    "startingEquipment": [
+      "Longsword",
+      "Shield",
+      "Bow"
+    ],
+    "level1Features": [
+      "Sneak Attack: Enhances ability",
+      "Evocation: Unlocks power",
+      "Smite: Enhances ability",
+      "Wild Shape: Unlocks power"
+    ],
+    "difficulty": "EASY",
+    "versatility": 5,
+    "powerLevel": 2,
+    "commonRaces": [
+      "Illusionist",
+      "Barbarian",
+      "Illusionist"
+    ],
+    "lore": "The Scholar Path tradition spans centuries of history."
+  },
+  {
+    "id": "mage_caller",
+    "name": "Mage Caller",
+    "description": "The Mage Caller is a healer class.",
+    "role": "LEADER",
+    "magicType": "ARCANE",
+    "primaryAbility": "Charisma",
+    "secondaryAbilities": [
+      "Dexterity",
+      "Constitution",
+      "Strength"
+    ],
+    "hitDie": 12,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Strength",
+      "Intelligence"
+    ],
+    "skillChoices": [
+      "Intimidation",
+      "Insight"
+    ],
+    "startingEquipment": [
+      "Ring",
+      "Boots",
+      "Armor",
+      "Helm"
+    ],
+    "level1Features": [
+      "Sneak Attack: Unlocks power",
+      "Sneak Attack: Grants bonus",
+      "Trap Sense: Grants bonus",
+      "Smite: Grants bonus",
+      "Evocation: Enhances ability"
+    ],
+    "difficulty": "EXPERT",
+    "versatility": 3,
+    "powerLevel": 10,
+    "commonRaces": [
+      "Warlock",
+      "Sorcerer"
+    ],
+    "lore": "The Mage Caller tradition spans centuries of history."
+  },
+  {
+    "id": "sorcerer_path",
+    "name": "Sorcerer Path",
+    "description": "The Sorcerer Path is a mage class.",
+    "role": "ROGUE",
+    "magicType": "BLOOD",
+    "primaryAbility": "Strength",
+    "secondaryAbilities": [
+      "Charisma",
+      "Dexterity"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Constitution"
+    ],
+    "skillChoices": [
+      "Performance",
+      "Sleight of Hand",
+      "Deception"
+    ],
+    "startingEquipment": [
+      "Amulet",
+      "Shield",
+      "Amulet",
+      "Potion"
+    ],
+    "level1Features": [
+      "Lay on Hands: Grants bonus",
+      "Necromancy: Grants bonus",
+      "Ki: Unlocks power",
+      "Enchantment: Enhances ability",
+      "Enchantment: Enhances ability"
+    ],
+    "difficulty": "VERY_HARD",
+    "versatility": 4,
+    "powerLevel": 6,
+    "commonRaces": [
+      "Rogue"
+    ],
+    "lore": "The Sorcerer Path tradition spans centuries of history."
+  },
+  {
+    "id": "scholar_heart",
+    "name": "Scholar Heart",
+    "description": "The Scholar Heart is a hybrid class.",
+    "role": "MAGE",
+    "magicType": "PSIONIC",
+    "primaryAbility": "Intelligence",
+    "secondaryAbilities": [
+      "Intelligence"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Heavy"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Constitution",
+      "Constitution"
+    ],
+    "skillChoices": [
+      "Survival",
+      "Deception",
+      "Sleight of Hand",
+      "Nature"
+    ],
+    "startingEquipment": [
+      "Gloves",
+      "Longsword",
+      "Longsword",
+      "Staff"
+    ],
+    "level1Features": [
+      "Power Attack: Grants bonus",
+      "Evasion: Grants bonus",
+      "Lay on Hands: Enhances ability",
+      "Power Attack: Enhances ability",
+      "Healing Word: Unlocks power"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 3,
+    "powerLevel": 3,
+    "commonRaces": [
+      "Rogue",
+      "Barbarian",
+      "Monk"
+    ],
+    "lore": "The Scholar Heart tradition spans centuries of history."
+  },
+  {
+    "id": "rogue",
+    "name": "Rogue",
+    "description": "The Rogue is a rogue class.",
+    "role": "WARRIOR",
+    "magicType": "BLOOD",
+    "primaryAbility": "Charisma",
+    "secondaryAbilities": [
+      "Charisma",
+      "Charisma"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Heavy"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Strength",
+      "Charisma"
+    ],
+    "skillChoices": [
+      "Acrobatics",
+      "Insight"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Dagger",
+      "Ring"
+    ],
+    "level1Features": [
+      "Wild Shape: Unlocks power",
+      "Lay on Hands: Grants bonus",
+      "Power Attack: Unlocks power"
+    ],
+    "difficulty": "HARD",
+    "versatility": 1,
+    "powerLevel": 7,
+    "commonRaces": [
+      "Artificer",
+      "Rogue"
+    ],
+    "lore": "The Rogue tradition spans centuries of history."
+  },
+  {
+    "id": "bard",
+    "name": "Bard",
+    "description": "The Bard is a mage class.",
+    "role": "MAGE",
+    "magicType": "ELEMENTAL",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Dexterity",
+      "Intelligence"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Wisdom",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "History",
+      "Religion"
+    ],
+    "startingEquipment": [
+      "Boots",
+      "Bow",
+      "Amulet"
+    ],
+    "level1Features": [
+      "Evasion: Enhances ability",
+      "Evocation: Unlocks power",
+      "Lay on Hands: Grants bonus"
+    ],
+    "difficulty": "EASY",
+    "versatility": 1,
+    "powerLevel": 3,
+    "commonRaces": [
+      "Fighter"
+    ],
+    "lore": "The Bard tradition spans centuries of history."
+  },
+  {
+    "id": "barbarian_keeper",
+    "name": "Barbarian Keeper",
+    "description": "The Barbarian Keeper is a rogue class.",
+    "role": "HEALER",
+    "magicType": "SHADOW",
+    "primaryAbility": "Charisma",
+    "secondaryAbilities": [
+      "Dexterity"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Constitution",
+      "Dexterity"
+    ],
+    "skillChoices": [
+      "Performance",
+      "Medicine",
+      "Animal Handling"
+    ],
+    "startingEquipment": [
+      "Scroll",
+      "Potion"
+    ],
+    "level1Features": [
+      "Healing Word: Enhances ability",
+      "Necromancy: Unlocks power"
+    ],
+    "difficulty": "EASY",
+    "versatility": 5,
+    "powerLevel": 1,
+    "commonRaces": [
+      "Warlock",
+      "Ranger",
+      "Fighter"
+    ],
+    "lore": "The Barbarian Keeper tradition spans centuries of history."
+  },
+  {
+    "id": "scout",
+    "name": "Scout",
+    "description": "The Scout is a rogue class.",
+    "role": "CRAFTER",
+    "magicType": "ARCANE",
+    "primaryAbility": "Strength",
+    "secondaryAbilities": [
+      "Strength",
+      "Strength",
+      "Constitution"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Stealth",
+      "Persuasion",
+      "Persuasion",
+      "Performance"
+    ],
+    "startingEquipment": [
+      "Amulet",
+      "Wand"
+    ],
+    "level1Features": [
+      "Second Wind: Grants bonus",
+      "Second Wind: Grants bonus",
+      "Wild Shape: Grants bonus"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 5,
+    "powerLevel": 6,
+    "commonRaces": [
+      "Rogue",
+      "Sorcerer",
+      "Scout",
+      "Bard"
+    ],
+    "lore": "The Scout tradition spans centuries of history."
+  },
+  {
+    "id": "mage",
+    "name": "Mage",
+    "description": "The Mage is a leader class.",
+    "role": "MAGE",
+    "magicType": "RUNIC",
+    "primaryAbility": "Wisdom",
+    "secondaryAbilities": [
+      "Strength",
+      "Constitution",
+      "Charisma"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Dexterity"
+    ],
+    "skillChoices": [
+      "History",
+      "Sleight of Hand"
+    ],
+    "startingEquipment": [
+      "Wand",
+      "Wand",
+      "Gloves"
+    ],
+    "level1Features": [
+      "Sneak Attack: Enhances ability",
+      "Sneak Attack: Unlocks power",
+      "Smite: Enhances ability",
+      "Enchantment: Grants bonus"
+    ],
+    "difficulty": "EASY",
+    "versatility": 3,
+    "powerLevel": 7,
+    "commonRaces": [
+      "Necromancer",
+      "Rogue",
+      "Monk"
+    ],
+    "lore": "The Mage tradition spans centuries of history."
+  },
+  {
+    "id": "rogue",
+    "name": "Rogue",
+    "description": "The Rogue is a hybrid class.",
+    "role": "WARRIOR",
+    "magicType": "RUNIC",
+    "primaryAbility": "Wisdom",
+    "secondaryAbilities": [
+      "Constitution"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Wisdom",
+      "Charisma"
+    ],
+    "skillChoices": [
+      "Intimidation",
+      "Stealth"
+    ],
+    "startingEquipment": [
+      "Longsword",
+      "Helm"
+    ],
+    "level1Features": [
+      "Healing Word: Grants bonus",
+      "Lay on Hands: Enhances ability"
+    ],
+    "difficulty": "VERY_HARD",
+    "versatility": 2,
+    "powerLevel": 3,
+    "commonRaces": [
+      "Illusionist"
+    ],
+    "lore": "The Rogue tradition spans centuries of history."
+  },
+  {
+    "id": "scout",
+    "name": "Scout",
+    "description": "The Scout is a healer class.",
+    "role": "LEADER",
+    "magicType": "ELEMENTAL",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Wisdom"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Strength"
+    ],
+    "skillChoices": [
+      "Intimidation",
+      "Stealth",
+      "Animal Handling"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Belt",
+      "Scroll"
+    ],
+    "level1Features": [
+      "Smite: Enhances ability",
+      "Rage: Grants bonus",
+      "Wild Shape: Enhances ability",
+      "Power Attack: Enhances ability"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 3,
+    "powerLevel": 10,
+    "commonRaces": [
+      "Bard",
+      "Scholar",
+      "Barbarian"
+    ],
+    "lore": "The Scout tradition spans centuries of history."
+  },
+  {
+    "id": "artificer_soul",
+    "name": "Artificer Soul",
+    "description": "The Artificer Soul is a healer class.",
+    "role": "HEALER",
+    "magicType": "DIVINE",
+    "primaryAbility": "Strength",
+    "secondaryAbilities": [
+      "Strength",
+      "Dexterity"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Strength",
+      "Charisma"
+    ],
+    "skillChoices": [
+      "Medicine",
+      "Athletics",
+      "Insight",
+      "Stealth",
+      "Intimidation"
+    ],
+    "startingEquipment": [
+      "Scroll",
+      "Longsword",
+      "Dagger"
+    ],
+    "level1Features": [
+      "Spellcasting: Grants bonus",
+      "Evasion: Grants bonus",
+      "Evasion: Unlocks power",
+      "Ki: Unlocks power"
+    ],
+    "difficulty": "HARD",
+    "versatility": 4,
+    "powerLevel": 2,
+    "commonRaces": [
+      "Necromancer"
+    ],
+    "lore": "The Artificer Soul tradition spans centuries of history."
+  },
+  {
+    "id": "ranger_bearer",
+    "name": "Ranger Bearer",
+    "description": "The Ranger Bearer is a mage class.",
+    "role": "WARRIOR",
+    "magicType": "BLOOD",
+    "primaryAbility": "Charisma",
+    "secondaryAbilities": [
+      "Dexterity"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Charisma"
+    ],
+    "skillChoices": [
+      "Nature",
+      "Religion",
+      "Investigation",
+      "Intimidation"
+    ],
+    "startingEquipment": [
+      "Bow",
+      "Dagger"
+    ],
+    "level1Features": [
+      "Sneak Attack: Grants bonus",
+      "Sneak Attack: Enhances ability"
+    ],
+    "difficulty": "VERY_HARD",
+    "versatility": 3,
+    "powerLevel": 7,
+    "commonRaces": [
+      "Illusionist"
+    ],
+    "lore": "The Ranger Bearer tradition spans centuries of history."
+  },
+  {
+    "id": "barbarian_walker",
+    "name": "Barbarian Walker",
+    "description": "The Barbarian Walker is a crafter class.",
+    "role": "SUPPORT",
+    "magicType": "RUNIC",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Strength"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Insight",
+      "Nature"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Boots"
+    ],
+    "level1Features": [
+      "Rage: Enhances ability",
+      "Wild Shape: Grants bonus",
+      "Necromancy: Enhances ability"
+    ],
+    "difficulty": "HARD",
+    "versatility": 2,
+    "powerLevel": 1,
+    "commonRaces": [
+      "Scholar",
+      "Illusionist",
+      "Illusionist",
+      "Bard"
+    ],
+    "lore": "The Barbarian Walker tradition spans centuries of history."
+  },
+  {
+    "id": "cleric",
+    "name": "Cleric",
+    "description": "The Cleric is a rogue class.",
+    "role": "MAGE",
+    "magicType": "NONE",
+    "primaryAbility": "Strength",
+    "secondaryAbilities": [
+      "Dexterity"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Heavy"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Charisma"
+    ],
+    "skillChoices": [
+      "Investigation",
+      "Arcana"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Bow"
+    ],
+    "level1Features": [
+      "Smite: Grants bonus",
+      "Spellcasting: Enhances ability",
+      "Spellcasting: Grants bonus",
+      "Lay on Hands: Grants bonus",
+      "Sneak Attack: Unlocks power"
+    ],
+    "difficulty": "VERY_HARD",
+    "versatility": 4,
+    "powerLevel": 8,
+    "commonRaces": [
+      "Fighter"
+    ],
+    "lore": "The Cleric tradition spans centuries of history."
+  },
+  {
+    "id": "scout",
+    "name": "Scout",
+    "description": "The Scout is a healer class.",
+    "role": "ROGUE",
+    "magicType": "SHADOW",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Dexterity",
+      "Strength"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Animal Handling",
+      "Arcana",
+      "Investigation",
+      "Performance",
+      "Deception"
+    ],
+    "startingEquipment": [
+      "Bow",
+      "Amulet",
+      "Belt"
+    ],
+    "level1Features": [
+      "Necromancy: Unlocks power",
+      "Smite: Grants bonus",
+      "Ki: Unlocks power"
+    ],
+    "difficulty": "HARD",
+    "versatility": 4,
+    "powerLevel": 9,
+    "commonRaces": [
+      "Barbarian",
+      "Necromancer",
+      "Warlock",
+      "Fighter"
+    ],
+    "lore": "The Scout tradition spans centuries of history."
+  },
+  {
+    "id": "monk",
+    "name": "Monk",
+    "description": "The Monk is a hybrid class.",
+    "role": "HEALER",
+    "magicType": "NONE",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Intelligence"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Strength",
+      "Dexterity"
+    ],
+    "skillChoices": [
+      "Investigation",
+      "Survival",
+      "Animal Handling"
+    ],
+    "startingEquipment": [
+      "Ring",
+      "Helm"
+    ],
+    "level1Features": [
+      "Rage: Grants bonus",
+      "Sneak Attack: Grants bonus",
+      "Evocation: Enhances ability",
+      "Smite: Unlocks power",
+      "Enchantment: Enhances ability"
+    ],
+    "difficulty": "EXPERT",
+    "versatility": 1,
+    "powerLevel": 6,
+    "commonRaces": [
+      "Druid",
+      "Artificer"
+    ],
+    "lore": "The Monk tradition spans centuries of history."
+  },
+  {
+    "id": "illusionist",
+    "name": "Illusionist",
+    "description": "The Illusionist is a crafter class.",
+    "role": "WARRIOR",
+    "magicType": "ARCANE",
+    "primaryAbility": "Strength",
+    "secondaryAbilities": [
+      "Wisdom"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Strength"
+    ],
+    "skillChoices": [
+      "Insight",
+      "Deception",
+      "Nature",
+      "History"
+    ],
+    "startingEquipment": [
+      "Longsword",
+      "Longsword",
+      "Dagger"
+    ],
+    "level1Features": [
+      "Smite: Grants bonus",
+      "Trap Sense: Unlocks power",
+      "Trap Sense: Enhances ability"
+    ],
+    "difficulty": "EASY",
+    "versatility": 3,
+    "powerLevel": 7,
+    "commonRaces": [
+      "Warlock"
+    ],
+    "lore": "The Illusionist tradition spans centuries of history."
+  },
+  {
+    "id": "sorcerer",
+    "name": "Sorcerer",
+    "description": "The Sorcerer is a rogue class.",
+    "role": "LEADER",
+    "magicType": "RUNIC",
+    "primaryAbility": "Charisma",
+    "secondaryAbilities": [
+      "Dexterity",
+      "Charisma"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Wisdom",
+      "Dexterity"
+    ],
+    "skillChoices": [
+      "Medicine",
+      "Medicine",
+      "Deception",
+      "History",
+      "Acrobatics"
+    ],
+    "startingEquipment": [
+      "Ring",
+      "Potion",
+      "Helm",
+      "Gloves"
+    ],
+    "level1Features": [
+      "Sneak Attack: Unlocks power",
+      "Rage: Unlocks power"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 5,
+    "powerLevel": 2,
+    "commonRaces": [
+      "Ranger",
+      "Warlock",
+      "Rogue",
+      "Bard"
+    ],
+    "lore": "The Sorcerer tradition spans centuries of history."
+  },
+  {
+    "id": "barbarian_knight",
+    "name": "Barbarian Knight",
+    "description": "The Barbarian Knight is a mage class.",
+    "role": "HYBRID",
+    "magicType": "RUNIC",
+    "primaryAbility": "Strength",
+    "secondaryAbilities": [
+      "Dexterity",
+      "Dexterity"
+    ],
+    "hitDie": 6,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Strength",
+      "Charisma"
+    ],
+    "skillChoices": [
+      "Animal Handling",
+      "Performance"
+    ],
+    "startingEquipment": [
+      "Boots",
+      "Potion",
+      "Dagger"
+    ],
+    "level1Features": [
+      "Lay on Hands: Enhances ability",
+      "Rage: Unlocks power",
+      "Ki: Grants bonus",
+      "Trap Sense: Enhances ability",
+      "Smite: Unlocks power"
+    ],
+    "difficulty": "MODERATE",
+    "versatility": 2,
+    "powerLevel": 8,
+    "commonRaces": [
+      "Mage"
+    ],
+    "lore": "The Barbarian Knight tradition spans centuries of history."
+  },
+  {
+    "id": "sorcerer",
+    "name": "Sorcerer",
+    "description": "The Sorcerer is a support class.",
+    "role": "MAGE",
+    "magicType": "ARCANE",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Intelligence"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Strength",
+      "Constitution"
+    ],
+    "skillChoices": [
+      "Acrobatics",
+      "Persuasion",
+      "History",
+      "Persuasion",
+      "History"
+    ],
+    "startingEquipment": [
+      "Staff",
+      "Armor"
+    ],
+    "level1Features": [
+      "Healing Word: Enhances ability",
+      "Enchantment: Unlocks power",
+      "Enchantment: Unlocks power"
+    ],
+    "difficulty": "EXPERT",
+    "versatility": 3,
+    "powerLevel": 5,
+    "commonRaces": [
+      "Bard",
+      "Cleric",
+      "Mage"
+    ],
+    "lore": "The Sorcerer tradition spans centuries of history."
+  },
+  {
+    "id": "fighter_path",
+    "name": "Fighter Path",
+    "description": "The Fighter Path is a crafter class.",
+    "role": "ROGUE",
+    "magicType": "NONE",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Intelligence"
+    ],
+    "hitDie": 6,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Insight",
+      "Athletics",
+      "Acrobatics",
+      "Insight",
+      "History"
+    ],
+    "startingEquipment": [
+      "Shield",
+      "Staff",
+      "Scroll",
+      "Helm"
+    ],
+    "level1Features": [
+      "Second Wind: Enhances ability",
+      "Lay on Hands: Enhances ability"
+    ],
+    "difficulty": "HARD",
+    "versatility": 1,
+    "powerLevel": 9,
+    "commonRaces": [
+      "Paladin",
+      "Barbarian",
+      "Fighter",
+      "Barbarian"
+    ],
+    "lore": "The Fighter Path tradition spans centuries of history."
+  },
+  {
+    "id": "paladin",
+    "name": "Paladin",
+    "description": "The Paladin is a support class.",
+    "role": "CRAFTER",
+    "magicType": "RUNIC",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Constitution"
+    ],
+    "hitDie": 6,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Strength"
+    ],
+    "skillChoices": [
+      "Perception",
+      "Survival"
+    ],
+    "startingEquipment": [
+      "Gloves",
+      "Ring",
+      "Bow"
+    ],
+    "level1Features": [
+      "Trap Sense: Enhances ability",
+      "Trap Sense: Unlocks power"
+    ],
+    "difficulty": "VERY_HARD",
+    "versatility": 5,
+    "powerLevel": 8,
+    "commonRaces": [
+      "Artificer",
+      "Sorcerer"
+    ],
+    "lore": "The Paladin tradition spans centuries of history."
+  },
+  {
+    "id": "rogue",
+    "name": "Rogue",
+    "description": "The Rogue is a warrior class.",
+    "role": "ROGUE",
+    "magicType": "ARCANE",
+    "primaryAbility": "Intelligence",
+    "secondaryAbilities": [
+      "Dexterity"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Strength",
+      "Intelligence"
+    ],
+    "skillChoices": [
+      "Persuasion",
+      "Insight"
+    ],
+    "startingEquipment": [
+      "Dagger",
+      "Helm",
+      "Ring",
+      "Shield"
+    ],
+    "level1Features": [
+      "Evasion: Unlocks power",
+      "Evasion: Grants bonus",
+      "Spellcasting: Enhances ability",
+      "Wild Shape: Enhances ability"
+    ],
+    "difficulty": "EXPERT",
+    "versatility": 3,
+    "powerLevel": 5,
+    "commonRaces": [
+      "Warrior",
+      "Necromancer",
+      "Scout",
+      "Cleric"
+    ],
+    "lore": "The Rogue tradition spans centuries of history."
+  },
+  {
+    "id": "scout",
+    "name": "Scout",
+    "description": "The Scout is a mage class.",
+    "role": "MAGE",
+    "magicType": "NECROMANCY",
+    "primaryAbility": "Strength",
+    "secondaryAbilities": [
+      "Wisdom",
+      "Constitution"
+    ],
+    "hitDie": 12,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Intelligence"
+    ],
+    "skillChoices": [
+      "Animal Handling",
+      "History",
+      "Investigation",
+      "Performance",
+      "Deception"
+    ],
+    "startingEquipment": [
+      "Ring",
+      "Amulet",
+      "Boots",
+      "Potion"
+    ],
+    "level1Features": [
+      "Ki: Enhances ability",
+      "Enchantment: Grants bonus"
+    ],
+    "difficulty": "EASY",
+    "versatility": 4,
+    "powerLevel": 5,
+    "commonRaces": [
+      "Warrior",
+      "Warlock",
+      "Sorcerer"
+    ],
+    "lore": "The Scout tradition spans centuries of history."
+  },
+  {
+    "id": "sorcerer",
+    "name": "Sorcerer",
+    "description": "The Sorcerer is a crafter class.",
+    "role": "MAGE",
+    "magicType": "NATURE",
+    "primaryAbility": "Dexterity",
+    "secondaryAbilities": [
+      "Charisma",
+      "Intelligence"
+    ],
+    "hitDie": 10,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Insight",
+      "Religion"
+    ],
+    "startingEquipment": [
+      "Belt",
+      "Helm"
+    ],
+    "level1Features": [
+      "Enchantment: Enhances ability",
+      "Smite: Unlocks power",
+      "Trap Sense: Enhances ability",
+      "Trap Sense: Grants bonus",
+      "Wild Shape: Grants bonus"
+    ],
+    "difficulty": "EASY",
+    "versatility": 3,
+    "powerLevel": 9,
+    "commonRaces": [
+      "Ranger",
+      "Necromancer",
+      "Warrior",
+      "Paladin"
+    ],
+    "lore": "The Sorcerer tradition spans centuries of history."
+  },
+  {
+    "id": "druid_walker",
+    "name": "Druid Walker",
+    "description": "The Druid Walker is a warrior class.",
+    "role": "HEALER",
+    "magicType": "NONE",
+    "primaryAbility": "Intelligence",
+    "secondaryAbilities": [
+      "Constitution"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Martial"
+    ],
+    "savingThrows": [
+      "Intelligence",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Athletics",
+      "Acrobatics",
+      "Intimidation",
+      "Perception",
+      "Sleight of Hand"
+    ],
+    "startingEquipment": [
+      "Scroll",
+      "Dagger",
+      "Helm",
+      "Scroll"
+    ],
+    "level1Features": [
+      "Rage: Grants bonus",
+      "Trap Sense: Enhances ability",
+      "Enchantment: Unlocks power",
+      "Spellcasting: Enhances ability"
+    ],
+    "difficulty": "EASY",
+    "versatility": 4,
+    "powerLevel": 1,
+    "commonRaces": [
+      "Druid",
+      "Bard"
+    ],
+    "lore": "The Druid Walker tradition spans centuries of history."
+  },
+  {
+    "id": "bard_seeker",
+    "name": "Bard Seeker",
+    "description": "The Bard Seeker is a leader class.",
+    "role": "WARRIOR",
+    "magicType": "NONE",
+    "primaryAbility": "Intelligence",
+    "secondaryAbilities": [
+      "Charisma"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "None"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Constitution",
+      "Wisdom"
+    ],
+    "skillChoices": [
+      "Investigation",
+      "Persuasion",
+      "Performance",
+      "Perception"
+    ],
+    "startingEquipment": [
+      "Shield",
+      "Bow",
+      "Scroll"
+    ],
+    "level1Features": [
+      "Necromancy: Unlocks power",
+      "Trap Sense: Unlocks power",
+      "Ki: Unlocks power",
+      "Spellcasting: Grants bonus"
+    ],
+    "difficulty": "EXPERT",
+    "versatility": 3,
+    "powerLevel": 9,
+    "commonRaces": [
+      "Sorcerer",
+      "Cleric",
+      "Artificer"
+    ],
+    "lore": "The Bard Seeker tradition spans centuries of history."
+  },
+  {
+    "id": "rogue",
+    "name": "Rogue",
+    "description": "The Rogue is a support class.",
+    "role": "HYBRID",
+    "magicType": "SHADOW",
+    "primaryAbility": "Constitution",
+    "secondaryAbilities": [
+      "Charisma",
+      "Charisma",
+      "Constitution"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Light"
+    ],
+    "weaponProficiencies": [
+      "Exotic"
+    ],
+    "savingThrows": [
+      "Dexterity",
+      "Strength"
+    ],
+    "skillChoices": [
+      "Nature",
+      "Deception",
+      "Acrobatics",
+      "Sleight of Hand",
+      "Medicine"
+    ],
+    "startingEquipment": [
+      "Belt",
+      "Potion",
+      "Potion"
+    ],
+    "level1Features": [
+      "Enchantment: Grants bonus",
+      "Evocation: Unlocks power",
+      "Evocation: Grants bonus",
+      "Rage: Unlocks power",
+      "Enchantment: Grants bonus"
+    ],
+    "difficulty": "EXPERT",
+    "versatility": 4,
+    "powerLevel": 6,
+    "commonRaces": [
+      "Paladin",
+      "Illusionist",
+      "Paladin"
+    ],
+    "lore": "The Rogue tradition spans centuries of history."
+  },
+  {
+    "id": "sorcerer",
+    "name": "Sorcerer",
+    "description": "The Sorcerer is a rogue class.",
+    "role": "SUPPORT",
+    "magicType": "PSIONIC",
+    "primaryAbility": "Dexterity",
+    "secondaryAbilities": [
+      "Constitution",
+      "Charisma",
+      "Strength"
+    ],
+    "hitDie": 8,
+    "armorProficiencies": [
+      "Medium"
+    ],
+    "weaponProficiencies": [
+      "Simple"
+    ],
+    "savingThrows": [
+      "Charisma",
+      "Constitution"
+    ],
+    "skillChoices": [
+      "Nature",
+      "Perception",
+      "Investigation",
+      "Medicine",
+      "Religion"
+    ],
+    "startingEquipment": [
+      "Scroll",
+      "Longsword"
+    ],
+    "level1Features": [
+      "Lay on Hands: Grants bonus",
+      "Wild Shape: Grants bonus"
+    ],
+    "difficulty": "VERY_HARD",
+    "versatility": 5,
+    "powerLevel": 5,
+    "commonRaces": [
+      "Mage",
+      "Ranger",
+      "Ranger",
+      "Druid"
+    ],
+    "lore": "The Sorcerer tradition spans centuries of history."
+  }
+]

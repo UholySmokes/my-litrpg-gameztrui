@@ -1,0 +1,4416 @@
+[
+  {
+    "id": "crown_of_thunder",
+    "name": "Crown of Thunder",
+    "type": "SHIELD",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A rare potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed",
+      "+2 to defense",
+      "+1 to defense",
+      "+2 to magic"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9668 gold"
+  },
+  {
+    "id": "blade_of_nature",
+    "name": "Blade of Nature",
+    "type": "GLOVES",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to defense",
+      "+3 to defense",
+      "+3 to speed",
+      "+3 to magic"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "20 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "905 gold"
+  },
+  {
+    "id": "rod_of_obsidian",
+    "name": "Rod of Obsidian",
+    "type": "WONDROUS",
+    "rarity": "ARTIFACT",
+    "attuned": "REQUIRED",
+    "description": "A rare gloves.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to magic",
+      "+1 to health",
+      "+2 to speed",
+      "+4 to attack"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "9 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1488 gold"
+  },
+  {
+    "id": "chalice_of_golden",
+    "name": "Chalice of Golden",
+    "type": "RING",
+    "rarity": "RARE",
+    "attuned": "REQUIRED",
+    "description": "A uncommon scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to speed",
+      "+1 to magic",
+      "+1 to speed",
+      "+4 to speed"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2637 gold"
+  },
+  {
+    "id": "rod_of_holy",
+    "name": "Rod of Holy",
+    "type": "GLOVES",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A very_rare shield.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack",
+      "+1 to defense",
+      "+4 to defense"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5016 gold"
+  },
+  {
+    "id": "wand_of_void",
+    "name": "Wand of Void",
+    "type": "ARMOR",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A uncommon gloves.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed",
+      "+3 to speed"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "5 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2852 gold"
+  },
+  {
+    "id": "belt_of_void",
+    "name": "Belt of Void",
+    "type": "POTION",
+    "rarity": "RARE",
+    "attuned": "OPTIONAL",
+    "description": "A uncommon armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense",
+      "+4 to speed",
+      "+5 to defense",
+      "+1 to attack"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "20 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1467 gold"
+  },
+  {
+    "id": "boots_of_thunder",
+    "name": "Boots of Thunder",
+    "type": "AMULET",
+    "rarity": "ARTIFACT",
+    "attuned": "REQUIRED",
+    "description": "A common boots.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to magic",
+      "+2 to attack",
+      "+3 to defense",
+      "+5 to attack"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7443 gold"
+  },
+  {
+    "id": "chalice_of_crystal",
+    "name": "Chalice of Crystal",
+    "type": "HEADGEAR",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A artifact ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to magic",
+      "+4 to speed"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9841 gold"
+  },
+  {
+    "id": "amulet_of_silver",
+    "name": "Amulet of Silver",
+    "type": "AMULET",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A uncommon boots.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to defense",
+      "+1 to magic"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4078 gold"
+  },
+  {
+    "id": "wand_of_void",
+    "name": "Wand of Void",
+    "type": "ROD",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A common weapon.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to magic",
+      "+4 to defense",
+      "+4 to speed",
+      "+5 to magic"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "863 gold"
+  },
+  {
+    "id": "wand_of_obsidian",
+    "name": "Wand of Obsidian",
+    "type": "RING",
+    "rarity": "VERY_RARE",
+    "attuned": "OPTIONAL",
+    "description": "A legendary rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to magic"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "20 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4966 gold"
+  },
+  {
+    "id": "shield_of_crystal",
+    "name": "Shield of Crystal",
+    "type": "BELT",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A common shield.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense",
+      "+5 to speed"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1478 gold"
+  },
+  {
+    "id": "wand_of_iron",
+    "name": "Wand of Iron",
+    "type": "GLOVES",
+    "rarity": "VERY_RARE",
+    "attuned": "REQUIRED",
+    "description": "A rare armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to defense",
+      "+4 to magic",
+      "+3 to speed"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "9 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8480 gold"
+  },
+  {
+    "id": "wand_of_arcane",
+    "name": "Wand of Arcane",
+    "type": "SCROLL",
+    "rarity": "UNCOMMON",
+    "attuned": "OPTIONAL",
+    "description": "A artifact headgear.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed",
+      "+1 to defense"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "2 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3010 gold"
+  },
+  {
+    "id": "blade_of_nature",
+    "name": "Blade of Nature",
+    "type": "AMULET",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A very_rare boots.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "12 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7509 gold"
+  },
+  {
+    "id": "boots_of_fire",
+    "name": "Boots of Fire",
+    "type": "POTION",
+    "rarity": "ARTIFACT",
+    "attuned": "REQUIRED",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to magic"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "6 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9238 gold"
+  },
+  {
+    "id": "belt_of_void",
+    "name": "Belt of Void",
+    "type": "RING",
+    "rarity": "LEGENDARY",
+    "attuned": "REQUIRED",
+    "description": "A legendary wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack",
+      "+2 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4667 gold"
+  },
+  {
+    "id": "belt_of_crystal",
+    "name": "Belt of Crystal",
+    "type": "ARMOR",
+    "rarity": "VERY_RARE",
+    "attuned": "OPTIONAL",
+    "description": "A legendary scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "3 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7871 gold"
+  },
+  {
+    "id": "boots_of_crystal",
+    "name": "Boots of Crystal",
+    "type": "AMULET",
+    "rarity": "LEGENDARY",
+    "attuned": "NONE",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "19 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3473 gold"
+  },
+  {
+    "id": "chalice_of_shadow",
+    "name": "Chalice of Shadow",
+    "type": "WONDROUS",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A rare wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to health"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6544 gold"
+  },
+  {
+    "id": "staff_of_ice",
+    "name": "Staff of Ice",
+    "type": "RING",
+    "rarity": "VERY_RARE",
+    "attuned": "REQUIRED",
+    "description": "A common potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed",
+      "+4 to magic"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8052 gold"
+  },
+  {
+    "id": "orb_of_arcane",
+    "name": "Orb of Arcane",
+    "type": "STAFF",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A legendary wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to magic",
+      "+5 to defense",
+      "+4 to speed"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "16 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9235 gold"
+  },
+  {
+    "id": "helm_of_arcane",
+    "name": "Helm of Arcane",
+    "type": "ARMOR",
+    "rarity": "VERY_RARE",
+    "attuned": "OPTIONAL",
+    "description": "A legendary wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack",
+      "+1 to health",
+      "+3 to speed",
+      "+2 to defense"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4772 gold"
+  },
+  {
+    "id": "boots_of_arcane",
+    "name": "Boots of Arcane",
+    "type": "ARMOR",
+    "rarity": "VERY_RARE",
+    "attuned": "OPTIONAL",
+    "description": "A uncommon wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to health",
+      "+4 to magic",
+      "+5 to attack"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "3 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8421 gold"
+  },
+  {
+    "id": "crown_of_astral",
+    "name": "Crown of Astral",
+    "type": "BOOTS",
+    "rarity": "VERY_RARE",
+    "attuned": "REQUIRED",
+    "description": "A very_rare rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to magic",
+      "+5 to attack",
+      "+5 to attack"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2995 gold"
+  },
+  {
+    "id": "chalice_of_arcane",
+    "name": "Chalice of Arcane",
+    "type": "WEAPON",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A artifact amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed",
+      "+4 to health",
+      "+3 to magic"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "7 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1291 gold"
+  },
+  {
+    "id": "rod_of_void",
+    "name": "Rod of Void",
+    "type": "AMULET",
+    "rarity": "ARTIFACT",
+    "attuned": "REQUIRED",
+    "description": "A very_rare gloves.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "1 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7827 gold"
+  },
+  {
+    "id": "boots_of_iron",
+    "name": "Boots of Iron",
+    "type": "BOOTS",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A legendary staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to health",
+      "+5 to magic",
+      "+4 to magic",
+      "+1 to defense"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "1 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1843 gold"
+  },
+  {
+    "id": "chalice_of_shadow",
+    "name": "Chalice of Shadow",
+    "type": "STAFF",
+    "rarity": "UNCOMMON",
+    "attuned": "REQUIRED",
+    "description": "A uncommon headgear.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed",
+      "+5 to defense"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2437 gold"
+  },
+  {
+    "id": "boots_of_arcane",
+    "name": "Boots of Arcane",
+    "type": "WEAPON",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A uncommon staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+1 to speed",
+      "+5 to defense",
+      "+2 to magic"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5479 gold"
+  },
+  {
+    "id": "blade_of_fire",
+    "name": "Blade of Fire",
+    "type": "ROD",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A very_rare potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to health",
+      "+5 to magic",
+      "+1 to speed",
+      "+4 to speed"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "19 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3809 gold"
+  },
+  {
+    "id": "rod_of_shadow",
+    "name": "Rod of Shadow",
+    "type": "GLOVES",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A legendary belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to speed"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5691 gold"
+  },
+  {
+    "id": "boots_of_iron",
+    "name": "Boots of Iron",
+    "type": "BOOTS",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A rare staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to magic",
+      "+4 to defense"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9874 gold"
+  },
+  {
+    "id": "chalice_of_silver",
+    "name": "Chalice of Silver",
+    "type": "STAFF",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A uncommon scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+3 to speed",
+      "+2 to health"
+    ],
+    "charges": 4,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7921 gold"
+  },
+  {
+    "id": "ring_of_ice",
+    "name": "Ring of Ice",
+    "type": "RING",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A very_rare armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to magic",
+      "+2 to defense",
+      "+5 to attack",
+      "+1 to magic"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "12 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2872 gold"
+  },
+  {
+    "id": "chalice_of_silver",
+    "name": "Chalice of Silver",
+    "type": "SCROLL",
+    "rarity": "LEGENDARY",
+    "attuned": "REQUIRED",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to health",
+      "+2 to attack",
+      "+5 to defense",
+      "+4 to magic"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "12 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9136 gold"
+  },
+  {
+    "id": "staff_of_obsidian",
+    "name": "Staff of Obsidian",
+    "type": "WAND",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A legendary rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to speed"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9998 gold"
+  },
+  {
+    "id": "orb_of_silver",
+    "name": "Orb of Silver",
+    "type": "ARMOR",
+    "rarity": "LEGENDARY",
+    "attuned": "REQUIRED",
+    "description": "A legendary armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to defense",
+      "+3 to defense"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1636 gold"
+  },
+  {
+    "id": "ring_of_crystal",
+    "name": "Ring of Crystal",
+    "type": "BELT",
+    "rarity": "RARE",
+    "attuned": "REQUIRED",
+    "description": "A common potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+1 to defense"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8284 gold"
+  },
+  {
+    "id": "ring_of_fire",
+    "name": "Ring of Fire",
+    "type": "AMULET",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A very_rare belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to health",
+      "+4 to defense"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6716 gold"
+  },
+  {
+    "id": "boots_of_silver",
+    "name": "Boots of Silver",
+    "type": "GLOVES",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A common headgear.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to health",
+      "+1 to attack"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2702 gold"
+  },
+  {
+    "id": "shield_of_shadow",
+    "name": "Shield of Shadow",
+    "type": "BOOTS",
+    "rarity": "COMMON",
+    "attuned": "NONE",
+    "description": "A artifact wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to magic"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5149 gold"
+  },
+  {
+    "id": "wand_of_shadow",
+    "name": "Wand of Shadow",
+    "type": "POTION",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A legendary scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+2 to health"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "20 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5666 gold"
+  },
+  {
+    "id": "orb_of_golden",
+    "name": "Orb of Golden",
+    "type": "ROD",
+    "rarity": "VERY_RARE",
+    "attuned": "REQUIRED",
+    "description": "A rare armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to magic"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "5 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3511 gold"
+  },
+  {
+    "id": "crown_of_astral",
+    "name": "Crown of Astral",
+    "type": "GLOVES",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A rare wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to attack",
+      "+5 to health"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6936 gold"
+  },
+  {
+    "id": "gloves_of_fire",
+    "name": "Gloves of Fire",
+    "type": "STAFF",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A rare rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to attack",
+      "+1 to speed",
+      "+3 to health"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3878 gold"
+  },
+  {
+    "id": "orb_of_iron",
+    "name": "Orb of Iron",
+    "type": "SHIELD",
+    "rarity": "LEGENDARY",
+    "attuned": "NONE",
+    "description": "A artifact rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to magic",
+      "+3 to health"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1734 gold"
+  },
+  {
+    "id": "wand_of_astral",
+    "name": "Wand of Astral",
+    "type": "SHIELD",
+    "rarity": "UNCOMMON",
+    "attuned": "OPTIONAL",
+    "description": "A very_rare armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+1 to attack"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7812 gold"
+  },
+  {
+    "id": "amulet_of_nature",
+    "name": "Amulet of Nature",
+    "type": "ARMOR",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A legendary boots.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to health",
+      "+4 to speed",
+      "+4 to speed",
+      "+4 to defense"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7952 gold"
+  },
+  {
+    "id": "rod_of_nature",
+    "name": "Rod of Nature",
+    "type": "WAND",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A legendary armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+1 to defense"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "12 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9866 gold"
+  },
+  {
+    "id": "chalice_of_arcane",
+    "name": "Chalice of Arcane",
+    "type": "ARMOR",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A legendary amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to defense"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "12 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6145 gold"
+  },
+  {
+    "id": "staff_of_holy",
+    "name": "Staff of Holy",
+    "type": "HEADGEAR",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A uncommon wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to magic",
+      "+3 to defense",
+      "+2 to speed",
+      "+1 to attack"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "12 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "742 gold"
+  },
+  {
+    "id": "shield_of_nature",
+    "name": "Shield of Nature",
+    "type": "SHIELD",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A very_rare scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+5 to defense",
+      "+2 to health"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2450 gold"
+  },
+  {
+    "id": "chalice_of_iron",
+    "name": "Chalice of Iron",
+    "type": "BELT",
+    "rarity": "COMMON",
+    "attuned": "NONE",
+    "description": "A artifact shield.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to defense",
+      "+4 to magic",
+      "+5 to attack",
+      "+4 to magic"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "6 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9381 gold"
+  },
+  {
+    "id": "belt_of_golden",
+    "name": "Belt of Golden",
+    "type": "WONDROUS",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A legendary rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to attack"
+    ],
+    "charges": 4,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "20 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9352 gold"
+  },
+  {
+    "id": "gloves_of_thunder",
+    "name": "Gloves of Thunder",
+    "type": "WONDROUS",
+    "rarity": "VERY_RARE",
+    "attuned": "NONE",
+    "description": "A common armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to magic",
+      "+2 to defense"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8751 gold"
+  },
+  {
+    "id": "helm_of_unholy",
+    "name": "Helm of Unholy",
+    "type": "BOOTS",
+    "rarity": "LEGENDARY",
+    "attuned": "REQUIRED",
+    "description": "A very_rare potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to speed"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8659 gold"
+  },
+  {
+    "id": "wand_of_arcane",
+    "name": "Wand of Arcane",
+    "type": "AMULET",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A common gloves.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense",
+      "+2 to magic"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "5 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6682 gold"
+  },
+  {
+    "id": "belt_of_ice",
+    "name": "Belt of Ice",
+    "type": "WEAPON",
+    "rarity": "LEGENDARY",
+    "attuned": "OPTIONAL",
+    "description": "A uncommon weapon.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6773 gold"
+  },
+  {
+    "id": "wand_of_holy",
+    "name": "Wand of Holy",
+    "type": "BOOTS",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A uncommon ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to health",
+      "+5 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "9 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5225 gold"
+  },
+  {
+    "id": "boots_of_astral",
+    "name": "Boots of Astral",
+    "type": "BOOTS",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A common boots.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to magic",
+      "+5 to health"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5000 gold"
+  },
+  {
+    "id": "helm_of_arcane",
+    "name": "Helm of Arcane",
+    "type": "HEADGEAR",
+    "rarity": "COMMON",
+    "attuned": "NONE",
+    "description": "A legendary ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to health",
+      "+2 to defense"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "694 gold"
+  },
+  {
+    "id": "blade_of_silver",
+    "name": "Blade of Silver",
+    "type": "HEADGEAR",
+    "rarity": "LEGENDARY",
+    "attuned": "OPTIONAL",
+    "description": "A artifact wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to speed"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "20 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6238 gold"
+  },
+  {
+    "id": "wand_of_silver",
+    "name": "Wand of Silver",
+    "type": "ROD",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A legendary amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to health"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "3 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1479 gold"
+  },
+  {
+    "id": "shield_of_iron",
+    "name": "Shield of Iron",
+    "type": "ARMOR",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A legendary amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to health",
+      "+5 to magic",
+      "+3 to magic",
+      "+4 to magic"
+    ],
+    "charges": 4,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3460 gold"
+  },
+  {
+    "id": "boots_of_void",
+    "name": "Boots of Void",
+    "type": "BELT",
+    "rarity": "COMMON",
+    "attuned": "NONE",
+    "description": "A uncommon rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "1 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6779 gold"
+  },
+  {
+    "id": "gloves_of_obsidian",
+    "name": "Gloves of Obsidian",
+    "type": "STAFF",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A very_rare gloves.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to health"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5793 gold"
+  },
+  {
+    "id": "chalice_of_arcane",
+    "name": "Chalice of Arcane",
+    "type": "POTION",
+    "rarity": "LEGENDARY",
+    "attuned": "OPTIONAL",
+    "description": "A very_rare wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to speed"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "7 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "163 gold"
+  },
+  {
+    "id": "amulet_of_iron",
+    "name": "Amulet of Iron",
+    "type": "WEAPON",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A artifact belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to health",
+      "+3 to defense"
+    ],
+    "charges": 4,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "16 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "612 gold"
+  },
+  {
+    "id": "staff_of_nature",
+    "name": "Staff of Nature",
+    "type": "SCROLL",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A legendary ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "9 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2803 gold"
+  },
+  {
+    "id": "gloves_of_thunder",
+    "name": "Gloves of Thunder",
+    "type": "ROD",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A artifact rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to health",
+      "+2 to attack"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "9 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8580 gold"
+  },
+  {
+    "id": "rod_of_golden",
+    "name": "Rod of Golden",
+    "type": "AMULET",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A common staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed",
+      "+1 to speed",
+      "+1 to magic"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2004 gold"
+  },
+  {
+    "id": "belt_of_astral",
+    "name": "Belt of Astral",
+    "type": "HEADGEAR",
+    "rarity": "VERY_RARE",
+    "attuned": "OPTIONAL",
+    "description": "A legendary wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to attack"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5191 gold"
+  },
+  {
+    "id": "blade_of_arcane",
+    "name": "Blade of Arcane",
+    "type": "RING",
+    "rarity": "RARE",
+    "attuned": "REQUIRED",
+    "description": "A legendary wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2704 gold"
+  },
+  {
+    "id": "wand_of_holy",
+    "name": "Wand of Holy",
+    "type": "ARMOR",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A common weapon.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack",
+      "+5 to magic",
+      "+3 to defense",
+      "+1 to speed"
+    ],
+    "charges": 4,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5475 gold"
+  },
+  {
+    "id": "gloves_of_golden",
+    "name": "Gloves of Golden",
+    "type": "RING",
+    "rarity": "COMMON",
+    "attuned": "NONE",
+    "description": "A legendary headgear.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to health"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "3 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "556 gold"
+  },
+  {
+    "id": "shield_of_unholy",
+    "name": "Shield of Unholy",
+    "type": "SCROLL",
+    "rarity": "ARTIFACT",
+    "attuned": "REQUIRED",
+    "description": "A uncommon weapon.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to magic",
+      "+5 to speed",
+      "+1 to attack",
+      "+1 to health"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6591 gold"
+  },
+  {
+    "id": "crown_of_void",
+    "name": "Crown of Void",
+    "type": "WONDROUS",
+    "rarity": "VERY_RARE",
+    "attuned": "REQUIRED",
+    "description": "A legendary wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "14 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5574 gold"
+  },
+  {
+    "id": "belt_of_crystal",
+    "name": "Belt of Crystal",
+    "type": "WONDROUS",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A legendary belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to attack",
+      "+1 to health"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "19 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9401 gold"
+  },
+  {
+    "id": "ring_of_crystal",
+    "name": "Ring of Crystal",
+    "type": "GLOVES",
+    "rarity": "RARE",
+    "attuned": "OPTIONAL",
+    "description": "A very_rare headgear.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to defense",
+      "+2 to attack",
+      "+1 to defense",
+      "+3 to health"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5108 gold"
+  },
+  {
+    "id": "helm_of_obsidian",
+    "name": "Helm of Obsidian",
+    "type": "GLOVES",
+    "rarity": "UNCOMMON",
+    "attuned": "REQUIRED",
+    "description": "A very_rare amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to magic",
+      "+1 to health",
+      "+5 to defense"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6925 gold"
+  },
+  {
+    "id": "wand_of_thunder",
+    "name": "Wand of Thunder",
+    "type": "RING",
+    "rarity": "ARTIFACT",
+    "attuned": "REQUIRED",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+5 to magic"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "19 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4919 gold"
+  },
+  {
+    "id": "shield_of_unholy",
+    "name": "Shield of Unholy",
+    "type": "WAND",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A common headgear.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to defense",
+      "+2 to speed"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "7 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7886 gold"
+  },
+  {
+    "id": "rod_of_golden",
+    "name": "Rod of Golden",
+    "type": "POTION",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A very_rare ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to attack",
+      "+3 to attack",
+      "+1 to magic",
+      "+1 to health"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "5 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7225 gold"
+  },
+  {
+    "id": "amulet_of_crystal",
+    "name": "Amulet of Crystal",
+    "type": "SHIELD",
+    "rarity": "RARE",
+    "attuned": "REQUIRED",
+    "description": "A common ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense",
+      "+2 to magic"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2935 gold"
+  },
+  {
+    "id": "amulet_of_shadow",
+    "name": "Amulet of Shadow",
+    "type": "WAND",
+    "rarity": "RARE",
+    "attuned": "REQUIRED",
+    "description": "A common potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack",
+      "+3 to defense"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6066 gold"
+  },
+  {
+    "id": "orb_of_unholy",
+    "name": "Orb of Unholy",
+    "type": "ROD",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A legendary scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to attack",
+      "+2 to defense",
+      "+2 to defense",
+      "+5 to speed"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4016 gold"
+  },
+  {
+    "id": "blade_of_golden",
+    "name": "Blade of Golden",
+    "type": "SHIELD",
+    "rarity": "LEGENDARY",
+    "attuned": "REQUIRED",
+    "description": "A legendary amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense",
+      "+1 to magic"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3438 gold"
+  },
+  {
+    "id": "rod_of_fire",
+    "name": "Rod of Fire",
+    "type": "WONDROUS",
+    "rarity": "VERY_RARE",
+    "attuned": "NONE",
+    "description": "A legendary armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed",
+      "+5 to magic"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2942 gold"
+  },
+  {
+    "id": "wand_of_iron",
+    "name": "Wand of Iron",
+    "type": "BELT",
+    "rarity": "LEGENDARY",
+    "attuned": "NONE",
+    "description": "A very_rare staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to magic",
+      "+5 to speed",
+      "+5 to attack",
+      "+2 to defense"
+    ],
+    "charges": 4,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6496 gold"
+  },
+  {
+    "id": "amulet_of_holy",
+    "name": "Amulet of Holy",
+    "type": "BOOTS",
+    "rarity": "VERY_RARE",
+    "attuned": "NONE",
+    "description": "A uncommon scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to health",
+      "+1 to defense",
+      "+1 to magic"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3781 gold"
+  },
+  {
+    "id": "helm_of_shadow",
+    "name": "Helm of Shadow",
+    "type": "HEADGEAR",
+    "rarity": "LEGENDARY",
+    "attuned": "NONE",
+    "description": "A rare boots.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+4 to magic",
+      "+4 to magic",
+      "+3 to speed"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "6 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3840 gold"
+  },
+  {
+    "id": "staff_of_crystal",
+    "name": "Staff of Crystal",
+    "type": "ARMOR",
+    "rarity": "RARE",
+    "attuned": "REQUIRED",
+    "description": "A rare potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5912 gold"
+  },
+  {
+    "id": "blade_of_astral",
+    "name": "Blade of Astral",
+    "type": "RING",
+    "rarity": "RARE",
+    "attuned": "REQUIRED",
+    "description": "A artifact belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to magic",
+      "+2 to health",
+      "+2 to health"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "1 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4627 gold"
+  },
+  {
+    "id": "chalice_of_unholy",
+    "name": "Chalice of Unholy",
+    "type": "WONDROUS",
+    "rarity": "VERY_RARE",
+    "attuned": "OPTIONAL",
+    "description": "A legendary wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to health"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3727 gold"
+  },
+  {
+    "id": "rod_of_iron",
+    "name": "Rod of Iron",
+    "type": "RING",
+    "rarity": "VERY_RARE",
+    "attuned": "REQUIRED",
+    "description": "A legendary shield.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to magic",
+      "+1 to magic",
+      "+2 to speed",
+      "+4 to defense"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6149 gold"
+  },
+  {
+    "id": "ring_of_void",
+    "name": "Ring of Void",
+    "type": "POTION",
+    "rarity": "UNCOMMON",
+    "attuned": "OPTIONAL",
+    "description": "A artifact weapon.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to magic",
+      "+2 to speed",
+      "+4 to speed",
+      "+5 to magic"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "19 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9309 gold"
+  },
+  {
+    "id": "orb_of_shadow",
+    "name": "Orb of Shadow",
+    "type": "SCROLL",
+    "rarity": "UNCOMMON",
+    "attuned": "REQUIRED",
+    "description": "A rare shield.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to defense",
+      "+4 to attack",
+      "+5 to speed",
+      "+2 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5001 gold"
+  },
+  {
+    "id": "crown_of_ice",
+    "name": "Crown of Ice",
+    "type": "ARMOR",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A uncommon weapon.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to defense",
+      "+2 to attack",
+      "+4 to magic",
+      "+2 to defense"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7459 gold"
+  },
+  {
+    "id": "blade_of_unholy",
+    "name": "Blade of Unholy",
+    "type": "GLOVES",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A rare potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to defense",
+      "+1 to defense",
+      "+5 to speed",
+      "+4 to attack"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "7 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3379 gold"
+  },
+  {
+    "id": "staff_of_arcane",
+    "name": "Staff of Arcane",
+    "type": "POTION",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A very_rare wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to defense",
+      "+5 to speed",
+      "+3 to defense"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "5 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1058 gold"
+  },
+  {
+    "id": "chalice_of_arcane",
+    "name": "Chalice of Arcane",
+    "type": "SHIELD",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A rare scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed",
+      "+5 to attack",
+      "+1 to magic",
+      "+4 to magic"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6810 gold"
+  },
+  {
+    "id": "amulet_of_ice",
+    "name": "Amulet of Ice",
+    "type": "SCROLL",
+    "rarity": "LEGENDARY",
+    "attuned": "NONE",
+    "description": "A very_rare headgear.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to health",
+      "+1 to speed",
+      "+1 to defense",
+      "+2 to magic"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3569 gold"
+  },
+  {
+    "id": "boots_of_arcane",
+    "name": "Boots of Arcane",
+    "type": "WONDROUS",
+    "rarity": "LEGENDARY",
+    "attuned": "REQUIRED",
+    "description": "A rare armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to magic"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4151 gold"
+  },
+  {
+    "id": "amulet_of_astral",
+    "name": "Amulet of Astral",
+    "type": "WEAPON",
+    "rarity": "VERY_RARE",
+    "attuned": "REQUIRED",
+    "description": "A common rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to magic",
+      "+4 to defense",
+      "+4 to attack",
+      "+1 to magic"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "5 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7616 gold"
+  },
+  {
+    "id": "boots_of_nature",
+    "name": "Boots of Nature",
+    "type": "ARMOR",
+    "rarity": "COMMON",
+    "attuned": "NONE",
+    "description": "A artifact ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed",
+      "+3 to defense",
+      "+2 to attack",
+      "+5 to attack"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8769 gold"
+  },
+  {
+    "id": "rod_of_arcane",
+    "name": "Rod of Arcane",
+    "type": "WAND",
+    "rarity": "COMMON",
+    "attuned": "NONE",
+    "description": "A common rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed",
+      "+3 to defense",
+      "+2 to attack"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "7 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "792 gold"
+  },
+  {
+    "id": "chalice_of_crystal",
+    "name": "Chalice of Crystal",
+    "type": "WONDROUS",
+    "rarity": "LEGENDARY",
+    "attuned": "NONE",
+    "description": "A artifact staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to magic"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "2 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "807 gold"
+  },
+  {
+    "id": "orb_of_arcane",
+    "name": "Orb of Arcane",
+    "type": "WONDROUS",
+    "rarity": "UNCOMMON",
+    "attuned": "REQUIRED",
+    "description": "A rare scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to attack",
+      "+1 to speed"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "1 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3158 gold"
+  },
+  {
+    "id": "belt_of_crystal",
+    "name": "Belt of Crystal",
+    "type": "ARMOR",
+    "rarity": "UNCOMMON",
+    "attuned": "REQUIRED",
+    "description": "A artifact wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to speed",
+      "+5 to attack"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3403 gold"
+  },
+  {
+    "id": "gloves_of_arcane",
+    "name": "Gloves of Arcane",
+    "type": "BOOTS",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A uncommon armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense",
+      "+1 to speed",
+      "+3 to attack"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "7 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3616 gold"
+  },
+  {
+    "id": "crown_of_crystal",
+    "name": "Crown of Crystal",
+    "type": "POTION",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A legendary belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to defense"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1678 gold"
+  },
+  {
+    "id": "rod_of_astral",
+    "name": "Rod of Astral",
+    "type": "WONDROUS",
+    "rarity": "LEGENDARY",
+    "attuned": "REQUIRED",
+    "description": "A rare armor.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to defense",
+      "+3 to defense",
+      "+3 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9980 gold"
+  },
+  {
+    "id": "helm_of_nature",
+    "name": "Helm of Nature",
+    "type": "BOOTS",
+    "rarity": "LEGENDARY",
+    "attuned": "NONE",
+    "description": "A artifact ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to attack"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3883 gold"
+  },
+  {
+    "id": "rod_of_arcane",
+    "name": "Rod of Arcane",
+    "type": "WONDROUS",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A common weapon.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to speed",
+      "+3 to defense"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "631 gold"
+  },
+  {
+    "id": "amulet_of_obsidian",
+    "name": "Amulet of Obsidian",
+    "type": "STAFF",
+    "rarity": "LEGENDARY",
+    "attuned": "OPTIONAL",
+    "description": "A artifact scroll.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to magic",
+      "+3 to attack",
+      "+5 to speed"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "1 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5437 gold"
+  },
+  {
+    "id": "wand_of_thunder",
+    "name": "Wand of Thunder",
+    "type": "RING",
+    "rarity": "LEGENDARY",
+    "attuned": "REQUIRED",
+    "description": "A artifact ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed",
+      "+5 to magic"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1068 gold"
+  },
+  {
+    "id": "chalice_of_nature",
+    "name": "Chalice of Nature",
+    "type": "ARMOR",
+    "rarity": "UNCOMMON",
+    "attuned": "REQUIRED",
+    "description": "A artifact wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to attack",
+      "+2 to health"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "7 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8323 gold"
+  },
+  {
+    "id": "crown_of_arcane",
+    "name": "Crown of Arcane",
+    "type": "STAFF",
+    "rarity": "VERY_RARE",
+    "attuned": "OPTIONAL",
+    "description": "A uncommon staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed",
+      "+2 to health"
+    ],
+    "charges": 4,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Wood"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9454 gold"
+  },
+  {
+    "id": "boots_of_crystal",
+    "name": "Boots of Crystal",
+    "type": "RING",
+    "rarity": "RARE",
+    "attuned": "OPTIONAL",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to defense",
+      "+4 to speed",
+      "+4 to health",
+      "+5 to speed"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "16 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6259 gold"
+  },
+  {
+    "id": "shield_of_silver",
+    "name": "Shield of Silver",
+    "type": "ARMOR",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A legendary wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to speed",
+      "+4 to magic"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9220 gold"
+  },
+  {
+    "id": "helm_of_nature",
+    "name": "Helm of Nature",
+    "type": "ARMOR",
+    "rarity": "RARE",
+    "attuned": "REQUIRED",
+    "description": "A artifact headgear.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to defense",
+      "+1 to attack"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "12 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6638 gold"
+  },
+  {
+    "id": "shield_of_arcane",
+    "name": "Shield of Arcane",
+    "type": "STAFF",
+    "rarity": "RARE",
+    "attuned": "OPTIONAL",
+    "description": "A very_rare amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3192 gold"
+  },
+  {
+    "id": "orb_of_arcane",
+    "name": "Orb of Arcane",
+    "type": "AMULET",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A legendary staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to attack",
+      "+4 to speed",
+      "+2 to defense",
+      "+4 to attack"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "1 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4291 gold"
+  },
+  {
+    "id": "helm_of_nature",
+    "name": "Helm of Nature",
+    "type": "ROD",
+    "rarity": "UNCOMMON",
+    "attuned": "OPTIONAL",
+    "description": "A uncommon shield.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to attack",
+      "+1 to speed"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "19 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8505 gold"
+  },
+  {
+    "id": "amulet_of_obsidian",
+    "name": "Amulet of Obsidian",
+    "type": "BOOTS",
+    "rarity": "UNCOMMON",
+    "attuned": "OPTIONAL",
+    "description": "A rare staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to health",
+      "+4 to health",
+      "+3 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2348 gold"
+  },
+  {
+    "id": "staff_of_iron",
+    "name": "Staff of Iron",
+    "type": "RING",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A artifact amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6855 gold"
+  },
+  {
+    "id": "gloves_of_arcane",
+    "name": "Gloves of Arcane",
+    "type": "ROD",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A very_rare wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to defense",
+      "+2 to defense"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "6 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7393 gold"
+  },
+  {
+    "id": "helm_of_silver",
+    "name": "Helm of Silver",
+    "type": "RING",
+    "rarity": "UNCOMMON",
+    "attuned": "REQUIRED",
+    "description": "A common staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to magic",
+      "+4 to speed"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "4 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1317 gold"
+  },
+  {
+    "id": "staff_of_fire",
+    "name": "Staff of Fire",
+    "type": "BOOTS",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to defense"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "16 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "165 gold"
+  },
+  {
+    "id": "blade_of_holy",
+    "name": "Blade of Holy",
+    "type": "WONDROUS",
+    "rarity": "COMMON",
+    "attuned": "NONE",
+    "description": "A legendary wondrous.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to defense"
+    ],
+    "charges": 9,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "1 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9889 gold"
+  },
+  {
+    "id": "gloves_of_golden",
+    "name": "Gloves of Golden",
+    "type": "AMULET",
+    "rarity": "VERY_RARE",
+    "attuned": "OPTIONAL",
+    "description": "A rare shield.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to magic",
+      "+3 to magic",
+      "+2 to magic",
+      "+4 to speed"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "2 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5420 gold"
+  },
+  {
+    "id": "orb_of_fire",
+    "name": "Orb of Fire",
+    "type": "WEAPON",
+    "rarity": "VERY_RARE",
+    "attuned": "NONE",
+    "description": "A very_rare staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to health",
+      "+1 to health"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7414 gold"
+  },
+  {
+    "id": "helm_of_crystal",
+    "name": "Helm of Crystal",
+    "type": "ROD",
+    "rarity": "VERY_RARE",
+    "attuned": "NONE",
+    "description": "A very_rare rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to magic",
+      "+1 to magic"
+    ],
+    "charges": 1,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3836 gold"
+  },
+  {
+    "id": "helm_of_nature",
+    "name": "Helm of Nature",
+    "type": "BOOTS",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack",
+      "+4 to magic",
+      "+5 to defense",
+      "+2 to health"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "17 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "2104 gold"
+  },
+  {
+    "id": "boots_of_golden",
+    "name": "Boots of Golden",
+    "type": "ARMOR",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A legendary potion.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed",
+      "+1 to speed",
+      "+5 to defense",
+      "+2 to defense"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "3 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "7135 gold"
+  },
+  {
+    "id": "rod_of_shadow",
+    "name": "Rod of Shadow",
+    "type": "WAND",
+    "rarity": "RARE",
+    "attuned": "OPTIONAL",
+    "description": "A rare ring.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack",
+      "+2 to health",
+      "+4 to attack"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "5633 gold"
+  },
+  {
+    "id": "shield_of_obsidian",
+    "name": "Shield of Obsidian",
+    "type": "STAFF",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A artifact boots.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to defense",
+      "+3 to attack",
+      "+3 to attack",
+      "+1 to attack"
+    ],
+    "charges": 6,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "19 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1912 gold"
+  },
+  {
+    "id": "helm_of_unholy",
+    "name": "Helm of Unholy",
+    "type": "WAND",
+    "rarity": "RARE",
+    "attuned": "OPTIONAL",
+    "description": "A legendary staff.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+3 to attack"
+    ],
+    "charges": 10,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "18 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6369 gold"
+  },
+  {
+    "id": "shield_of_unholy",
+    "name": "Shield of Unholy",
+    "type": "WONDROUS",
+    "rarity": "RARE",
+    "attuned": "NONE",
+    "description": "A uncommon gloves.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to speed",
+      "+1 to health"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "11 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "4873 gold"
+  },
+  {
+    "id": "chalice_of_thunder",
+    "name": "Chalice of Thunder",
+    "type": "HEADGEAR",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A uncommon shield.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to attack",
+      "+5 to magic",
+      "+3 to health"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "9 lb",
+    "materials": [
+      "Obsidian"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3544 gold"
+  },
+  {
+    "id": "boots_of_holy",
+    "name": "Boots of Holy",
+    "type": "STAFF",
+    "rarity": "VERY_RARE",
+    "attuned": "REQUIRED",
+    "description": "A rare wand.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to attack",
+      "+2 to speed"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "10 lb",
+    "materials": [
+      "Gold"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "363 gold"
+  },
+  {
+    "id": "gloves_of_arcane",
+    "name": "Gloves of Arcane",
+    "type": "BELT",
+    "rarity": "VERY_RARE",
+    "attuned": "NONE",
+    "description": "A very_rare belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to attack",
+      "+5 to magic",
+      "+3 to defense",
+      "+5 to speed"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "5 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9519 gold"
+  },
+  {
+    "id": "chalice_of_golden",
+    "name": "Chalice of Golden",
+    "type": "WEAPON",
+    "rarity": "ARTIFACT",
+    "attuned": "OPTIONAL",
+    "description": "A very_rare rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to defense",
+      "+4 to speed"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "5 lb",
+    "materials": [
+      "Silver"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "3583 gold"
+  },
+  {
+    "id": "orb_of_iron",
+    "name": "Orb of Iron",
+    "type": "RING",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A common belt.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+2 to speed"
+    ],
+    "charges": 7,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "6 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "1583 gold"
+  },
+  {
+    "id": "wand_of_nature",
+    "name": "Wand of Nature",
+    "type": "WAND",
+    "rarity": "COMMON",
+    "attuned": "REQUIRED",
+    "description": "A legendary rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+5 to speed",
+      "+2 to speed",
+      "+2 to attack"
+    ],
+    "charges": 2,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "8 lb",
+    "materials": [
+      "Bone"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "8015 gold"
+  },
+  {
+    "id": "staff_of_iron",
+    "name": "Staff of Iron",
+    "type": "SHIELD",
+    "rarity": "UNCOMMON",
+    "attuned": "NONE",
+    "description": "A artifact boots.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+4 to speed"
+    ],
+    "charges": 5,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "15 lb",
+    "materials": [
+      "Crystal"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "200 gold"
+  },
+  {
+    "id": "crown_of_fire",
+    "name": "Crown of Fire",
+    "type": "ARMOR",
+    "rarity": "COMMON",
+    "attuned": "OPTIONAL",
+    "description": "A artifact rod.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to health",
+      "+5 to health"
+    ],
+    "charges": 8,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "9 lb",
+    "materials": [
+      "Steel"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "9723 gold"
+  },
+  {
+    "id": "ring_of_arcane",
+    "name": "Ring of Arcane",
+    "type": "HEADGEAR",
+    "rarity": "ARTIFACT",
+    "attuned": "NONE",
+    "description": "A very_rare amulet.",
+    "magicalEffect": "Enhances combat abilities",
+    "abilities": [
+      "+1 to magic",
+      "+1 to health"
+    ],
+    "charges": 3,
+    "rechargeCondition": "Long rest",
+    "dimensions": "1x1x6 inches",
+    "weight": "13 lb",
+    "materials": [
+      "Iron"
+    ],
+    "creator": "Unknown",
+    "history": "Forged in ancient times.",
+    "lore": "Whispers of power surround this item.",
+    "curse": "None",
+    "requirements": "None",
+    "attunementRequirements": [],
+    "synergies": [],
+    "drawbacks": [],
+    "value": "6461 gold"
+  }
+]

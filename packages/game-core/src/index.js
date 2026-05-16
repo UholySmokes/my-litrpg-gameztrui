@@ -8,3 +8,4 @@ export * from "./systems/abilities/engineProfile.js";
 export * from "./systems/skills/LivingLatticeSystem.js";
 export * from "./systems/skills/SkillRegistry.js";
 export * from "./systems/skills/TalentMigrationAudit.js";
+export * from "./systems/magic/PhysicsMagicEngine.js";

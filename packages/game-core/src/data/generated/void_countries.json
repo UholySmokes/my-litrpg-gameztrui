@@ -1,0 +1,2178 @@
+[
+  {
+    "id": "elemental_chaos",
+    "name": "Elemental Chaos",
+    "fullName": "The Kingdom of Elemental Chaos",
+    "capital": "Grand City",
+    "governmentType": "TECHNOCRACY",
+    "economyType": "POST_SCARCITY",
+    "technologyLevel": "FUTURISTIC",
+    "societyType": "INDIVIDUALIST",
+    "population": 4363408,
+    "areaSquareMiles": 456436,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "River of Light"
+    ],
+    "majorMountains": [
+      "Obsidian Ridge"
+    ],
+    "resources": [
+      "Cattle",
+      "Gold"
+    ],
+    "exports": [
+      "Food",
+      "Weapons",
+      "Livestock",
+      "Magic items"
+    ],
+    "imports": [
+      "Silk",
+      "Rare books",
+      "Fine wine",
+      "Gems"
+    ],
+    "majorReligions": [
+      "Nature Cult"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 32,
+      "Elf": 16,
+      "Dwarf": 19,
+      "Halfling": 10,
+      "Other": 10
+    },
+    "history": "A land with a storied past spanning 4782 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Dragon Clan",
+      "Holy Order",
+      "Neighboring Kingdom"
+    ],
+    "enemies": [
+      "Dark Cult"
+    ],
+    "notableGuilds": [
+      "Guild of Crafters"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "1098 years ago"
+  },
+  {
+    "id": "dragons_spine",
+    "name": "Dragon's Spine",
+    "fullName": "The Kingdom of Dragon's Spine",
+    "capital": "Stronghold",
+    "governmentType": "MONARCHY",
+    "economyType": "HUNTING",
+    "technologyLevel": "RENAISSANCE",
+    "societyType": "COMMUNAL",
+    "population": 2896098,
+    "areaSquareMiles": 184847,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3"
+    ],
+    "majorRivers": [
+      "Silver Flow"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Stone",
+      "Herbs"
+    ],
+    "exports": [
+      "Stone",
+      "Spices",
+      "Food",
+      "Cloth"
+    ],
+    "imports": [
+      "Rare books",
+      "Fine wine",
+      "Exotic goods",
+      "Gems"
+    ],
+    "majorReligions": [
+      "Void Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 41,
+      "Elf": 20,
+      "Dwarf": 7,
+      "Halfling": 8,
+      "Other": 6
+    },
+    "history": "A land with a storied past spanning 4909 years of history.",
+    "currentConflicts": [
+      "Political unrest",
+      "Monster incursions"
+    ],
+    "allies": [
+      "Neighboring Kingdom",
+      "Holy Order"
+    ],
+    "enemies": [],
+    "notableGuilds": [
+      "Guild of Thieves",
+      "Guild of Mages",
+      "Guild of Healers"
+    ],
+    "climate": [
+      "Varied"
+    ],
+    "terrain": [
+      "Coastal"
+    ],
+    "foundingDate": "881 years ago"
+  },
+  {
+    "id": "elemental_chaos",
+    "name": "Elemental Chaos",
+    "fullName": "The Kingdom of Elemental Chaos",
+    "capital": "Stronghold",
+    "governmentType": "THEOCRACY",
+    "economyType": "MILITARISTIC",
+    "technologyLevel": "MAGITECH",
+    "societyType": "COMMUNAL",
+    "population": 2836971,
+    "areaSquareMiles": 422622,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Silver Flow"
+    ],
+    "majorMountains": [
+      "Silver Summit"
+    ],
+    "resources": [
+      "Stone",
+      "Iron",
+      "Gold"
+    ],
+    "exports": [
+      "Stone",
+      "Livestock"
+    ],
+    "imports": [
+      "Silk",
+      "Fine wine",
+      "Exotic goods",
+      "Spices"
+    ],
+    "majorReligions": [
+      "Nature Cult"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 69,
+      "Elf": 7,
+      "Dwarf": 11,
+      "Halfling": 4,
+      "Other": 2
+    },
+    "history": "A land with a storied past spanning 3814 years of history.",
+    "currentConflicts": [
+      "Political unrest"
+    ],
+    "allies": [
+      "Holy Order",
+      "Trade Federation"
+    ],
+    "enemies": [
+      "Tyrant Empire"
+    ],
+    "notableGuilds": [
+      "Guild of Crafters"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Desert"
+    ],
+    "foundingDate": "1667 years ago"
+  },
+  {
+    "id": "ironpeak_mountains",
+    "name": "Ironpeak Mountains",
+    "fullName": "The Kingdom of Ironpeak Mountains",
+    "capital": "Sanctum",
+    "governmentType": "THEOCRACY",
+    "economyType": "HUNTING",
+    "technologyLevel": "STONE_AGE",
+    "societyType": "CASTE",
+    "population": 4606849,
+    "areaSquareMiles": 81370,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4"
+    ],
+    "majorRivers": [
+      "River of Light"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Wood",
+      "Cattle",
+      "Horses"
+    ],
+    "exports": [
+      "Wood",
+      "Food",
+      "Weapons"
+    ],
+    "imports": [
+      "Spices",
+      "Luxuries",
+      "Fine wine"
+    ],
+    "majorReligions": [
+      "Nature Cult"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 58,
+      "Elf": 18,
+      "Dwarf": 11,
+      "Halfling": 9,
+      "Other": 3
+    },
+    "history": "A land with a storied past spanning 4748 years of history.",
+    "currentConflicts": [
+      "Trade disputes",
+      "Religious conflict"
+    ],
+    "allies": [
+      "Holy Order",
+      "Dragon Clan",
+      "Trade Federation"
+    ],
+    "enemies": [
+      "Tyrant Empire",
+      "Dark Cult"
+    ],
+    "notableGuilds": [
+      "Guild of Warriors",
+      "Guild of Mages"
+    ],
+    "climate": [
+      "Mild"
+    ],
+    "terrain": [
+      "Plains"
+    ],
+    "foundingDate": "657 years ago"
+  },
+  {
+    "id": "astral_plane",
+    "name": "Astral Plane",
+    "fullName": "The Kingdom of Astral Plane",
+    "capital": "High Hold",
+    "governmentType": "ANARCHY",
+    "economyType": "TRADE",
+    "technologyLevel": "MODERN",
+    "societyType": "EGALITARIAN",
+    "population": 820519,
+    "areaSquareMiles": 481123,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Crystal Stream"
+    ],
+    "majorMountains": [
+      "Iron Mountains"
+    ],
+    "resources": [
+      "Cattle",
+      "Wood"
+    ],
+    "exports": [
+      "Cloth",
+      "Livestock",
+      "Spices",
+      "Stone"
+    ],
+    "imports": [
+      "Gems",
+      "Exotic goods"
+    ],
+    "majorReligions": [
+      "Sun Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 33,
+      "Elf": 19,
+      "Dwarf": 19,
+      "Halfling": 10,
+      "Other": 10
+    },
+    "history": "A land with a storied past spanning 4073 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Neighboring Kingdom"
+    ],
+    "enemies": [
+      "Rival Nation",
+      "Dark Cult",
+      "Monster Horde"
+    ],
+    "notableGuilds": [
+      "Guild of Warriors",
+      "Guild of Merchants",
+      "Guild of Crafters"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "1972 years ago"
+  },
+  {
+    "id": "verdant_vale",
+    "name": "Verdant Vale",
+    "fullName": "The Kingdom of Verdant Vale",
+    "capital": "Citadel",
+    "governmentType": "MONARCHY",
+    "economyType": "POST_SCARCITY",
+    "technologyLevel": "MAGITECH",
+    "societyType": "INDIVIDUALIST",
+    "population": 1128677,
+    "areaSquareMiles": 207847,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3"
+    ],
+    "majorRivers": [
+      "Iron River"
+    ],
+    "majorMountains": [
+      "Iron Mountains"
+    ],
+    "resources": [
+      "Stone",
+      "Wood",
+      "Magic crystals",
+      "Gold"
+    ],
+    "exports": [
+      "Cloth",
+      "Spices",
+      "Weapons",
+      "Stone"
+    ],
+    "imports": [
+      "Silk",
+      "Exotic goods"
+    ],
+    "majorReligions": [
+      "Sun Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 37,
+      "Elf": 7,
+      "Dwarf": 7,
+      "Halfling": 11,
+      "Other": 7
+    },
+    "history": "A land with a storied past spanning 1820 years of history.",
+    "currentConflicts": [
+      "Political unrest",
+      "None"
+    ],
+    "allies": [
+      "Trade Federation"
+    ],
+    "enemies": [],
+    "notableGuilds": [
+      "Guild of Thieves",
+      "Guild of Crafters",
+      "Guild of Merchants"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "692 years ago"
+  },
+  {
+    "id": "sapphire_coast",
+    "name": "Sapphire Coast",
+    "fullName": "The Kingdom of Sapphire Coast",
+    "capital": "Stronghold",
+    "governmentType": "TRIBAL",
+    "economyType": "FISHING",
+    "technologyLevel": "MAGITECH",
+    "societyType": "EGALITARIAN",
+    "population": 2889770,
+    "areaSquareMiles": 96039,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Silver Flow"
+    ],
+    "majorMountains": [
+      "Iron Mountains"
+    ],
+    "resources": [
+      "Magic crystals",
+      "Fish",
+      "Herbs"
+    ],
+    "exports": [
+      "Magic items",
+      "Livestock"
+    ],
+    "imports": [
+      "Spices",
+      "Rare books",
+      "Exotic goods"
+    ],
+    "majorReligions": [
+      "Ancestor Veneration"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 70,
+      "Elf": 7,
+      "Dwarf": 15,
+      "Halfling": 10,
+      "Other": 2
+    },
+    "history": "A land with a storied past spanning 4791 years of history.",
+    "currentConflicts": [
+      "Border war"
+    ],
+    "allies": [],
+    "enemies": [],
+    "notableGuilds": [
+      "Guild of Mages",
+      "Guild of Merchants",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Temperate"
+    ],
+    "terrain": [
+      "Desert"
+    ],
+    "foundingDate": "525 years ago"
+  },
+  {
+    "id": "eldrin_forest",
+    "name": "Eldrin Forest",
+    "fullName": "The Kingdom of Eldrin Forest",
+    "capital": "Sanctum",
+    "governmentType": "TRIBAL",
+    "economyType": "MILITARISTIC",
+    "technologyLevel": "STONE_AGE",
+    "societyType": "COMMUNAL",
+    "population": 592079,
+    "areaSquareMiles": 90483,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3"
+    ],
+    "majorRivers": [
+      "Crystal Stream"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Horses",
+      "Wood",
+      "Stone"
+    ],
+    "exports": [
+      "Magic items",
+      "Stone"
+    ],
+    "imports": [
+      "Fine wine",
+      "Spices",
+      "Gems"
+    ],
+    "majorReligions": [
+      "Ancestor Veneration"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 41,
+      "Elf": 21,
+      "Dwarf": 9,
+      "Halfling": 10,
+      "Other": 1
+    },
+    "history": "A land with a storied past spanning 817 years of history.",
+    "currentConflicts": [
+      "Border war",
+      "Monster incursions"
+    ],
+    "allies": [
+      "Neighboring Kingdom",
+      "Trade Federation"
+    ],
+    "enemies": [
+      "Dark Cult"
+    ],
+    "notableGuilds": [
+      "Guild of Thieves"
+    ],
+    "climate": [
+      "Cold"
+    ],
+    "terrain": [
+      "Desert"
+    ],
+    "foundingDate": "817 years ago"
+  },
+  {
+    "id": "celestial_peaks",
+    "name": "Celestial Peaks",
+    "fullName": "The Kingdom of Celestial Peaks",
+    "capital": "Sanctum",
+    "governmentType": "MAGOCRACY",
+    "economyType": "NOMADIC",
+    "technologyLevel": "STEAMPUNK",
+    "societyType": "MILITARISTIC",
+    "population": 986279,
+    "areaSquareMiles": 350694,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Silver Flow"
+    ],
+    "majorMountains": [
+      "Silver Summit"
+    ],
+    "resources": [
+      "Gems",
+      "Wood",
+      "Herbs",
+      "Gold"
+    ],
+    "exports": [
+      "Weapons",
+      "Magic items",
+      "Livestock"
+    ],
+    "imports": [
+      "Rare books",
+      "Silk",
+      "Fine wine"
+    ],
+    "majorReligions": [
+      "Temple of Light"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 63,
+      "Elf": 7,
+      "Dwarf": 15,
+      "Halfling": 11,
+      "Other": 10
+    },
+    "history": "A land with a storied past spanning 4857 years of history.",
+    "currentConflicts": [
+      "Trade disputes",
+      "Religious conflict"
+    ],
+    "allies": [
+      "Holy Order"
+    ],
+    "enemies": [
+      "Dark Cult",
+      "Tyrant Empire"
+    ],
+    "notableGuilds": [
+      "Guild of Mages"
+    ],
+    "climate": [
+      "Varied"
+    ],
+    "terrain": [
+      "Forest"
+    ],
+    "foundingDate": "1391 years ago"
+  },
+  {
+    "id": "sapphire_coast",
+    "name": "Sapphire Coast",
+    "fullName": "The Kingdom of Sapphire Coast",
+    "capital": "Old Town",
+    "governmentType": "MAGOCRACY",
+    "economyType": "AGRARIAN",
+    "technologyLevel": "MAGITECH",
+    "societyType": "PATRIARCHAL",
+    "population": 2707059,
+    "areaSquareMiles": 294358,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Crystal Stream"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Herbs",
+      "Fish",
+      "Iron",
+      "Horses"
+    ],
+    "exports": [
+      "Wood",
+      "Weapons"
+    ],
+    "imports": [
+      "Fine wine",
+      "Silk",
+      "Rare books"
+    ],
+    "majorReligions": [
+      "Sun Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 41,
+      "Elf": 25,
+      "Dwarf": 15,
+      "Halfling": 14,
+      "Other": 1
+    },
+    "history": "A land with a storied past spanning 4876 years of history.",
+    "currentConflicts": [],
+    "allies": [],
+    "enemies": [
+      "Tyrant Empire",
+      "Rival Nation"
+    ],
+    "notableGuilds": [
+      "Guild of Healers",
+      "Guild of Merchants"
+    ],
+    "climate": [
+      "Varied"
+    ],
+    "terrain": [
+      "Coastal"
+    ],
+    "foundingDate": "1541 years ago"
+  },
+  {
+    "id": "shadowfen_marsh",
+    "name": "Shadowfen Marsh",
+    "fullName": "The Kingdom of Shadowfen Marsh",
+    "capital": "High Hold",
+    "governmentType": "TECHNOCRACY",
+    "economyType": "MINING",
+    "technologyLevel": "STONE_AGE",
+    "societyType": "CASTE",
+    "population": 837542,
+    "areaSquareMiles": 239822,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3"
+    ],
+    "majorRivers": [
+      "Dark Water"
+    ],
+    "majorMountains": [
+      "Iron Mountains"
+    ],
+    "resources": [
+      "Wood",
+      "Herbs"
+    ],
+    "exports": [
+      "Weapons",
+      "Livestock"
+    ],
+    "imports": [
+      "Spices",
+      "Silk",
+      "Luxuries"
+    ],
+    "majorReligions": [
+      "Void Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 30,
+      "Elf": 12,
+      "Dwarf": 15,
+      "Halfling": 5,
+      "Other": 7
+    },
+    "history": "A land with a storied past spanning 2370 years of history.",
+    "currentConflicts": [
+      "Trade disputes"
+    ],
+    "allies": [],
+    "enemies": [
+      "Dark Cult"
+    ],
+    "notableGuilds": [
+      "Guild of Warriors",
+      "Guild of Healers",
+      "Guild of Crafters"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Forest"
+    ],
+    "foundingDate": "1893 years ago"
+  },
+  {
+    "id": "celestial_peaks",
+    "name": "Celestial Peaks",
+    "fullName": "The Kingdom of Celestial Peaks",
+    "capital": "Citadel",
+    "governmentType": "THEOCRACY",
+    "economyType": "MILITARISTIC",
+    "technologyLevel": "STEAMPUNK",
+    "societyType": "MATRIARCHAL",
+    "population": 3498716,
+    "areaSquareMiles": 431879,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Iron River"
+    ],
+    "majorMountains": [
+      "Iron Mountains"
+    ],
+    "resources": [
+      "Herbs",
+      "Fish",
+      "Iron"
+    ],
+    "exports": [
+      "Spices",
+      "Weapons",
+      "Cloth",
+      "Wood"
+    ],
+    "imports": [
+      "Silk",
+      "Rare books"
+    ],
+    "majorReligions": [
+      "Old Faith"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 34,
+      "Elf": 25,
+      "Dwarf": 8,
+      "Halfling": 4,
+      "Other": 3
+    },
+    "history": "A land with a storied past spanning 4502 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Holy Order"
+    ],
+    "enemies": [
+      "Monster Horde"
+    ],
+    "notableGuilds": [
+      "Guild of Crafters",
+      "Guild of Crafters",
+      "Guild of Thieves"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Desert"
+    ],
+    "foundingDate": "1086 years ago"
+  },
+  {
+    "id": "verdant_vale",
+    "name": "Verdant Vale",
+    "fullName": "The Kingdom of Verdant Vale",
+    "capital": "Citadel",
+    "governmentType": "REPUBLIC",
+    "economyType": "INDUSTRIAL",
+    "technologyLevel": "STEAMPUNK",
+    "societyType": "CASTE",
+    "population": 735640,
+    "areaSquareMiles": 290948,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Dark Water"
+    ],
+    "majorMountains": [
+      "Silver Summit"
+    ],
+    "resources": [
+      "Herbs",
+      "Cattle"
+    ],
+    "exports": [
+      "Food",
+      "Livestock"
+    ],
+    "imports": [
+      "Rare books",
+      "Gems"
+    ],
+    "majorReligions": [
+      "Old Faith"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 35,
+      "Elf": 7,
+      "Dwarf": 12,
+      "Halfling": 9,
+      "Other": 10
+    },
+    "history": "A land with a storied past spanning 3538 years of history.",
+    "currentConflicts": [
+      "None"
+    ],
+    "allies": [
+      "Dragon Clan"
+    ],
+    "enemies": [],
+    "notableGuilds": [
+      "Guild of Healers",
+      "Guild of Warriors",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "1664 years ago"
+  },
+  {
+    "id": "eldrin_forest",
+    "name": "Eldrin Forest",
+    "fullName": "The Kingdom of Eldrin Forest",
+    "capital": "High Hold",
+    "governmentType": "ANARCHY",
+    "economyType": "MILITARISTIC",
+    "technologyLevel": "IRON_AGE",
+    "societyType": "COMMUNAL",
+    "population": 3885834,
+    "areaSquareMiles": 105298,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Iron River"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Fish",
+      "Horses",
+      "Gold"
+    ],
+    "exports": [
+      "Magic items",
+      "Cloth"
+    ],
+    "imports": [
+      "Exotic goods",
+      "Silk"
+    ],
+    "majorReligions": [
+      "Ancestor Veneration"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 58,
+      "Elf": 5,
+      "Dwarf": 19,
+      "Halfling": 4,
+      "Other": 4
+    },
+    "history": "A land with a storied past spanning 4829 years of history.",
+    "currentConflicts": [
+      "Religious conflict"
+    ],
+    "allies": [
+      "Trade Federation"
+    ],
+    "enemies": [
+      "Rival Nation",
+      "Tyrant Empire"
+    ],
+    "notableGuilds": [
+      "Guild of Merchants",
+      "Guild of Thieves",
+      "Guild of Healers"
+    ],
+    "climate": [
+      "Mild"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "1766 years ago"
+  },
+  {
+    "id": "astral_plane",
+    "name": "Astral Plane",
+    "fullName": "The Kingdom of Astral Plane",
+    "capital": "High Hold",
+    "governmentType": "ANARCHY",
+    "economyType": "MINING",
+    "technologyLevel": "STONE_AGE",
+    "societyType": "EGALITARIAN",
+    "population": 880675,
+    "areaSquareMiles": 358878,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3"
+    ],
+    "majorRivers": [
+      "River of Light"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Cattle",
+      "Iron"
+    ],
+    "exports": [
+      "Food",
+      "Spices",
+      "Livestock"
+    ],
+    "imports": [
+      "Luxuries",
+      "Fine wine",
+      "Silk",
+      "Rare books"
+    ],
+    "majorReligions": [
+      "Temple of Light"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 60,
+      "Elf": 23,
+      "Dwarf": 17,
+      "Halfling": 7,
+      "Other": 10
+    },
+    "history": "A land with a storied past spanning 3668 years of history.",
+    "currentConflicts": [
+      "None"
+    ],
+    "allies": [
+      "Dragon Clan"
+    ],
+    "enemies": [
+      "Monster Horde",
+      "Tyrant Empire"
+    ],
+    "notableGuilds": [
+      "Guild of Thieves",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Varied"
+    ],
+    "terrain": [
+      "Desert"
+    ],
+    "foundingDate": "1237 years ago"
+  },
+  {
+    "id": "frostfang_tundra",
+    "name": "Frostfang Tundra",
+    "fullName": "The Kingdom of Frostfang Tundra",
+    "capital": "High Hold",
+    "governmentType": "OLIGARCHY",
+    "economyType": "MAGICAL",
+    "technologyLevel": "STEAMPUNK",
+    "societyType": "SLAVE_OWNING",
+    "population": 1354833,
+    "areaSquareMiles": 193078,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Iron River"
+    ],
+    "majorMountains": [
+      "Iron Mountains"
+    ],
+    "resources": [
+      "Iron",
+      "Herbs",
+      "Magic crystals"
+    ],
+    "exports": [
+      "Wood",
+      "Livestock",
+      "Food",
+      "Magic items"
+    ],
+    "imports": [
+      "Gems",
+      "Rare books"
+    ],
+    "majorReligions": [
+      "Nature Cult"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 59,
+      "Elf": 19,
+      "Dwarf": 19,
+      "Halfling": 9,
+      "Other": 8
+    },
+    "history": "A land with a storied past spanning 3478 years of history.",
+    "currentConflicts": [
+      "Monster incursions"
+    ],
+    "allies": [
+      "Trade Federation",
+      "Holy Order",
+      "Neighboring Kingdom"
+    ],
+    "enemies": [
+      "Dark Cult"
+    ],
+    "notableGuilds": [
+      "Guild of Warriors",
+      "Guild of Healers",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Mild"
+    ],
+    "terrain": [
+      "Plains"
+    ],
+    "foundingDate": "1448 years ago"
+  },
+  {
+    "id": "shadowfen_marsh",
+    "name": "Shadowfen Marsh",
+    "fullName": "The Kingdom of Shadowfen Marsh",
+    "capital": "Stronghold",
+    "governmentType": "ANARCHY",
+    "economyType": "MILITARISTIC",
+    "technologyLevel": "MEDIEVAL",
+    "societyType": "INDIVIDUALIST",
+    "population": 1195574,
+    "areaSquareMiles": 246637,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Crystal Stream"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Cattle",
+      "Magic crystals",
+      "Iron",
+      "Gold"
+    ],
+    "exports": [
+      "Cloth",
+      "Stone"
+    ],
+    "imports": [
+      "Silk",
+      "Gems"
+    ],
+    "majorReligions": [
+      "Sun Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 57,
+      "Elf": 10,
+      "Dwarf": 19,
+      "Halfling": 3,
+      "Other": 4
+    },
+    "history": "A land with a storied past spanning 3661 years of history.",
+    "currentConflicts": [
+      "None",
+      "Political unrest"
+    ],
+    "allies": [
+      "Trade Federation",
+      "Holy Order"
+    ],
+    "enemies": [
+      "Dark Cult",
+      "Rival Nation",
+      "Tyrant Empire"
+    ],
+    "notableGuilds": [
+      "Guild of Thieves",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Cold"
+    ],
+    "terrain": [
+      "Forest"
+    ],
+    "foundingDate": "1147 years ago"
+  },
+  {
+    "id": "celestial_peaks",
+    "name": "Celestial Peaks",
+    "fullName": "The Kingdom of Celestial Peaks",
+    "capital": "Capital City",
+    "governmentType": "REPUBLIC",
+    "economyType": "INDUSTRIAL",
+    "technologyLevel": "BRONZE_AGE",
+    "societyType": "MATRIARCHAL",
+    "population": 82718,
+    "areaSquareMiles": 482535,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Silver Flow"
+    ],
+    "majorMountains": [
+      "Peak of Shadows"
+    ],
+    "resources": [
+      "Stone",
+      "Wood",
+      "Gems",
+      "Gold"
+    ],
+    "exports": [
+      "Food",
+      "Magic items",
+      "Stone"
+    ],
+    "imports": [
+      "Fine wine",
+      "Gems",
+      "Silk"
+    ],
+    "majorReligions": [
+      "Void Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 41,
+      "Elf": 14,
+      "Dwarf": 14,
+      "Halfling": 4,
+      "Other": 9
+    },
+    "history": "A land with a storied past spanning 1809 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Dragon Clan"
+    ],
+    "enemies": [],
+    "notableGuilds": [
+      "Guild of Healers",
+      "Guild of Thieves",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Mild"
+    ],
+    "terrain": [
+      "Desert"
+    ],
+    "foundingDate": "1787 years ago"
+  },
+  {
+    "id": "emerald_isles",
+    "name": "Emerald Isles",
+    "fullName": "The Kingdom of Emerald Isles",
+    "capital": "Citadel",
+    "governmentType": "THEOCRACY",
+    "economyType": "INDUSTRIAL",
+    "technologyLevel": "IRON_AGE",
+    "societyType": "MILITARISTIC",
+    "population": 824273,
+    "areaSquareMiles": 396290,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Dark Water"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Magic crystals",
+      "Herbs",
+      "Gems",
+      "Cattle",
+      "Iron"
+    ],
+    "exports": [
+      "Cloth",
+      "Wood",
+      "Stone",
+      "Livestock"
+    ],
+    "imports": [
+      "Gems",
+      "Luxuries"
+    ],
+    "majorReligions": [
+      "Nature Cult"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 66,
+      "Elf": 16,
+      "Dwarf": 15,
+      "Halfling": 4,
+      "Other": 6
+    },
+    "history": "A land with a storied past spanning 1064 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Holy Order"
+    ],
+    "enemies": [
+      "Dark Cult",
+      "Rival Nation",
+      "Monster Horde"
+    ],
+    "notableGuilds": [
+      "Guild of Mages",
+      "Guild of Mages",
+      "Guild of Crafters"
+    ],
+    "climate": [
+      "Temperate"
+    ],
+    "terrain": [
+      "Plains"
+    ],
+    "foundingDate": "1734 years ago"
+  },
+  {
+    "id": "elemental_chaos",
+    "name": "Elemental Chaos",
+    "fullName": "The Kingdom of Elemental Chaos",
+    "capital": "Grand City",
+    "governmentType": "MONARCHY",
+    "economyType": "POST_SCARCITY",
+    "technologyLevel": "FUTURISTIC",
+    "societyType": "INDIVIDUALIST",
+    "population": 1428179,
+    "areaSquareMiles": 191578,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4"
+    ],
+    "majorRivers": [
+      "Dark Water"
+    ],
+    "majorMountains": [
+      "Obsidian Ridge"
+    ],
+    "resources": [
+      "Horses",
+      "Iron",
+      "Herbs",
+      "Gems"
+    ],
+    "exports": [
+      "Weapons",
+      "Cloth"
+    ],
+    "imports": [
+      "Silk",
+      "Exotic goods"
+    ],
+    "majorReligions": [
+      "Void Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 58,
+      "Elf": 18,
+      "Dwarf": 15,
+      "Halfling": 3,
+      "Other": 5
+    },
+    "history": "A land with a storied past spanning 4252 years of history.",
+    "currentConflicts": [
+      "Border war",
+      "Monster incursions"
+    ],
+    "allies": [],
+    "enemies": [
+      "Rival Nation"
+    ],
+    "notableGuilds": [
+      "Guild of Healers",
+      "Guild of Merchants",
+      "Guild of Mages"
+    ],
+    "climate": [
+      "Varied"
+    ],
+    "terrain": [
+      "Mountains"
+    ],
+    "foundingDate": "1462 years ago"
+  },
+  {
+    "id": "sapphire_coast",
+    "name": "Sapphire Coast",
+    "fullName": "The Kingdom of Sapphire Coast",
+    "capital": "Stronghold",
+    "governmentType": "MONARCHY",
+    "economyType": "MILITARISTIC",
+    "technologyLevel": "STEAMPUNK",
+    "societyType": "COMMUNAL",
+    "population": 3086890,
+    "areaSquareMiles": 421179,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Iron River"
+    ],
+    "majorMountains": [
+      "Iron Mountains"
+    ],
+    "resources": [
+      "Stone",
+      "Fish",
+      "Wood"
+    ],
+    "exports": [
+      "Stone",
+      "Magic items",
+      "Weapons"
+    ],
+    "imports": [
+      "Silk",
+      "Luxuries",
+      "Exotic goods"
+    ],
+    "majorReligions": [
+      "Sun Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 37,
+      "Elf": 5,
+      "Dwarf": 9,
+      "Halfling": 15,
+      "Other": 2
+    },
+    "history": "A land with a storied past spanning 2490 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Holy Order"
+    ],
+    "enemies": [],
+    "notableGuilds": [
+      "Guild of Healers"
+    ],
+    "climate": [
+      "Cold"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "654 years ago"
+  },
+  {
+    "id": "eldrin_forest",
+    "name": "Eldrin Forest",
+    "fullName": "The Kingdom of Eldrin Forest",
+    "capital": "Capital City",
+    "governmentType": "ANARCHY",
+    "economyType": "POST_SCARCITY",
+    "technologyLevel": "BRONZE_AGE",
+    "societyType": "EGALITARIAN",
+    "population": 4898502,
+    "areaSquareMiles": 328370,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Silver Flow"
+    ],
+    "majorMountains": [
+      "Peak of Shadows"
+    ],
+    "resources": [
+      "Iron",
+      "Gems"
+    ],
+    "exports": [
+      "Food",
+      "Livestock"
+    ],
+    "imports": [
+      "Silk",
+      "Luxuries"
+    ],
+    "majorReligions": [
+      "Temple of Light"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 57,
+      "Elf": 12,
+      "Dwarf": 11,
+      "Halfling": 3,
+      "Other": 2
+    },
+    "history": "A land with a storied past spanning 3669 years of history.",
+    "currentConflicts": [
+      "None"
+    ],
+    "allies": [
+      "Dragon Clan"
+    ],
+    "enemies": [
+      "Tyrant Empire"
+    ],
+    "notableGuilds": [
+      "Guild of Crafters",
+      "Guild of Warriors",
+      "Guild of Thieves"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Coastal"
+    ],
+    "foundingDate": "1884 years ago"
+  },
+  {
+    "id": "celestial_peaks",
+    "name": "Celestial Peaks",
+    "fullName": "The Kingdom of Celestial Peaks",
+    "capital": "Capital City",
+    "governmentType": "MAGOCRACY",
+    "economyType": "MAGICAL",
+    "technologyLevel": "MODERN",
+    "societyType": "MATRIARCHAL",
+    "population": 677383,
+    "areaSquareMiles": 92296,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3"
+    ],
+    "majorRivers": [
+      "Silver Flow"
+    ],
+    "majorMountains": [
+      "Silver Summit"
+    ],
+    "resources": [
+      "Gold",
+      "Cattle",
+      "Wood"
+    ],
+    "exports": [
+      "Cloth",
+      "Spices"
+    ],
+    "imports": [
+      "Spices",
+      "Gems"
+    ],
+    "majorReligions": [
+      "Ancestor Veneration"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 67,
+      "Elf": 14,
+      "Dwarf": 18,
+      "Halfling": 11,
+      "Other": 5
+    },
+    "history": "A land with a storied past spanning 2287 years of history.",
+    "currentConflicts": [
+      "Monster incursions"
+    ],
+    "allies": [
+      "Trade Federation",
+      "Holy Order"
+    ],
+    "enemies": [],
+    "notableGuilds": [
+      "Guild of Crafters",
+      "Guild of Mages",
+      "Guild of Mages"
+    ],
+    "climate": [
+      "Cold"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "626 years ago"
+  },
+  {
+    "id": "ironpeak_mountains",
+    "name": "Ironpeak Mountains",
+    "fullName": "The Kingdom of Ironpeak Mountains",
+    "capital": "Grand City",
+    "governmentType": "ANARCHY",
+    "economyType": "AGRARIAN",
+    "technologyLevel": "FUTURISTIC",
+    "societyType": "INDIVIDUALIST",
+    "population": 680682,
+    "areaSquareMiles": 353488,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "River of Light"
+    ],
+    "majorMountains": [
+      "Peak of Shadows"
+    ],
+    "resources": [
+      "Cattle",
+      "Stone",
+      "Gold",
+      "Fish"
+    ],
+    "exports": [
+      "Cloth",
+      "Wood",
+      "Magic items"
+    ],
+    "imports": [
+      "Rare books",
+      "Gems",
+      "Exotic goods",
+      "Silk"
+    ],
+    "majorReligions": [
+      "Void Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 61,
+      "Elf": 15,
+      "Dwarf": 11,
+      "Halfling": 6,
+      "Other": 10
+    },
+    "history": "A land with a storied past spanning 1897 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Dragon Clan",
+      "Trade Federation"
+    ],
+    "enemies": [
+      "Monster Horde",
+      "Dark Cult",
+      "Tyrant Empire"
+    ],
+    "notableGuilds": [
+      "Guild of Thieves",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Cold"
+    ],
+    "terrain": [
+      "Coastal"
+    ],
+    "foundingDate": "1289 years ago"
+  },
+  {
+    "id": "sapphire_coast",
+    "name": "Sapphire Coast",
+    "fullName": "The Kingdom of Sapphire Coast",
+    "capital": "Capital City",
+    "governmentType": "DICTATORSHIP",
+    "economyType": "MINING",
+    "technologyLevel": "STEAMPUNK",
+    "societyType": "EGALITARIAN",
+    "population": 3360563,
+    "areaSquareMiles": 191837,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Iron River"
+    ],
+    "majorMountains": [
+      "Silver Summit"
+    ],
+    "resources": [
+      "Cattle",
+      "Gems",
+      "Wood"
+    ],
+    "exports": [
+      "Weapons",
+      "Wood"
+    ],
+    "imports": [
+      "Spices",
+      "Exotic goods",
+      "Silk"
+    ],
+    "majorReligions": [
+      "Old Faith"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 31,
+      "Elf": 20,
+      "Dwarf": 17,
+      "Halfling": 5,
+      "Other": 5
+    },
+    "history": "A land with a storied past spanning 5000 years of history.",
+    "currentConflicts": [
+      "Political unrest"
+    ],
+    "allies": [
+      "Dragon Clan"
+    ],
+    "enemies": [
+      "Tyrant Empire",
+      "Dark Cult",
+      "Rival Nation"
+    ],
+    "notableGuilds": [
+      "Guild of Crafters",
+      "Guild of Merchants"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "637 years ago"
+  },
+  {
+    "id": "obsidian_wastes",
+    "name": "Obsidian Wastes",
+    "fullName": "The Kingdom of Obsidian Wastes",
+    "capital": "Grand City",
+    "governmentType": "MERITOCRACY",
+    "economyType": "MILITARISTIC",
+    "technologyLevel": "IRON_AGE",
+    "societyType": "CASTE",
+    "population": 4361696,
+    "areaSquareMiles": 494680,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Dark Water"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Iron",
+      "Fish",
+      "Gems",
+      "Herbs",
+      "Stone"
+    ],
+    "exports": [
+      "Spices",
+      "Stone",
+      "Weapons"
+    ],
+    "imports": [
+      "Spices",
+      "Fine wine",
+      "Exotic goods",
+      "Silk"
+    ],
+    "majorReligions": [
+      "Ancestor Veneration"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 53,
+      "Elf": 9,
+      "Dwarf": 16,
+      "Halfling": 12,
+      "Other": 8
+    },
+    "history": "A land with a storied past spanning 1017 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Holy Order",
+      "Trade Federation",
+      "Neighboring Kingdom"
+    ],
+    "enemies": [
+      "Monster Horde"
+    ],
+    "notableGuilds": [
+      "Guild of Warriors",
+      "Guild of Mages",
+      "Guild of Crafters"
+    ],
+    "climate": [
+      "Varied"
+    ],
+    "terrain": [
+      "Plains"
+    ],
+    "foundingDate": "1636 years ago"
+  },
+  {
+    "id": "obsidian_wastes",
+    "name": "Obsidian Wastes",
+    "fullName": "The Kingdom of Obsidian Wastes",
+    "capital": "Sanctum",
+    "governmentType": "THEOCRACY",
+    "economyType": "MAGICAL",
+    "technologyLevel": "INDUSTRIAL",
+    "societyType": "CASTE",
+    "population": 4983058,
+    "areaSquareMiles": 319594,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3"
+    ],
+    "majorRivers": [
+      "Dark Water"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Iron",
+      "Stone",
+      "Gold",
+      "Wood",
+      "Herbs"
+    ],
+    "exports": [
+      "Cloth",
+      "Weapons",
+      "Stone",
+      "Wood"
+    ],
+    "imports": [
+      "Fine wine",
+      "Silk",
+      "Exotic goods"
+    ],
+    "majorReligions": [
+      "Temple of Light"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 58,
+      "Elf": 17,
+      "Dwarf": 11,
+      "Halfling": 15,
+      "Other": 5
+    },
+    "history": "A land with a storied past spanning 1672 years of history.",
+    "currentConflicts": [
+      "Border war"
+    ],
+    "allies": [
+      "Trade Federation",
+      "Neighboring Kingdom",
+      "Holy Order"
+    ],
+    "enemies": [
+      "Monster Horde",
+      "Tyrant Empire"
+    ],
+    "notableGuilds": [
+      "Guild of Healers",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Hot"
+    ],
+    "terrain": [
+      "Plains"
+    ],
+    "foundingDate": "1492 years ago"
+  },
+  {
+    "id": "obsidian_wastes",
+    "name": "Obsidian Wastes",
+    "fullName": "The Kingdom of Obsidian Wastes",
+    "capital": "Fortress",
+    "governmentType": "THEOCRACY",
+    "economyType": "POST_SCARCITY",
+    "technologyLevel": "FUTURISTIC",
+    "societyType": "PATRIARCHAL",
+    "population": 2489836,
+    "areaSquareMiles": 384623,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Dark Water"
+    ],
+    "majorMountains": [
+      "Obsidian Ridge"
+    ],
+    "resources": [
+      "Wood",
+      "Magic crystals",
+      "Horses",
+      "Stone"
+    ],
+    "exports": [
+      "Stone",
+      "Magic items"
+    ],
+    "imports": [
+      "Spices",
+      "Exotic goods"
+    ],
+    "majorReligions": [
+      "Temple of Light"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 31,
+      "Elf": 25,
+      "Dwarf": 18,
+      "Halfling": 4,
+      "Other": 6
+    },
+    "history": "A land with a storied past spanning 4308 years of history.",
+    "currentConflicts": [],
+    "allies": [
+      "Dragon Clan",
+      "Holy Order",
+      "Neighboring Kingdom"
+    ],
+    "enemies": [
+      "Monster Horde",
+      "Rival Nation",
+      "Dark Cult"
+    ],
+    "notableGuilds": [
+      "Guild of Mages",
+      "Guild of Warriors"
+    ],
+    "climate": [
+      "Mild"
+    ],
+    "terrain": [
+      "Forest"
+    ],
+    "foundingDate": "1083 years ago"
+  },
+  {
+    "id": "crystal_desert",
+    "name": "Crystal Desert",
+    "fullName": "The Kingdom of Crystal Desert",
+    "capital": "High Hold",
+    "governmentType": "ANARCHY",
+    "economyType": "AGRARIAN",
+    "technologyLevel": "BRONZE_AGE",
+    "societyType": "MATRIARCHAL",
+    "population": 2749199,
+    "areaSquareMiles": 289808,
+    "majorCities": [
+      "City 1",
+      "City 2",
+      "City 3",
+      "City 4",
+      "City 5"
+    ],
+    "majorRivers": [
+      "Silver Flow"
+    ],
+    "majorMountains": [
+      "Silver Summit"
+    ],
+    "resources": [
+      "Magic crystals",
+      "Horses",
+      "Iron",
+      "Stone"
+    ],
+    "exports": [
+      "Cloth",
+      "Wood",
+      "Food"
+    ],
+    "imports": [
+      "Fine wine",
+      "Luxuries",
+      "Exotic goods"
+    ],
+    "majorReligions": [
+      "Void Worshippers"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 66,
+      "Elf": 23,
+      "Dwarf": 6,
+      "Halfling": 11,
+      "Other": 1
+    },
+    "history": "A land with a storied past spanning 1580 years of history.",
+    "currentConflicts": [
+      "Border war"
+    ],
+    "allies": [],
+    "enemies": [
+      "Dark Cult"
+    ],
+    "notableGuilds": [
+      "Guild of Healers"
+    ],
+    "climate": [
+      "Cold"
+    ],
+    "terrain": [
+      "Coastal"
+    ],
+    "foundingDate": "981 years ago"
+  },
+  {
+    "id": "ironpeak_mountains",
+    "name": "Ironpeak Mountains",
+    "fullName": "The Kingdom of Ironpeak Mountains",
+    "capital": "Sanctum",
+    "governmentType": "ANARCHY",
+    "economyType": "MINING",
+    "technologyLevel": "BRONZE_AGE",
+    "societyType": "INDIVIDUALIST",
+    "population": 2892100,
+    "areaSquareMiles": 393762,
+    "majorCities": [
+      "City 1",
+      "City 2"
+    ],
+    "majorRivers": [
+      "Iron River"
+    ],
+    "majorMountains": [
+      "Crystal Range"
+    ],
+    "resources": [
+      "Horses",
+      "Magic crystals"
+    ],
+    "exports": [
+      "Spices",
+      "Cloth",
+      "Food",
+      "Stone"
+    ],
+    "imports": [
+      "Rare books",
+      "Spices"
+    ],
+    "majorReligions": [
+      "Nature Cult"
+    ],
+    "officialLanguages": [
+      "Common"
+    ],
+    "commonRaces": {
+      "Human": 40,
+      "Elf": 8,
+      "Dwarf": 13,
+      "Halfling": 6,
+      "Other": 4
+    },
+    "history": "A land with a storied past spanning 962 years of history.",
+    "currentConflicts": [
+      "None",
+      "Religious conflict"
+    ],
+    "allies": [],
+    "enemies": [],
+    "notableGuilds": [
+      "Guild of Crafters",
+      "Guild of Warriors",
+      "Guild of Thieves"
+    ],
+    "climate": [
+      "Temperate"
+    ],
+    "terrain": [
+      "Hills"
+    ],
+    "foundingDate": "948 years ago"
+  }
+]

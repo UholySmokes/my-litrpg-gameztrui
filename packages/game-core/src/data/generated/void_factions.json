@@ -1,0 +1,2074 @@
+[
+  {
+    "id": "covenant_of_lost",
+    "name": "Covenant of Lost",
+    "type": "RESISTANCE",
+    "scope": "NATIONAL",
+    "description": "A tyranny faction seeking power and influence.",
+    "headquarters": "Castle ruins",
+    "territory": "Shadowfen Marsh",
+    "leader": "Grand Voidwalker",
+    "foundingDate": "1561 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Spread the faith",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Allies",
+      "Gold",
+      "Information"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Honored",
+    "influence": 26,
+    "strength": 83,
+    "wealth": 36
+  },
+  {
+    "id": "brotherhood_of_shadow",
+    "name": "Brotherhood of Shadow",
+    "type": "RESISTANCE",
+    "scope": "REGIONAL",
+    "description": "A military faction seeking power and influence.",
+    "headquarters": "Castle ruins",
+    "territory": "Ironpeak Mountains",
+    "leader": "Supreme Stormbringer",
+    "foundingDate": "844 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Control the region",
+      "Spread the faith"
+    ],
+    "resources": [
+      "Gold",
+      "Information",
+      "Territory",
+      "Ships"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Greed"
+    ],
+    "currentConflict": "None",
+    "reputation": "Despised",
+    "influence": 98,
+    "strength": 50,
+    "wealth": 76
+  },
+  {
+    "id": "circle_of_astral",
+    "name": "Circle of Astral",
+    "type": "RESISTANCE",
+    "scope": "NATIONAL",
+    "description": "A mercantile faction seeking power and influence.",
+    "headquarters": "Castle ruins",
+    "territory": "Abyssal Depths",
+    "leader": "Lord Ironmind",
+    "foundingDate": "175 years ago",
+    "motto": "\"Knowledge is power\"",
+    "goals": [
+      "Establish trade dominance",
+      "Spread the faith",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Territory",
+      "Information",
+      "Arms"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "None",
+    "reputation": "Feared",
+    "influence": 43,
+    "strength": 58,
+    "wealth": 93
+  },
+  {
+    "id": "brotherhood_of_obsidian",
+    "name": "Brotherhood of Obsidian",
+    "type": "TYRANNY",
+    "scope": "LOCAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Astral Plane",
+    "leader": "Master Voidwalker",
+    "foundingDate": "517 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Spread the faith",
+      "Overthrow the monarchy",
+      "Establish monopoly",
+      "Train warriors"
+    ],
+    "resources": [
+      "Food",
+      "Allies",
+      "Ships"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Mysterious",
+    "influence": 41,
+    "strength": 19,
+    "wealth": 44
+  },
+  {
+    "id": "order_of_void",
+    "name": "Order of Void",
+    "type": "RELIGIOUS",
+    "scope": "NATIONAL",
+    "description": "A resistance faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Ironpeak Mountains",
+    "leader": "King Darkhollow",
+    "foundingDate": "843 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Protect the innocent",
+      "Spread the faith",
+      "Establish trade dominance",
+      "Control the region"
+    ],
+    "resources": [
+      "Food",
+      "Magic"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Neutral",
+    "influence": 77,
+    "strength": 49,
+    "wealth": 85
+  },
+  {
+    "id": "clan_of_shadow",
+    "name": "Clan of Shadow",
+    "type": "RESISTANCE",
+    "scope": "REGIONAL",
+    "description": "A shadow faction seeking power and influence.",
+    "headquarters": "Cave system",
+    "territory": "Shadowfen Marsh",
+    "leader": "Queen Starweaver",
+    "foundingDate": "302 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Overthrow the monarchy",
+      "Discover lost knowledge",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Beasts",
+      "Food",
+      "Magic",
+      "Information"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Mysterious",
+    "influence": 29,
+    "strength": 94,
+    "wealth": 26
+  },
+  {
+    "id": "brotherhood_of_obsidian",
+    "name": "Brotherhood of Obsidian",
+    "type": "SHADOW",
+    "scope": "NATIONAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Dragon's Spine",
+    "leader": "King Ironmind",
+    "foundingDate": "1488 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Survive in hiding",
+      "Protect the innocent",
+      "Survive in hiding",
+      "Overthrow the monarchy",
+      "Survive in hiding"
+    ],
+    "resources": [
+      "Information",
+      "Food",
+      "Beasts",
+      "Territory"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Feared",
+    "influence": 62,
+    "strength": 50,
+    "wealth": 21
+  },
+  {
+    "id": "order_of_shadow",
+    "name": "Order of Shadow",
+    "type": "MERCANTILE",
+    "scope": "LOCAL",
+    "description": "A political faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Ironpeak Mountains",
+    "leader": "Queen Voidwalker",
+    "foundingDate": "1109 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Train warriors"
+    ],
+    "resources": [
+      "Ships",
+      "Beasts",
+      "Information"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Mysterious",
+    "influence": 34,
+    "strength": 10,
+    "wealth": 64
+  },
+  {
+    "id": "covenant_of_eternal",
+    "name": "Covenant of Eternal",
+    "type": "ARCANE",
+    "scope": "LOCAL",
+    "description": "A resistance faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Celestial Peaks",
+    "leader": "Chieftain Silvervein",
+    "foundingDate": "1481 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Protect the innocent",
+      "Gather ancient artifacts",
+      "Overthrow the monarchy"
+    ],
+    "resources": [
+      "Beasts",
+      "Territory",
+      "Gold"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Neutral",
+    "influence": 57,
+    "strength": 24,
+    "wealth": 53
+  },
+  {
+    "id": "cult_of_lost",
+    "name": "Cult of Lost",
+    "type": "RESISTANCE",
+    "scope": "LOCAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Cave system",
+    "territory": "Emerald Isles",
+    "leader": "Queen Stormbringer",
+    "foundingDate": "536 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Spread the faith",
+      "Establish trade dominance",
+      "Train warriors",
+      "Control the region",
+      "Survive in hiding"
+    ],
+    "resources": [
+      "Gold",
+      "Territory",
+      "Beasts",
+      "Information",
+      "Magic"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Political intrigue",
+    "reputation": "Honored",
+    "influence": 10,
+    "strength": 54,
+    "wealth": 33
+  },
+  {
+    "id": "house_of_emerald",
+    "name": "House of Emerald",
+    "type": "MILITARY",
+    "scope": "LOCAL",
+    "description": "A nature faction seeking power and influence.",
+    "headquarters": "Shipyard",
+    "territory": "Frostfang Tundra",
+    "leader": "Lady Voidwalker",
+    "foundingDate": "1153 years ago",
+    "motto": "\"Knowledge is power\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Survive in hiding",
+      "Control the region",
+      "Protect the innocent",
+      "Establish trade dominance"
+    ],
+    "resources": [
+      "Ships",
+      "Food",
+      "Allies"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Neutral",
+    "influence": 78,
+    "strength": 44,
+    "wealth": 23
+  },
+  {
+    "id": "clan_of_ancient",
+    "name": "Clan of Ancient",
+    "type": "TYRANNY",
+    "scope": "LOCAL",
+    "description": "A political faction seeking power and influence.",
+    "headquarters": "Temple",
+    "territory": "Astral Plane",
+    "leader": "Archmage Thornwall",
+    "foundingDate": "835 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Spread the faith",
+      "Establish trade dominance"
+    ],
+    "resources": [
+      "Allies",
+      "Food"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "Political intrigue",
+    "reputation": "Honored",
+    "influence": 30,
+    "strength": 95,
+    "wealth": 35
+  },
+  {
+    "id": "clan_of_ancient",
+    "name": "Clan of Ancient",
+    "type": "CRIMINAL",
+    "scope": "LOCAL",
+    "description": "A nature faction seeking power and influence.",
+    "headquarters": "Shipyard",
+    "territory": "Shadowfen Marsh",
+    "leader": "Chieftain Silvervein",
+    "foundingDate": "765 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Train warriors",
+      "Discover lost knowledge",
+      "Protect the innocent",
+      "Gather ancient artifacts",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Allies",
+      "Beasts"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Shyness"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Neutral",
+    "influence": 16,
+    "strength": 96,
+    "wealth": 53
+  },
+  {
+    "id": "house_of_astral",
+    "name": "House of Astral",
+    "type": "MILITARY",
+    "scope": "REGIONAL",
+    "description": "A tyranny faction seeking power and influence.",
+    "headquarters": "Cave system",
+    "territory": "Verdant Vale",
+    "leader": "Chieftain Darkhollow",
+    "foundingDate": "1658 years ago",
+    "motto": "\"Survival at all costs\"",
+    "goals": [
+      "Establish monopoly",
+      "Protect the innocent",
+      "Train warriors"
+    ],
+    "resources": [
+      "Magic",
+      "Information",
+      "Food"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Trade war",
+    "reputation": "Despised",
+    "influence": 35,
+    "strength": 70,
+    "wealth": 100
+  },
+  {
+    "id": "order_of_eternal",
+    "name": "Order of Eternal",
+    "type": "RESISTANCE",
+    "scope": "NATIONAL",
+    "description": "A political faction seeking power and influence.",
+    "headquarters": "Forest camp",
+    "territory": "Arcane Archipelago",
+    "leader": "Grand Silvervein",
+    "foundingDate": "569 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Control the region",
+      "Establish trade dominance"
+    ],
+    "resources": [
+      "Allies",
+      "Food",
+      "Gold"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Despised",
+    "influence": 62,
+    "strength": 77,
+    "wealth": 49
+  },
+  {
+    "id": "cult_of_golden",
+    "name": "Cult of Golden",
+    "type": "ARCANE",
+    "scope": "REGIONAL",
+    "description": "A tyranny faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Shadowfen Marsh",
+    "leader": "Archmage Thornwall",
+    "foundingDate": "723 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Overthrow the monarchy",
+      "Establish trade dominance",
+      "Overthrow the monarchy",
+      "Discover lost knowledge"
+    ],
+    "resources": [
+      "Territory",
+      "Gold",
+      "Arms"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Feared",
+    "influence": 37,
+    "strength": 46,
+    "wealth": 70
+  },
+  {
+    "id": "guild_of_forgotten",
+    "name": "Guild of Forgotten",
+    "type": "SHADOW",
+    "scope": "LOCAL",
+    "description": "A nature faction seeking power and influence.",
+    "headquarters": "Market district",
+    "territory": "Verdant Vale",
+    "leader": "Chieftain Lightweaver",
+    "foundingDate": "784 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Control the region"
+    ],
+    "resources": [
+      "Territory",
+      "Beasts",
+      "Ships"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "None",
+    "reputation": "Mysterious",
+    "influence": 87,
+    "strength": 57,
+    "wealth": 40
+  },
+  {
+    "id": "guild_of_golden",
+    "name": "Guild of Golden",
+    "type": "SHADOW",
+    "scope": "REGIONAL",
+    "description": "A religious faction seeking power and influence.",
+    "headquarters": "Castle ruins",
+    "territory": "Crystal Desert",
+    "leader": "Grand Darkhollow",
+    "foundingDate": "184 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Spread the faith",
+      "Survive in hiding",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Beasts",
+      "Territory"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Neutral",
+    "influence": 78,
+    "strength": 29,
+    "wealth": 15
+  },
+  {
+    "id": "brotherhood_of_golden",
+    "name": "Brotherhood of Golden",
+    "type": "NATURE",
+    "scope": "NATIONAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Underground vault",
+    "territory": "Obsidian Wastes",
+    "leader": "King Goldheart",
+    "foundingDate": "1389 years ago",
+    "motto": "\"The void awaits\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Food",
+      "Gold",
+      "Arms",
+      "Information",
+      "Allies"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Mysterious",
+    "influence": 17,
+    "strength": 98,
+    "wealth": 34
+  },
+  {
+    "id": "house_of_crystal",
+    "name": "House of Crystal",
+    "type": "RESISTANCE",
+    "scope": "NATIONAL",
+    "description": "A religious faction seeking power and influence.",
+    "headquarters": "Market district",
+    "territory": "Emerald Isles",
+    "leader": "Supreme Shadowfax",
+    "foundingDate": "1251 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Establish monopoly",
+      "Establish trade dominance",
+      "Spread the faith",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Allies",
+      "Magic"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Shyness"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Mysterious",
+    "influence": 100,
+    "strength": 77,
+    "wealth": 43
+  },
+  {
+    "id": "guild_of_lost",
+    "name": "Guild of Lost",
+    "type": "MERCANTILE",
+    "scope": "REGIONAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Underground vault",
+    "territory": "Ironpeak Mountains",
+    "leader": "Master Ironmind",
+    "foundingDate": "193 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Establish trade dominance",
+      "Control the region",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Allies",
+      "Information",
+      "Food",
+      "Gold"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Greed"
+    ],
+    "currentConflict": "None",
+    "reputation": "Honored",
+    "influence": 10,
+    "strength": 93,
+    "wealth": 54
+  },
+  {
+    "id": "empire_of_emerald",
+    "name": "Empire of Emerald",
+    "type": "ARCANE",
+    "scope": "LOCAL",
+    "description": "A resistance faction seeking power and influence.",
+    "headquarters": "Cave system",
+    "territory": "Astral Plane",
+    "leader": "Master Shadowfax",
+    "foundingDate": "1939 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Overthrow the monarchy",
+      "Control the region",
+      "Control the region",
+      "Overthrow the monarchy"
+    ],
+    "resources": [
+      "Information",
+      "Allies",
+      "Ships"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Shyness"
+    ],
+    "currentConflict": "None",
+    "reputation": "Honored",
+    "influence": 98,
+    "strength": 58,
+    "wealth": 93
+  },
+  {
+    "id": "guild_of_lost",
+    "name": "Guild of Lost",
+    "type": "SHADOW",
+    "scope": "NATIONAL",
+    "description": "A mercantile faction seeking power and influence.",
+    "headquarters": "Shipyard",
+    "territory": "Frostfang Tundra",
+    "leader": "King Stormbringer",
+    "foundingDate": "517 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Protect the innocent",
+      "Survive in hiding",
+      "Spread the faith",
+      "Discover lost knowledge",
+      "Overthrow the monarchy"
+    ],
+    "resources": [
+      "Ships",
+      "Arms",
+      "Magic"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "Trade war",
+    "reputation": "Neutral",
+    "influence": 34,
+    "strength": 82,
+    "wealth": 72
+  },
+  {
+    "id": "brotherhood_of_ancient",
+    "name": "Brotherhood of Ancient",
+    "type": "CRIMINAL",
+    "scope": "LOCAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Market district",
+    "territory": "Dragon's Spine",
+    "leader": "Master Shadowfax",
+    "foundingDate": "1507 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Protect the innocent",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Magic",
+      "Ships",
+      "Territory",
+      "Beasts",
+      "Gold"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Mysterious",
+    "influence": 22,
+    "strength": 58,
+    "wealth": 59
+  },
+  {
+    "id": "the_shadow",
+    "name": "The Shadow",
+    "type": "MILITARY",
+    "scope": "NATIONAL",
+    "description": "A military faction seeking power and influence.",
+    "headquarters": "Market district",
+    "territory": "Frostfang Tundra",
+    "leader": "Lady Stormbringer",
+    "foundingDate": "392 years ago",
+    "motto": "\"The void awaits\"",
+    "goals": [
+      "Control the region",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Arms",
+      "Magic",
+      "Beasts",
+      "Ships"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Greed"
+    ],
+    "currentConflict": "Political intrigue",
+    "reputation": "Feared",
+    "influence": 71,
+    "strength": 29,
+    "wealth": 41
+  },
+  {
+    "id": "the_void",
+    "name": "The Void",
+    "type": "CRIMINAL",
+    "scope": "NATIONAL",
+    "description": "A resistance faction seeking power and influence.",
+    "headquarters": "Castle ruins",
+    "territory": "Eldrin Forest",
+    "leader": "Lord Darkhollow",
+    "foundingDate": "1215 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Train warriors",
+      "Discover lost knowledge"
+    ],
+    "resources": [
+      "Gold",
+      "Magic",
+      "Beasts"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Neutral",
+    "influence": 55,
+    "strength": 93,
+    "wealth": 46
+  },
+  {
+    "id": "cult_of_forgotten",
+    "name": "Cult of Forgotten",
+    "type": "NATURE",
+    "scope": "NATIONAL",
+    "description": "A religious faction seeking power and influence.",
+    "headquarters": "Shipyard",
+    "territory": "Crystal Desert",
+    "leader": "Lady Ironmind",
+    "foundingDate": "308 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Establish monopoly",
+      "Overthrow the monarchy",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Arms",
+      "Gold",
+      "Information",
+      "Beasts"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "None",
+    "reputation": "Feared",
+    "influence": 86,
+    "strength": 33,
+    "wealth": 96
+  },
+  {
+    "id": "house_of_iron",
+    "name": "House of Iron",
+    "type": "CRIMINAL",
+    "scope": "NATIONAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Temple",
+    "territory": "Dragon's Spine",
+    "leader": "Lady Stormbringer",
+    "foundingDate": "1976 years ago",
+    "motto": "\"Survival at all costs\"",
+    "goals": [
+      "Establish trade dominance",
+      "Gather ancient artifacts",
+      "Control the region",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Territory",
+      "Allies",
+      "Magic"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Honored",
+    "influence": 24,
+    "strength": 83,
+    "wealth": 64
+  },
+  {
+    "id": "guild_of_iron",
+    "name": "Guild of Iron",
+    "type": "RELIGIOUS",
+    "scope": "REGIONAL",
+    "description": "A political faction seeking power and influence.",
+    "headquarters": "Market district",
+    "territory": "Elemental Chaos",
+    "leader": "Archmage Lightweaver",
+    "foundingDate": "753 years ago",
+    "motto": "\"Survival at all costs\"",
+    "goals": [
+      "Survive in hiding",
+      "Discover lost knowledge",
+      "Establish monopoly",
+      "Overthrow the monarchy",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Food",
+      "Beasts",
+      "Information"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Shyness"
+    ],
+    "currentConflict": "None",
+    "reputation": "Despised",
+    "influence": 78,
+    "strength": 78,
+    "wealth": 39
+  },
+  {
+    "id": "house_of_shadow",
+    "name": "House of Shadow",
+    "type": "SHADOW",
+    "scope": "NATIONAL",
+    "description": "A nature faction seeking power and influence.",
+    "headquarters": "Underground vault",
+    "territory": "Celestial Peaks",
+    "leader": "High Priest Darkhollow",
+    "foundingDate": "581 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Spread the faith",
+      "Control the region"
+    ],
+    "resources": [
+      "Beasts",
+      "Ships",
+      "Arms",
+      "Gold"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Political intrigue",
+    "reputation": "Neutral",
+    "influence": 47,
+    "strength": 68,
+    "wealth": 28
+  },
+  {
+    "id": "covenant_of_forgotten",
+    "name": "Covenant of Forgotten",
+    "type": "NATURE",
+    "scope": "LOCAL",
+    "description": "A mercantile faction seeking power and influence.",
+    "headquarters": "Forest camp",
+    "territory": "Eldrin Forest",
+    "leader": "Master Darkhollow",
+    "foundingDate": "1524 years ago",
+    "motto": "\"The void awaits\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Control the region",
+      "Discover lost knowledge"
+    ],
+    "resources": [
+      "Gold",
+      "Arms",
+      "Territory",
+      "Information"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "None",
+    "reputation": "Neutral",
+    "influence": 13,
+    "strength": 28,
+    "wealth": 56
+  },
+  {
+    "id": "brotherhood_of_shadow",
+    "name": "Brotherhood of Shadow",
+    "type": "MERCANTILE",
+    "scope": "LOCAL",
+    "description": "A military faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Crystal Desert",
+    "leader": "Master Goldheart",
+    "foundingDate": "1622 years ago",
+    "motto": "\"Knowledge is power\"",
+    "goals": [
+      "Survive in hiding",
+      "Discover lost knowledge",
+      "Overthrow the monarchy",
+      "Survive in hiding"
+    ],
+    "resources": [
+      "Information",
+      "Arms"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Mysterious",
+    "influence": 32,
+    "strength": 74,
+    "wealth": 30
+  },
+  {
+    "id": "the_obsidian",
+    "name": "The Obsidian",
+    "type": "NATURE",
+    "scope": "NATIONAL",
+    "description": "A tyranny faction seeking power and influence.",
+    "headquarters": "Underground vault",
+    "territory": "Astral Plane",
+    "leader": "Queen Starweaver",
+    "foundingDate": "1127 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Protect the innocent",
+      "Establish trade dominance"
+    ],
+    "resources": [
+      "Beasts",
+      "Food"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "Trade war",
+    "reputation": "Despised",
+    "influence": 89,
+    "strength": 17,
+    "wealth": 38
+  },
+  {
+    "id": "house_of_iron",
+    "name": "House of Iron",
+    "type": "RESISTANCE",
+    "scope": "NATIONAL",
+    "description": "A religious faction seeking power and influence.",
+    "headquarters": "Shipyard",
+    "territory": "Emerald Isles",
+    "leader": "King Shadowfax",
+    "foundingDate": "1794 years ago",
+    "motto": "\"Survival at all costs\"",
+    "goals": [
+      "Control the region",
+      "Overthrow the monarchy",
+      "Discover lost knowledge"
+    ],
+    "resources": [
+      "Information",
+      "Arms",
+      "Gold"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "None",
+    "reputation": "Feared",
+    "influence": 13,
+    "strength": 40,
+    "wealth": 46
+  },
+  {
+    "id": "brotherhood_of_void",
+    "name": "Brotherhood of Void",
+    "type": "RELIGIOUS",
+    "scope": "LOCAL",
+    "description": "A mercantile faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Elemental Chaos",
+    "leader": "Queen Ironmind",
+    "foundingDate": "1229 years ago",
+    "motto": "\"Knowledge is power\"",
+    "goals": [
+      "Spread the faith",
+      "Establish trade dominance"
+    ],
+    "resources": [
+      "Gold",
+      "Ships"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "Political intrigue",
+    "reputation": "Honored",
+    "influence": 49,
+    "strength": 11,
+    "wealth": 55
+  },
+  {
+    "id": "guild_of_obsidian",
+    "name": "Guild of Obsidian",
+    "type": "RESISTANCE",
+    "scope": "LOCAL",
+    "description": "A arcane faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Astral Plane",
+    "leader": "King Silvervein",
+    "foundingDate": "1539 years ago",
+    "motto": "\"The void awaits\"",
+    "goals": [
+      "Overthrow the monarchy",
+      "Discover lost knowledge"
+    ],
+    "resources": [
+      "Beasts",
+      "Allies"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Shyness"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Despised",
+    "influence": 85,
+    "strength": 14,
+    "wealth": 47
+  },
+  {
+    "id": "brotherhood_of_iron",
+    "name": "Brotherhood of Iron",
+    "type": "TYRANNY",
+    "scope": "LOCAL",
+    "description": "A religious faction seeking power and influence.",
+    "headquarters": "Forest camp",
+    "territory": "Dragon's Spine",
+    "leader": "High Priest Silvervein",
+    "foundingDate": "1674 years ago",
+    "motto": "\"The void awaits\"",
+    "goals": [
+      "Train warriors",
+      "Train warriors",
+      "Establish monopoly"
+    ],
+    "resources": [
+      "Ships",
+      "Allies",
+      "Beasts",
+      "Food"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Shyness"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Honored",
+    "influence": 97,
+    "strength": 59,
+    "wealth": 40
+  },
+  {
+    "id": "cult_of_astral",
+    "name": "Cult of Astral",
+    "type": "SHADOW",
+    "scope": "LOCAL",
+    "description": "A political faction seeking power and influence.",
+    "headquarters": "Shipyard",
+    "territory": "Ironpeak Mountains",
+    "leader": "Lord Silvervein",
+    "foundingDate": "1669 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Train warriors",
+      "Gather ancient artifacts",
+      "Survive in hiding",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Territory",
+      "Allies",
+      "Ships",
+      "Arms",
+      "Gold"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Shyness"
+    ],
+    "currentConflict": "Political intrigue",
+    "reputation": "Feared",
+    "influence": 21,
+    "strength": 19,
+    "wealth": 32
+  },
+  {
+    "id": "clan_of_crimson",
+    "name": "Clan of Crimson",
+    "type": "TYRANNY",
+    "scope": "REGIONAL",
+    "description": "A tyranny faction seeking power and influence.",
+    "headquarters": "Market district",
+    "territory": "Ironpeak Mountains",
+    "leader": "Grand Goldheart",
+    "foundingDate": "181 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Discover lost knowledge",
+      "Establish monopoly",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Territory",
+      "Beasts",
+      "Allies",
+      "Gold",
+      "Magic"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Mysterious",
+    "influence": 92,
+    "strength": 17,
+    "wealth": 41
+  },
+  {
+    "id": "covenant_of_silver",
+    "name": "Covenant of Silver",
+    "type": "POLITICAL",
+    "scope": "LOCAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Crystal Desert",
+    "leader": "Grand Shadowfax",
+    "foundingDate": "1848 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Survive in hiding",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Ships",
+      "Beasts",
+      "Territory",
+      "Information"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Neutral",
+    "influence": 23,
+    "strength": 60,
+    "wealth": 65
+  },
+  {
+    "id": "cult_of_obsidian",
+    "name": "Cult of Obsidian",
+    "type": "ARCANE",
+    "scope": "LOCAL",
+    "description": "A arcane faction seeking power and influence.",
+    "headquarters": "Temple",
+    "territory": "Celestial Peaks",
+    "leader": "Chieftain Ironmind",
+    "foundingDate": "1538 years ago",
+    "motto": "\"The void awaits\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Establish trade dominance",
+      "Survive in hiding",
+      "Control the region",
+      "Train warriors"
+    ],
+    "resources": [
+      "Ships",
+      "Allies",
+      "Territory"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "None",
+    "reputation": "Honored",
+    "influence": 86,
+    "strength": 58,
+    "wealth": 17
+  },
+  {
+    "id": "circle_of_hidden",
+    "name": "Circle of Hidden",
+    "type": "NATURE",
+    "scope": "REGIONAL",
+    "description": "A mercantile faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Frostfang Tundra",
+    "leader": "Lord Shadowfax",
+    "foundingDate": "652 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Protect the innocent",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Food",
+      "Arms",
+      "Allies",
+      "Territory"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "None",
+    "reputation": "Neutral",
+    "influence": 95,
+    "strength": 43,
+    "wealth": 33
+  },
+  {
+    "id": "the_shadow",
+    "name": "The Shadow",
+    "type": "NATURE",
+    "scope": "REGIONAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Market district",
+    "territory": "Frostfang Tundra",
+    "leader": "King Shadowfax",
+    "foundingDate": "1086 years ago",
+    "motto": "\"Survival at all costs\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Overthrow the monarchy",
+      "Establish monopoly"
+    ],
+    "resources": [
+      "Gold",
+      "Magic",
+      "Beasts",
+      "Territory",
+      "Information"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Political intrigue",
+    "reputation": "Honored",
+    "influence": 29,
+    "strength": 68,
+    "wealth": 28
+  },
+  {
+    "id": "clan_of_lost",
+    "name": "Clan of Lost",
+    "type": "ARCANE",
+    "scope": "LOCAL",
+    "description": "A nature faction seeking power and influence.",
+    "headquarters": "Cave system",
+    "territory": "Shadowfen Marsh",
+    "leader": "Lord Goldheart",
+    "foundingDate": "1804 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Survive in hiding",
+      "Establish monopoly",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Magic",
+      "Beasts"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "None",
+    "reputation": "Neutral",
+    "influence": 86,
+    "strength": 58,
+    "wealth": 37
+  },
+  {
+    "id": "circle_of_golden",
+    "name": "Circle of Golden",
+    "type": "MERCANTILE",
+    "scope": "NATIONAL",
+    "description": "A shadow faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Obsidian Wastes",
+    "leader": "King Thornwall",
+    "foundingDate": "718 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Survive in hiding",
+      "Survive in hiding"
+    ],
+    "resources": [
+      "Food",
+      "Territory",
+      "Allies",
+      "Information",
+      "Magic"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "Trade war",
+    "reputation": "Despised",
+    "influence": 64,
+    "strength": 57,
+    "wealth": 32
+  },
+  {
+    "id": "covenant_of_astral",
+    "name": "Covenant of Astral",
+    "type": "POLITICAL",
+    "scope": "NATIONAL",
+    "description": "A nature faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Verdant Vale",
+    "leader": "Archmage Stormbringer",
+    "foundingDate": "1537 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Gold",
+      "Food"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "None",
+    "reputation": "Mysterious",
+    "influence": 22,
+    "strength": 91,
+    "wealth": 66
+  },
+  {
+    "id": "covenant_of_astral",
+    "name": "Covenant of Astral",
+    "type": "MILITARY",
+    "scope": "NATIONAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Frostfang Tundra",
+    "leader": "High Priest Goldheart",
+    "foundingDate": "1229 years ago",
+    "motto": "\"Survival at all costs\"",
+    "goals": [
+      "Spread the faith",
+      "Survive in hiding"
+    ],
+    "resources": [
+      "Territory",
+      "Ships"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Honored",
+    "influence": 57,
+    "strength": 38,
+    "wealth": 74
+  },
+  {
+    "id": "guild_of_crimson",
+    "name": "Guild of Crimson",
+    "type": "CRIMINAL",
+    "scope": "REGIONAL",
+    "description": "A nature faction seeking power and influence.",
+    "headquarters": "Forest camp",
+    "territory": "Eldrin Forest",
+    "leader": "Archmage Thornwall",
+    "foundingDate": "131 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Overthrow the monarchy",
+      "Train warriors",
+      "Establish monopoly"
+    ],
+    "resources": [
+      "Territory",
+      "Allies",
+      "Information",
+      "Magic"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Shyness"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Neutral",
+    "influence": 88,
+    "strength": 92,
+    "wealth": 60
+  },
+  {
+    "id": "the_hidden",
+    "name": "The Hidden",
+    "type": "SHADOW",
+    "scope": "REGIONAL",
+    "description": "A political faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Astral Plane",
+    "leader": "Master Shadowfax",
+    "foundingDate": "1951 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Spread the faith",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Beasts",
+      "Arms",
+      "Territory"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "Political intrigue",
+    "reputation": "Mysterious",
+    "influence": 30,
+    "strength": 51,
+    "wealth": 36
+  },
+  {
+    "id": "order_of_shadow",
+    "name": "Order of Shadow",
+    "type": "MILITARY",
+    "scope": "REGIONAL",
+    "description": "A military faction seeking power and influence.",
+    "headquarters": "Market district",
+    "territory": "Eldrin Forest",
+    "leader": "Grand Voidwalker",
+    "foundingDate": "1985 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Control the region",
+      "Protect the innocent",
+      "Survive in hiding",
+      "Overthrow the monarchy",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Magic",
+      "Information",
+      "Arms"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Public scandal"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Feared",
+    "influence": 94,
+    "strength": 16,
+    "wealth": 45
+  },
+  {
+    "id": "order_of_forgotten",
+    "name": "Order of Forgotten",
+    "type": "POLITICAL",
+    "scope": "NATIONAL",
+    "description": "A military faction seeking power and influence.",
+    "headquarters": "Castle ruins",
+    "territory": "Ironpeak Mountains",
+    "leader": "Chieftain Starweaver",
+    "foundingDate": "351 years ago",
+    "motto": "\"Power through unity\"",
+    "goals": [
+      "Establish trade dominance",
+      "Establish trade dominance",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Arms",
+      "Ships"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Greed"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Honored",
+    "influence": 72,
+    "strength": 12,
+    "wealth": 62
+  },
+  {
+    "id": "order_of_crystal",
+    "name": "Order of Crystal",
+    "type": "RELIGIOUS",
+    "scope": "LOCAL",
+    "description": "A nature faction seeking power and influence.",
+    "headquarters": "Palace",
+    "territory": "Dragon's Spine",
+    "leader": "King Goldheart",
+    "foundingDate": "1755 years ago",
+    "motto": "\"Knowledge is power\"",
+    "goals": [
+      "Establish trade dominance",
+      "Control the region",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Arms",
+      "Territory"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "None",
+    "reputation": "Mysterious",
+    "influence": 79,
+    "strength": 10,
+    "wealth": 30
+  },
+  {
+    "id": "covenant_of_eternal",
+    "name": "Covenant of Eternal",
+    "type": "CRIMINAL",
+    "scope": "LOCAL",
+    "description": "A mercantile faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Shadowfen Marsh",
+    "leader": "Lord Voidwalker",
+    "foundingDate": "1148 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Spread the faith",
+      "Overthrow the monarchy",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Gold",
+      "Territory",
+      "Arms"
+    ],
+    "membership": "Moderate",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Internal corruption"
+    ],
+    "currentConflict": "Trade war",
+    "reputation": "Feared",
+    "influence": 45,
+    "strength": 71,
+    "wealth": 35
+  },
+  {
+    "id": "order_of_emerald",
+    "name": "Order of Emerald",
+    "type": "RESISTANCE",
+    "scope": "NATIONAL",
+    "description": "A criminal faction seeking power and influence.",
+    "headquarters": "Shipyard",
+    "territory": "Astral Plane",
+    "leader": "Chieftain Shadowfax",
+    "foundingDate": "1149 years ago",
+    "motto": "\"Survival at all costs\"",
+    "goals": [
+      "Establish trade dominance",
+      "Protect the innocent",
+      "Spread the faith"
+    ],
+    "resources": [
+      "Food",
+      "Arms",
+      "Information",
+      "Beasts"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Greed"
+    ],
+    "currentConflict": "Trade war",
+    "reputation": "Despised",
+    "influence": 65,
+    "strength": 67,
+    "wealth": 64
+  },
+  {
+    "id": "empire_of_eternal",
+    "name": "Empire of Eternal",
+    "type": "CRIMINAL",
+    "scope": "REGIONAL",
+    "description": "A shadow faction seeking power and influence.",
+    "headquarters": "Castle ruins",
+    "territory": "Celestial Peaks",
+    "leader": "Archmage Shadowfax",
+    "foundingDate": "509 years ago",
+    "motto": "\"Glory to the few\"",
+    "goals": [
+      "Overthrow the monarchy",
+      "Gather ancient artifacts",
+      "Survive in hiding",
+      "Protect the innocent"
+    ],
+    "resources": [
+      "Beasts",
+      "Information"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "None",
+    "reputation": "Mysterious",
+    "influence": 55,
+    "strength": 60,
+    "wealth": 13
+  },
+  {
+    "id": "order_of_iron",
+    "name": "Order of Iron",
+    "type": "ARCANE",
+    "scope": "REGIONAL",
+    "description": "A political faction seeking power and influence.",
+    "headquarters": "Temple",
+    "territory": "Frostfang Tundra",
+    "leader": "Lady Ironmind",
+    "foundingDate": "1445 years ago",
+    "motto": "\"Gold is king\"",
+    "goals": [
+      "Protect the innocent",
+      "Overthrow the monarchy",
+      "Gather ancient artifacts",
+      "Control the region"
+    ],
+    "resources": [
+      "Gold",
+      "Territory",
+      "Arms",
+      "Magic"
+    ],
+    "membership": "Large",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Greed"
+    ],
+    "currentConflict": "None",
+    "reputation": "Honored",
+    "influence": 59,
+    "strength": 46,
+    "wealth": 87
+  },
+  {
+    "id": "cult_of_void",
+    "name": "Cult of Void",
+    "type": "MERCANTILE",
+    "scope": "LOCAL",
+    "description": "A resistance faction seeking power and influence.",
+    "headquarters": "Cave system",
+    "territory": "Astral Plane",
+    "leader": "Grand Darkhollow",
+    "foundingDate": "1275 years ago",
+    "motto": "\"The void awaits\"",
+    "goals": [
+      "Discover lost knowledge",
+      "Overthrow the monarchy",
+      "Overthrow the monarchy",
+      "Spread the faith",
+      "Spread the faith"
+    ],
+    "resources": [
+      "Ships",
+      "Beasts"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Territorial dispute",
+    "reputation": "Honored",
+    "influence": 25,
+    "strength": 67,
+    "wealth": 31
+  },
+  {
+    "id": "empire_of_emerald",
+    "name": "Empire of Emerald",
+    "type": "SHADOW",
+    "scope": "REGIONAL",
+    "description": "A mercantile faction seeking power and influence.",
+    "headquarters": "Old tower",
+    "territory": "Verdant Vale",
+    "leader": "Lord Starweaver",
+    "foundingDate": "109 years ago",
+    "motto": "\"Survival at all costs\"",
+    "goals": [
+      "Protect the innocent",
+      "Discover lost knowledge",
+      "Control the region",
+      "Train warriors"
+    ],
+    "resources": [
+      "Territory",
+      "Gold"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Outdated laws"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Despised",
+    "influence": 48,
+    "strength": 45,
+    "wealth": 50
+  },
+  {
+    "id": "circle_of_obsidian",
+    "name": "Circle of Obsidian",
+    "type": "RELIGIOUS",
+    "scope": "NATIONAL",
+    "description": "A arcane faction seeking power and influence.",
+    "headquarters": "Shipyard",
+    "territory": "Celestial Peaks",
+    "leader": "Lord Shadowfax",
+    "foundingDate": "711 years ago",
+    "motto": "\"The void awaits\"",
+    "goals": [
+      "Survive in hiding",
+      "Gather ancient artifacts",
+      "Overthrow the monarchy",
+      "Establish monopoly",
+      "Gather ancient artifacts"
+    ],
+    "resources": [
+      "Magic",
+      "Gold"
+    ],
+    "membership": "Small",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Greed"
+    ],
+    "currentConflict": "Border skirmishes",
+    "reputation": "Feared",
+    "influence": 98,
+    "strength": 65,
+    "wealth": 38
+  },
+  {
+    "id": "brotherhood_of_shadow",
+    "name": "Brotherhood of Shadow",
+    "type": "MERCANTILE",
+    "scope": "NATIONAL",
+    "description": "A arcane faction seeking power and influence.",
+    "headquarters": "Underground vault",
+    "territory": "Eldrin Forest",
+    "leader": "Lord Stormbringer",
+    "foundingDate": "1909 years ago",
+    "motto": "\"Order from chaos\"",
+    "goals": [
+      "Gather ancient artifacts",
+      "Control the region"
+    ],
+    "resources": [
+      "Arms",
+      "Information",
+      "Allies",
+      "Territory"
+    ],
+    "membership": "Vast",
+    "notableMembers": [],
+    "allies": [],
+    "enemies": [],
+    "weaknesses": [
+      "Infighting"
+    ],
+    "currentConflict": "Trade war",
+    "reputation": "Neutral",
+    "influence": 84,
+    "strength": 68,
+    "wealth": 25
+  }
+]

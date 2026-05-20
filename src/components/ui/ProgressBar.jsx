@@ -1,4 +1,4 @@
-1import React from 'react';
+import React from 'react';
 
 export default function ProgressBar({ current, max, label, color = '#4ade80', tooltip = '' }) {
   const percentage = max > 0 ? Math.min((current / max) * 100, 100) : 0;
@@ -9,15 +9,14 @@ export default function ProgressBar({ current, max, label, color = '#4ade80', to
         <span className="progress-value">{Math.round(current)}/{max}</span>
       </div>
       <div className="progress-bar">
-        <div 
-          className="progress-fill" 
-          style={{ 
-            '--progress': `${percentage}%`, 
-            '--fill-color': color 
+        <div
+          className="progress-fill"
+          style={{
+            '--progress': `${percentage}%`,
+            '--fill-color': color
           }}
         />
       </div>
     </div>
   );
 }
-ie

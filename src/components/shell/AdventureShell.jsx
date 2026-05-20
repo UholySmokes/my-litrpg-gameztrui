@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import ProgressBar from "../../ui/ProgressBar.jsx";
+import ProgressBar from "../ui/ProgressBar.jsx";
 import GameQuickActions from "../gameui/GameQuickActions.jsx";
 import {
   DEFAULT_START_LOCATION_ID,
@@ -343,7 +343,7 @@ const topMeters = [
             <h3 className="surface-section__title">Current reserves</h3>
 <div className="archive-meter-grid">
               {topMeters.map((meter) => (
-                <ProgressBar 
+                <ProgressBar
                   key={meter.label}
                   current={meter.current}
                   max={meter.max}

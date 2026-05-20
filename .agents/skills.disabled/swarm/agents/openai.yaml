@@ -1,0 +1,11 @@
+interface:
+  display_name: "Swarm"
+  short_description: "Exhaustive repo-audit swarm for unfinished games"
+  default_prompt: "Use $swarm to audit this unfinished game repo, review cross-team evidence, and rank the best aligned fixes and additions."
+policy:
+  products:
+    - "chatgpt"
+    - "codex"
+    - "api"
+    - "atlas"
+  allow_implicit_invocation: true

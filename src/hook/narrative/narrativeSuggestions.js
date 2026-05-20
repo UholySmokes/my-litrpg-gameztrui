@@ -86,6 +86,20 @@ export const CONTEXT_SUGGESTION_FILLERS = [
     category: "observe",
   }),
   createSuggestionRecord({
+    id: "inspect-system-label",
+    label: "Inspect System Label",
+    command: "inspect System label",
+    weight: 0.82,
+    category: "observe",
+  }),
+  createSuggestionRecord({
+    id: "check-oath",
+    label: "Check Oath",
+    command: "check oath",
+    weight: 0.8,
+    category: "observe",
+  }),
+  createSuggestionRecord({
     id: "rest",
     label: "Rest",
     command: "rest",
@@ -452,6 +466,127 @@ export function buildSummaryPrompt({ previousSummary, recentLines }) {
     .join("\n");
 }
 
+function hasSealedOath(player = {}) {
+  return Boolean(
+    player?.startingPrompt ||
+      player?.characterCreationBlueprint?.startingPrompt ||
+      player?.oathOrigin?.name ||
+      player?.origin?.name,
+  );
+}
+
+function getLedgerDebtAmount(state = {}) {
+  const player = state.player || {};
+  const debt =
+    player.ledgerDebt ??
+    player.debt?.ledger ??
+    player.contracts?.ledgerDebt ??
+    state.world?.ledgerDebt ??
+    state.world?.economy?.ledgerDebt ??
+    0;
+  return toNumber(debt, 0);
+}
+
+function hasFactionContext(state = {}) {
+  const quests = state.quests || {};
+  const world = state.world || {};
+  const activeQuest = Array.isArray(quests.active) ? quests.active[0] : null;
+  return Boolean(
+    activeQuest?.factionId ||
+      activeQuest?.faction ||
+      world?.factionPressure ||
+      world?.currentFaction ||
+      world?.zone?.faction,
+  );
+}
+
+function hasLeylineContext(state = {}) {
+  const world = state.world || {};
+  const essence = world.essence || {};
+  const location =
+    typeof world.location === "object" && world.location !== null ? world.location : {};
+  return Boolean(
+    essence.ambient ||
+      essence.dominantEssence ||
+      location.leylinePressure ||
+      world.leylinePressure ||
+      world.weather?.leylinePressure,
+  );
+}
+
+function buildLorePressureSuggestions(state) {
+  const player = state?.player || {};
+  const suggestions = [];
+
+  if (hasSealedOath(player)) {
+    suggestions.push(
+      createSuggestionRecord({
+        id: "lore-check-oath",
+        label: "Check Oath",
+        command: "check oath",
+        weight: 0.91,
+        category: "observe",
+        reason: "Your oath defines the first binding pressure on this chronicle.",
+      }),
+    );
+  }
+
+  const systemLabel = resolveArchetypeSystemLabel(player);
+  if (systemLabel || player?.archetypeSystem) {
+    suggestions.push(
+      createSuggestionRecord({
+        id: "lore-inspect-system-label",
+        label: "Inspect System Label",
+        command: "inspect System label",
+        weight: 0.89,
+        category: "observe",
+        reason: "The System records patterns, but it does not always understand them.",
+      }),
+    );
+  }
+
+  if (getLedgerDebtAmount(state) > 0 || player?.contracts || state?.world?.economy) {
+    suggestions.push(
+      createSuggestionRecord({
+        id: "lore-review-ledger-debt",
+        label: "Review Ledger Debt",
+        command: "review ledger debt",
+        weight: 0.86,
+        category: "social",
+        reason: "Power, contracts, and entropy often leave debt behind.",
+      }),
+    );
+  }
+
+  if (hasLeylineContext(state)) {
+    suggestions.push(
+      createSuggestionRecord({
+        id: "lore-sense-leyline-pressure",
+        label: "Sense Leyline Pressure",
+        command: "sense leyline pressure",
+        weight: 0.9,
+        category: "observe",
+        reason: "Leylines behave like infrastructure, weather, and political leverage at once.",
+      }),
+    );
+  }
+
+  if (hasFactionContext(state)) {
+    suggestions.push(
+      createSuggestionRecord({
+        id: "lore-ask-faction-terms",
+        label: "Ask About Faction Terms",
+        command: "ask about faction terms",
+        weight: 0.84,
+        category: "social",
+        reason: "In Meridian, help usually arrives with clauses attached.",
+      }),
+    );
+  }
+
+  return suggestions;
+}
+
 export function resolveArchetypeSystemLabel(player = {}) {
   return getPlayerArchetypeSystemLabel(player);
 }
@@ -799,7 +934,10 @@ export function buildActionSuggestions(state) {
     }
   } else {
     if (onboardingContext?.active) {
-      contextSuggestions.push(...buildTravelSuggestions(state, 2));
+      contextSuggestions.push(
+        ...buildTravelSuggestions(state, 2),
+        ...buildLorePressureSuggestions(state).slice(0, 2),
+      );
     } else {
       contextSuggestions.push(...buildQuestDrivenSuggestions(state), ...buildTravelSuggestions(state, 2));
     }
@@ -870,6 +1008,8 @@ export function buildActionSuggestions(state) {
         }),
       );
     }
+
+    contextSuggestions.push(...buildLorePressureSuggestions(state));
 
     const systemLabel = resolveArchetypeSystemLabel(player);
     if (systemLabel) {

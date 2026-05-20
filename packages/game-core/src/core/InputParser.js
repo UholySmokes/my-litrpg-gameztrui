@@ -64,6 +64,9 @@ export function parseAction(userInput, gameState) {
   const lookAction = parseLook(cleanedInput);
   if (lookAction) return lookAction;
 
+  const loreAction = parseLoreAction(cleanedInput, userInput);
+  if (loreAction) return loreAction;
+
   const dialogueAction = parseDialogue(cleanedInput, userInput, gameState);
   if (dialogueAction) return dialogueAction;
 
@@ -73,6 +76,68 @@ export function parseAction(userInput, gameState) {
     originalInput: userInput,
     description: `Player said: "${userInput}"`,
   };
+}
+
+function parseLoreAction(input, rawInput) {
+  const originalInput = typeof rawInput === "string" ? rawInput.trim() : input;
+
+  if (/^(check|review|inspect|read)\s+(my\s+)?oath$/i.test(input)) {
+    return {
+      type: "lore_inspect",
+      topic: "oath",
+      originalInput,
+    };
+  }
+
+  if (/^(review|check|inspect|read)\s+(my\s+)?ledger\s+debt$/i.test(input)) {
+    return {
+      type: "lore_inspect",
+      topic: "ledger_debt",
+      originalInput,
+    };
+  }
+
+  if (/^(sense|inspect|read|scan)\s+(the\s+)?leyline\s+pressure$/i.test(input)) {
+    return {
+      type: "lore_inspect",
+      topic: "leyline_pressure",
+      originalInput,
+    };
+  }
+
+  if (/^(inspect|check|review|read)\s+(the\s+)?system\s+label$/i.test(input)) {
+    return {
+      type: "lore_inspect",
+      topic: "system_label",
+      originalInput,
+    };
+  }
+
+  if (/^(ask|question|talk)\s+(about\s+)?faction\s+terms$/i.test(input)) {
+    return {
+      type: "lore_inspect",
+      topic: "faction_terms",
+      originalInput,
+    };
+  }
+
+  if (/^(check|inspect|review)\s+(soulcoin|soulcoins)$/i.test(input)) {
+    return {
+      type: "lore_inspect",
+      topic: "soulcoin",
+      originalInput,
+    };
+  }
+
+  if (/^(study|inspect|review)\s+(the\s+)?voidspark$/i.test(input)) {
+    return {
+      type: "lore_inspect",
+      topic: "voidspark",
+      originalInput,
+    };
+  }
+
+  return null;
 }
 
 function parseDialogue(input, rawInput, gameState) {

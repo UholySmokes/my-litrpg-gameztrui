@@ -129,6 +129,112 @@ function classifyMagicStudyTarget(rawTarget, knownEssences, knownForms, player) 
   };
 }
 
+function getLoreOathText(player = {}) {
+  const raw =
+    typeof player.startingPrompt === "string"
+      ? player.startingPrompt
+      : player.characterCreationBlueprint?.startingPrompt;
+  const oathText = String(raw || "").trim();
+  const originName = player.oathOrigin?.name || player.origin?.name || "";
+  if (oathText && originName) {
+    return `Oath reviewed: ${originName} binds this chronicle through "${oathText}".`;
+  }
+  if (oathText) {
+    return `Oath reviewed: "${oathText}".`;
+  }
+  if (originName) {
+    return `Oath reviewed: ${originName} still marks the first pressure on this chronicle.`;
+  }
+  return "No sealed oath is recorded yet. The chronicle remains unbound.";
+}
+
+function getLoreLedgerDebtText(state = {}) {
+  const player = state.player || {};
+  const debt =
+    player.ledgerDebt ??
+    player.debt?.ledger ??
+    player.contracts?.ledgerDebt ??
+    state.world?.ledgerDebt ??
+    state.world?.economy?.ledgerDebt ??
+    0;
+  const amount = Number.isFinite(Number(debt)) ? Number(debt) : 0;
+  if (amount > 0) {
+    return `Ledger reviewed: ${amount} debt remains attached to your contracts, entropy costs, or faction obligations.`;
+  }
+  return "Ledger reviewed: no active ledger debt is recorded, but Meridian remembers favors before it remembers mercy.";
+}
+
+function getLoreLeylinePressureText(state = {}) {
+  const world = state.world || {};
+  const essence = world.essence || {};
+  const ambient = essence.ambient || {};
+  const dominant =
+    ambient.dominantEssence ||
+    essence.dominantEssence ||
+    world.weather?.dominantEssence ||
+    "unclassified";
+  const pressure =
+    world.leylinePressure ??
+    world.location?.leylinePressure ??
+    world.weather?.leylinePressure ??
+    ambient.global?.pressure ??
+    null;
+
+  if (pressure != null) {
+    return `Leyline pressure sensed: ${dominant} essence is dominant, with pressure reading ${pressure}. The route feels like infrastructure under strain.`;
+  }
+
+  return `Leyline pressure sensed: ${dominant} essence threads the area. No stable civic pressure reading is available.`;
+}
+
+function getLoreSystemLabelText(state = {}) {
+  const player = state.player || {};
+  const label =
+    player.archetypeSystem?.name ||
+    player.systemLabel ||
+    player.className ||
+    player.class?.name ||
+    player.class ||
+    "Unclassified";
+  return `System label inspected: ${label}. Useful, but not absolute — the System records patterns better than it understands truth.`;
+}
+
+function getLoreFactionTermsText(state = {}) {
+  const quests = state.quests || {};
+  const world = state.world || {};
+  const activeQuest = Array.isArray(quests.active) ? quests.active[0] : null;
+  const faction =
+    activeQuest?.factionName ||
+    activeQuest?.faction ||
+    activeQuest?.factionId ||
+    world.currentFaction ||
+    world.factionPressure?.faction ||
+    "the nearest interested faction";
+
+  return `Faction terms considered: ${faction} may offer safety, access, or leverage, but in Meridian help usually arrives with clauses attached.`;
+}
+
+function getLoreInspectDescription(state = {}, action = {}) {
+  switch (action.topic) {
+    case "oath":
+      return getLoreOathText(state.player || {});
+    case "ledger_debt":
+      return getLoreLedgerDebtText(state);
+    case "leyline_pressure":
+      return getLoreLeylinePressureText(state);
+    case "system_label":
+      return getLoreSystemLabelText(state);
+    case "faction_terms":
+      return getLoreFactionTermsText(state);
+    case "soulcoin":
+      return "Soulcoin reviewed: not a whole soul in a coin, but value backed by memory, oath-weight, future labor, or identity-risk.";
+    case "voidspark":
+      return "Voidspark studied: a survivable seed of Void-energy, filtered through space, time, and the body's ability to endure wonder.";
+    default:
+      return "Lore inspected.";
+  }
+}
+
 /**
  * Executes an action and returns the result
  * This is the main dispatcher that routes actions to appropriate logic functions
@@ -854,6 +960,18 @@ export function executeAction(state, action, _options = {}) {
             state: state,
             readOnly: true,
             showStatus: true, // Flag to show status block
+          };
+
+        case "lore_inspect":
+          return {
+            success: true,
+            description: getLoreInspectDescription(state, action),
+            state,
+            readOnly: true,
+            lore: {
+              topic: action.topic,
+              originalInput: action.originalInput || "",
+            },
           };
 
         case "dialogue":

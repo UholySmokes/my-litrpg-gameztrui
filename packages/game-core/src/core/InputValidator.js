@@ -29,19 +29,19 @@ function validateAction(action, gameState) {
   switch (action.type) {
     case 'use_item':
       return validateUseItem(action, gameState);
-    
+
     case 'move':
       return validateMove(action, gameState);
 
     case "rest":
       return validateRest(action, gameState);
-    
+
     case 'attack':
       return validateAttack(action, gameState);
 
     case "escape":
       return validateEscape(action, gameState);
-    
+
     case 'look':
     case 'inventory':
     case 'status':
@@ -49,6 +49,9 @@ function validateAction(action, gameState) {
     case 'dialogue':
       // These actions are always valid (read-only)
       return { valid: true };
+
+    case "lore_inspect":
+      return validateLoreInspect(action);
 
     case 'magic_sense':
       return { valid: true };
@@ -106,7 +109,7 @@ function validateAction(action, gameState) {
 
     case 'magic_release':
       return { valid: true };
-    
+
     default:
       return {
         valid: false,
@@ -122,7 +125,7 @@ function validateUseItem(action, gameState) {
   // Check if item exists in inventory
   const inventory = gameState.player.inventory || [];
   const item = inventory.find(invItem => invItem.id === action.itemId);
-  
+
   if (!item) {
     return {
       valid: false,
@@ -292,7 +295,7 @@ function validateGameRules(action, gameState) {
   // - etc.
 
   const combat = gameState.combat || {};
-  
+
   // Prevent non-combat actions during active combat
   const isMagic = typeof action.type === "string" && action.type.startsWith("magic_");
   if (
@@ -301,11 +304,34 @@ function validateGameRules(action, gameState) {
     action.type !== "escape" &&
     action.type !== "use_item" &&
     action.type !== "look" &&
+    action.type !== "lore_inspect" &&
     !isMagic
   ) {
     return {
       valid: false,
       reason: 'You are in combat! Focus on the enemy.'
+    };
+  }
+
+  return { valid: true };
+}
+
+function validateLoreInspect(action) {
+  const topic = String(action?.topic || "").trim();
+  const allowedTopics = new Set([
+    "oath",
+    "ledger_debt",
+    "leyline_pressure",
+    "system_label",
+    "faction_terms",
+    "soulcoin",
+    "voidspark",
+  ]);
+
+  if (!allowedTopics.has(topic)) {
+    return {
+      valid: false,
+      reason: "Unknown lore inspection topic.",
     };
   }
 

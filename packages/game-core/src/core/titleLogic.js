@@ -120,6 +120,7 @@ export function getEffectiveAttributes(
   const normalized = ensureAttributeShape(baseAttributes, baseAttributeValue);
 
   const bonuses = getTitleBonuses(player);
+  console.log("[DEBUG_LOG] getEffectiveAttributes bonuses:", bonuses.attributes);
   const setBonuses = getSetBonuses(player?.equipment || {});
   const allStats =
     toNumber(bonuses.allStats, 0) + toNumber(setBonuses.allStats, 0);

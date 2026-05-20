@@ -249,6 +249,7 @@ const applyLaneModifier = (
   config,
   { allowZeroDamage = false } = {},
 ) => {
+  console.log("[DEBUG_LOG] applyLaneModifier:", { laneDistance, damageBefore: damageResult?.damage });
   if (!damageResult || laneDistance <= 0) return damageResult;
   const laneConfig = getBalanceConfig(config).combatLane || DEFAULT_COMBAT_LANE_CONFIG;
   const multiplier =
@@ -669,7 +670,7 @@ function takeDamage(state, amount) {
  * Handles race-specific combat start effects (Mutant buffs, Elemental absorption)
  */
 export function startCombat(state, enemyIds) {
-  if (Array.isArray(enemyIds) && enemyIds.length > 0) {
+  if (Array.isArray(enemyIds) && enemyIds.length > 1) {
     return startSkirmishCombat(state, enemyIds);
   }
   if (!enemyIds || enemyIds.length === 0) {
@@ -682,6 +683,7 @@ export function startCombat(state, enemyIds) {
       ...enemy,
       lane: (index % 3) + 1,
     }));
+  console.log("[DEBUG_LOG] startCombat enemies with lanes:", enemies.map(e => ({ id: e.id, lane: e.lane })));
   if (enemies.length === 0) {
     return state;
   }
@@ -918,6 +920,12 @@ export function playerAttack(state, enemyIndex, skillId = null) {
       effectivePlayerAttributes,
       "strength",
     );
+    console.log("[DEBUG_LOG] playerAttack basic attack stats:", {
+      playerStrength,
+      effectivePlayerAttributes,
+      strToDamageMultiplier,
+      baseAttributeValue
+    });
     const playerStats = {
       ...state.player,
       attack:
@@ -1106,6 +1114,12 @@ export function playerAttack(state, enemyIndex, skillId = null) {
     0,
     shieldedEnemy.stats.hp.current - effectiveDamage,
   );
+  console.log("[DEBUG_LOG] playerAttack damage application:", {
+    initialHp: shieldedEnemy.stats.hp.current,
+    effectiveDamage,
+    newEnemyHp,
+    enemyName: shieldedEnemy.name
+  });
   const newEnemies = resolvedState.combat.enemies.map((e, idx) =>
     idx === enemyIndex
       ? {
@@ -2278,9 +2292,17 @@ export function escapeCombat(state) {
   }
 }
 export function executeSkill(attacker, defender, skillInput, config = {}, options = {}) {
+  console.log("[DEBUG_LOG] executeSkill called with", {
+    attackerName: attacker.name,
+    skillInput: typeof skillInput === "string" ? skillInput : skillInput?.id,
+  });
   let skill =
     typeof skillInput === "string" ? getSkillById(skillInput) : skillInput;
-  if (!skill) return { damage: 0, messages: ["Skill not found"] };
+  console.log("[DEBUG_LOG] skill found:", skill?.id);
+  if (!skill) {
+    console.log("[DEBUG_LOG] executeSkill early return: skill not found");
+    return { damage: 0, messages: ["Skill not found"] };
+  }
   // If this is a registry skill, apply talent modifiers so skills and abilities
   // follow the same template expectations (cost/cd/damage multipliers, etc.).
   if (skill?.id && getSkillById(skill.id)) {
@@ -2308,7 +2330,9 @@ export function executeSkill(attacker, defender, skillInput, config = {}, option
     !options?.unifiedMagic && stateForUnifiedMagic
       ? resolveCombatAbilityMagic(stateForUnifiedMagic, skill)
       : null;
+  console.log("[DEBUG_LOG] resolvedSkillMagic:", resolvedSkillMagic?.ok);
   if (resolvedSkillMagic?.ok === false) {
+    console.log("[DEBUG_LOG] executeSkill early return: resolvedSkillMagic.ok is false");
     return {
       damage: 0,
       messages: [resolvedSkillMagic.reason || "Magic profile unavailable"],
@@ -2334,6 +2358,7 @@ export function executeSkill(attacker, defender, skillInput, config = {}, option
     stateForUnifiedMagic,
   );
   if (!consumption.success) {
+    console.log("[DEBUG_LOG] executeSkill early return: consumption.success is false", consumption.error);
     return {
       damage: 0,
       messages: [consumption.error || "Insufficient mana"],
@@ -2367,6 +2392,7 @@ export function executeSkill(attacker, defender, skillInput, config = {}, option
     gambleResult = rollGambleCast();
     emit("combat:gambleCast", { result: gambleResult });
   }
+  console.log("[DEBUG_LOG] executeSkill reaching calculateDamagePipeline");
   const result = calculateDamagePipeline(
     updatedAttacker,
     updatedDefender,

@@ -77,6 +77,7 @@ export function calculateDamage(attacker, defender, skill = null, config = {}) {
 
   const strength = getAttributeValue(stats, "strength") || 10;
   const intelligence = getAttributeValue(stats, "intelligence") || 10;
+  console.log("[DEBUG_LOG] calculateDamage stats:", { strength, intelligence, attack: attacker?.attack });
   const luck = getAttributeValue(stats, "luck") || 10;
   const scalingStat = isMagic ? intelligence : strength;
   const baseAttack = Math.floor(scalingStat * 2);
@@ -300,7 +301,17 @@ export function calculateDamagePipeline(
   skill = null,
   config = {},
 ) {
+  console.log("[DEBUG_LOG] calculateDamagePipeline", {
+    attackerName: attacker.name,
+    skillId: skill?.id || skill,
+    config
+  });
   const snapshot = buildCombatSnapshot(attacker, defender, skill, config);
+  console.log("[DEBUG_LOG] snapshot", {
+    isMagic: snapshot.isMagic,
+    strToDamageMultiplier: snapshot.strToDamageMultiplier,
+    attackerStats: snapshot.attackerStats
+  });
   const log = [];
   const {
     isMagic,

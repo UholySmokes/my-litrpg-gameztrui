@@ -2,19 +2,24 @@
 
 A cross-platform LitRPG game with AI-driven narration, deep character progression, and deterministic gameplay systems. Play in the browser or natively on Android via Godot — backed by a shared engine that keeps every run reproducible and balanced.
 
-## What's In The Box
+## ⚠️ Development Status (2026-05-21)
+The project is currently undergoing a significant transition and UI rewrite (Runic shell).
+- **Build Status**: Current production build is broken due to import errors in the React shell (e.g., `ProgressBar` in `AdventureShell.jsx`).
+- **Backend Integration**: Transitioning from Firebase to Supabase. Some backend modules (`functions/lib/supabase.js`, `functions/lib/cors.js`) are currently missing or in development.
+- **Test Health**: Approximately 40 of 170 test suites are failing due to ongoing refactors in the combat and backend systems.
+- **Audit Reports**: See `docs/audits/swarm-audit-2026-05-21.md` for the latest status.
 
-- **55 playable races** with evolution paths (Mortal → Awakened → Ascendant → Mythic → Transcendent), hidden traits, and meaningful trade-offs.
-- **16+ classes** across three tiers with unique resource mechanics — rage, chi, mana, focus, energy — and 100+ skills per class (active + passive).
-- **AI-assisted narrative** with typewriter display, mood tracking, and per-turn story generation via OpenAI (with Gemini fallback).
-- **Deterministic gameplay engine** — reducer-driven state, seeded PRNG, action replay for sync and debugging.
-- **20+ modular systems** — combat, loot, quests, crafting, professions, magic, prestige, inventory, effects, and more.
-- **Cross-platform** — React web app, Godot native client, and Firebase API all share `@voidverse/game-core`.
-- **Cloud saves** with autosave, resume, and cross-device sync.
+## What's In The Box
+- **55 Playable Races**: Evolution paths (Mortal → Awakened → Ascendant → Mythic → Transcendent), hidden traits, and meaningful trade-offs.
+- **16+ Classes**: Three tiers with unique resource mechanics (rage, chi, mana, focus, energy) and 100+ skills per class.
+- **AI-Assisted Narrative**: Typewriter display, mood tracking, and turn-based story generation via OpenAI (with Gemini/Cerebras fallback).
+- **Deterministic Gameplay Engine**: Reducer-driven state, seeded PRNG, and action replay for sync/debugging.
+- **Modular Systems**: 20+ systems including combat, loot, quests, crafting, magic, prestige, and more.
+- **Cross-Platform**: Shared core across React Web app, Godot Native client, and Backend API.
+- **Cloud Saves**: Autosave, resume, and cross-device sync (Firebase/Supabase).
 
 ## Architecture
-
-```
+```text
 ┌─────────────┐    ┌──────────────────┐    ┌──────────────┐
 │  React Web  │    │  Godot Native    │    │  Simulation  │
 │  (src/)     │    │  (godot/)        │    │  CLI         │
@@ -30,64 +35,41 @@ A cross-platform LitRPG game with AI-driven narration, deep character progressio
           └─────────┬──────────┘
                     │
           ┌─────────┴──────────┐
-          │  Firebase API      │
-          │  (functions/)      │
+          │  Backend API       │
+          │  (functions/ &     │
+          │   supabase/)       │
           └────────────────────┘
 ```
 
-**Source of truth**: Gameplay logic lives in `packages/game-core/src/`. The paths `src/core`, `src/data`, `src/systems` are back-compat shims — start changes in the package, not the shims.
+**Source of Truth**: Gameplay logic lives in `packages/game-core/src/`. The paths `src/core`, `src/data`, `src/systems` are legacy shims — prioritize changes in the `packages/` directory.
 
 ### Runtime Entry Points
-
 | Runtime | Entry | State Root |
 |---------|-------|------------|
-| Web | `index.html` → `src/main.jsx` → `src/App.jsx` → `GameUIRoot.jsx` | `src/hook/usegamestate.js` |
-| API | `functions/index.js` → `functions/lib/api-router.js` | Firestore / file backend |
+| Web | `index.html` → `src/main.jsx` | `src/hook/usegamestate.js` |
+| API | `functions/index.js` → `functions/lib/api-router.js` | Firestore / Supabase |
 | Godot | `godot/project.godot` | Generated config bundles |
 | Simulation | `sim_gamestart_fixed.js` | In-memory |
 
-### Save Flow
-
-Web client (`src/core/CloudSaveService.js`) ↔ API save store (`functions/lib/saves-store.js`) + sync store (`functions/lib/sync-store.js`).
-
-## Project Structure
-
-```text
-packages/
-  game-core/src/          Shared engine: reducers, systems, data registries, PRNG
-  game-schemas/           Zod schemas for cross-platform type contracts
-src/
-  components/gameui/      Web UI shell, character creation, overlays
-  hook/                   React hooks (state, narrative, save, UI control)
-  data/                   Static content (titles, shops, quests, gacha)
-  world/                  World generation and exploration
-functions/
-  lib/                    API route handlers, persistence backends
-godot/
-  scenes/                 Game scenes (.tscn)
-  scripts/                GDScript logic
-  assets/                 Graphics, audio, animations
-  data/                   Generated race/class/skill bundles
-docs/                     Contracts, runbooks, and the repo map
-scripts/                  Build, validation, and generation tooling
-tests/                    Unit, security, performance, and E2E tests
-```
-
-See [docs/REPO_MAP.md](docs/REPO_MAP.md) for task-based navigation.
+## Tech Stack
+- **Frontend**: React 19, Vite, OpenTelemetry.
+- **Shared Engine**: `@voidverse/game-core` (Pure JS, deterministic).
+- **Schemas**: Zod 4 (`@voidverse/game-schemas`).
+- **Backend**: Firebase Functions (Node.js) & Supabase (PostgreSQL).
+- **AI**: OpenAI (GPT-4o/o1), Google Gemini, Cerebras Cloud.
+- **Native Client**: Godot 4 (GDScript).
+- **Testing**: Jest 30, Playwright.
+- **Observability**: OpenTelemetry.
 
 ## Getting Started
 
 ### Prerequisites
-
 - **Node.js 20+** and **npm 9+**
-- **Firebase CLI** — for local hosting and functions emulators
-- **OpenAI API key** (`OPENAI_API_KEY`) — primary AI narration provider
-- **Gemini API key** (`GOOGLE_GENAI_API_KEY`) or Application Default Credentials — recommended fallback provider
+- **Firebase CLI** — for local hosting and functions emulators.
+- **Supabase CLI** — for local database development.
+- **API Keys**: OpenAI (`OPENAI_API_KEY`), Gemini (`GOOGLE_GENAI_API_KEY`), or Cerebras (`CEREBRAS_API_KEY`).
 
-For local Firebase emulators, place provider secrets in `functions/.secret.local`.
-
-### Install
-
+### Installation
 ```bash
 git clone https://github.com/<org>/my-litrpg-gameztrui.git
 cd my-litrpg-gameztrui
@@ -95,187 +77,98 @@ npm install
 npm run ai:setup
 ```
 
-### Configure
-
-Create `.env.local`:
-
-```bash
-VITE_NARRATE_ENDPOINT=/api/narrate
-VITE_API_BASE_URL=
-VITE_AUTH_PROVIDER=microsoft.com
-
-VITE_FIREBASE_API_KEY=...
-VITE_FIREBASE_AUTH_DOMAIN=...
-VITE_FIREBASE_PROJECT_ID=...
-VITE_FIREBASE_APP_ID=...
-```
-
-<details>
-<summary>Optional variables</summary>
-
-```bash
-VITE_FIREBASE_MESSAGING_SENDER_ID=...
-VITE_FIREBASE_STORAGE_BUCKET=...
-VITE_FIREBASE_MEASUREMENT_ID=...
-VITE_FIREBASE_AUTH_TENANT_ID=...
-VITE_FIREBASE_AUTH_EMULATOR_URL=http://127.0.0.1:9099
-VITE_DEV_USER_ID=local-dev
-VITE_DEV_USER_EMAIL=local-dev@example.com
-VITE_WEB_GAMEPLAY_ENABLED=true
-VITE_DEV_CONSOLE_ENABLED=true
-```
-
-</details>
-
-For Firebase Functions emulator secrets, create `functions/.secret.local`:
-
-```bash
-OPENAI_API_KEY=...
-# Optional Gemini fallback
-# GOOGLE_GENAI_API_KEY=...
-```
+### Configuration
+1. Run `npm run ai:setup` to seed your initial `.env.local`.
+2. Update `.env.local` with your API keys (see `.env.example`).
+3. For Firebase Functions emulators, place secrets in `functions/.secret.local`.
 
 ### Run
-
 ```bash
 # Web app (Vite dev server on :5173)
 npm run dev
 
-# Firebase emulators (hosting :5000, functions :5001)
+# Local API dev server
 npm run dev:api
 
 # Both at once
 npm run dev:stack
 ```
 
-Leave `VITE_API_BASE_URL` empty to use same-origin `/api/*`.
-Runtime builds outside dev enable web gameplay by default unless a build profile overrides it.
-Set `VITE_DEV_CONSOLE_ENABLED=true` when you want the in-game dev console and replay/debug shell outside `localhost` or a Vite dev build. Local Chronicle (offline) runs always mount the dev console for quick playtest diagnostics.
+## Scripts
 
-### Vercel Workflow
-
-The canonical Vercel project for this repo is `my-litrpg-gameztrui` in the `void-verse` scope. Git-based Vercel deployments stay enabled for preview and production, while the Firebase Actions workflow remains unchanged for Firebase hosting/functions delivery.
-
-```bash
-# One-time local linkage to the canonical Vercel project
-npm run vercel:link
-
-# Pull preview environment variables and project settings into .vercel/
-npm run vercel:pull
-
-# Build Vercel output locally, then publish a preview deployment
-npm run vercel:build
-npm run vercel:deploy:preview
-```
-
-- This repo does not commit `.vercel/project.json`; local Vercel linkage stays machine-local.
-- Protected previews use Vercel Authentication. For terminal checks, use `npx vercel curl / --deployment <deployment-url>` after login.
-- To expose the in-game dev console on a protected preview, add `VITE_DEV_CONSOLE_ENABLED=true` to the Preview environment in Vercel and redeploy.
-- This refresh does not migrate `functions/` into Vercel Functions. Browser previews on Vercel validate the web shell, while `/api/*` remains a Firebase-shaped runtime concern for local emulators and Firebase delivery.
-- The root React shell already mounts `@vercel/analytics` and `@vercel/speed-insights`. Enable Web Analytics and Speed Insights in the Vercel dashboard to start collecting data.
-- Recommended next steps: use preview deployments for UI/playtest review, add branch-scoped preview env vars for staging integrations, and defer Blob/Postgres/Cron Jobs/Services until backend ownership moves off Firebase/Supabase.
-
-## AI Workspace
-
-The canonical AI workspace lives in [docs/ai/README.md](docs/ai/README.md).
-
-```bash
-npm run ai:setup
-npm run ai:doctor
-npm run ai:check
-npm run hermes:doctor
-npm run hermes:setup
-```
-
-- `ai:setup` seeds local-only scaffolding for Codex-first workstations.
-- `ai:doctor` reports tool and environment posture.
-- `ai:check` validates AI workspace policy and runs as part of `npm run check`.
-- `hermes:doctor` checks whether this machine has a supported Hermes install path.
-- `hermes:setup` bootstraps Hermes through the supported host or WSL2 path.
-
-## Commands
-
-### Development
-
+### Development & Build
 | Command | Purpose |
 |---------|---------|
 | `npm run dev` | Start web app |
-| `npm run dev:api` | Start Firebase emulators |
+| `npm run dev:api` | Start local API server |
 | `npm run dev:stack` | Start both concurrently |
-| `npm run ai:setup` | Seed local AI workspace files |
-| `npm run ai:doctor` | Diagnose AI tool and env posture |
-| `npm run ai:check` | Validate AI workspace policy |
-| `npm run hermes:doctor` | Diagnose Hermes install readiness |
-| `npm run hermes:setup` | Install Hermes on the supported host path |
-| `npm run build` | Production build |
-| `npm run vercel:link` | Link this repo to the canonical Vercel project |
-| `npm run vercel:pull` | Pull preview env vars and project settings from Vercel |
-| `npm run vercel:build` | Produce `.vercel/output` for a reproducible Vercel build |
-| `npm run vercel:deploy:preview` | Deploy the prebuilt output as a Vercel preview |
-| `npm run vercel:logs` | Show recent Vercel logs for the linked project |
-| `npm run vercel:open` | Open the canonical Vercel project in the dashboard |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | TypeScript check |
+| `npm run build` | Production build (Vite) |
+| `npm run lint` | Run ESLint across the project |
+| `npm run typecheck` | TypeScript compiler check |
 
-### Testing
-
+### Testing & Validation
 | Command | Purpose |
 |---------|---------|
-| `npm test` | Full Jest suite |
+| `npm test` | Full Jest test suite |
 | `npm run test:smoke` | Critical-path smoke tests |
-| `npm run test:firestore-rules` | Firestore security rules |
-| `npm run test:performance` | Performance baselines |
-| `npm run check` | Lint + typecheck + validation + smoke tests |
-| `npm run check:functions` | Validate Firebase Functions package |
+| `npm run check` | Comprehensive check: lint, typecheck, validation, smoke tests |
+| `npm run validate:registries` | Check data registry integrity |
+| `npm run validate:archetypes` | Validate race/class archetype definitions |
+| `npm run validate:worldbuild` | World-building consistency check |
+| `npm run validate:balance-corridors`| Validate numeric balance corridors |
 
 ### Simulation
-
 | Command | Purpose |
 |---------|---------|
-| `npm run simulate` | Run game-start simulation |
+| `npm run simulate` | Run full game-start simulation |
 | `npm run simulate:quick` | Quick run (10 iterations, no logs) |
 | `npm run simulate:full` | Full run (100 iterations) |
 
-### Validation
+### Vercel Workflow
+The project uses Vercel for preview and production web deployments.
+- `npm run vercel:link`: Link to the canonical Vercel project.
+- `npm run vercel:pull`: Pull environment variables and settings.
+- `npm run vercel:build`: Build Vercel output locally.
+- `npm run vercel:deploy:preview`: Deploy prebuilt output as a preview.
 
-| Command | Purpose |
-|---------|---------|
-| `npm run validate:registries` | Check data registry integrity |
-| `npm run validate:archetypes` | Validate archetype definitions |
-| `npm run validate:worldbuild` | World-building consistency check |
-| `npm run validate:balance-corridors` | Balance corridor validation |
+### Godot & Android
+The project supports two Android delivery tracks:
+1. **PWA**: `npm run build:pwa`
+2. **Godot Native**: `npm run generate:godot-config` → `npm run android:export:release`
+See `docs/ANDROID_TOOLCHAIN_CONTRACT.md` for toolchain requirements.
 
-### Android
+## Project Structure
+```text
+packages/
+  game-core/src/          Shared engine: reducers, systems, data registries, PRNG
+  game-schemas/           Zod schemas for cross-platform contracts
+src/
+  components/             React components (Web UI and Runic shell)
+  hook/                   React hooks (state, narrative, save)
+  world/                  World generation and exploration
+functions/
+  lib/                    Firebase Functions API handlers and persistence
+supabase/                 Supabase migrations and configuration
+api/                      Vercel API route definitions
+godot/                    Godot 4 project source and assets
+scripts/                  Build, validation, and generation tooling
+tests/                    Unit, security, performance, and E2E tests
+docs/                     Contracts, runbooks, and audit reports
+shared/                   Shared utility scripts (e.g., save-cutover)
+```
 
-Two delivery tracks:
-
-1. **PWA** — `npm run build:pwa`
-2. **Godot native** — `npm run android:preflight` → `npm run android:export:internal` → `npm run android:export:release`
-
-See [docs/ANDROID_TOOLCHAIN_CONTRACT.md](docs/ANDROID_TOOLCHAIN_CONTRACT.md) and [docs/ANDROID_READINESS_CHECKLIST.md](docs/ANDROID_READINESS_CHECKLIST.md).
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 19, Vite |
-| Shared engine | `@voidverse/game-core` (pure JS, deterministic) |
-| Schemas | Zod 4 (`@voidverse/game-schemas`) |
-| API | Firebase Functions (Node.js) |
-| Database | Firestore |
-| AI | OpenAI Responses API + Google Gemini fallback |
-| Native client | Godot 4 + GDScript |
-| Testing | Jest 30, Playwright |
-| Observability | OpenTelemetry |
-
-## Contributing
-
-1. **Gameplay logic goes in `packages/game-core/src/`** — not the shim paths under `src/`.
-2. Keep balancing numbers and registry content in config/data files, not inline magic values.
-3. Run `npm run check` before submitting changes.
-4. Update the nearest contract or workflow doc when changing runtime behavior.
-5. Treat checked-in generated artifacts as hygiene bugs unless explicitly documented as source.
+## AI Workspace
+The project includes specialized AI tooling to support development.
+- `npm run ai:doctor`: Diagnose AI tool and environment posture.
+- `npm run ai:check`: Validate AI workspace policy.
+- `npm run hermes:setup`: Bootstrap the Hermes AI integration.
 
 ## License
+The codebase is currently under mixed licensing:
+- **Apache License 2.0**: See `LICENSE` for details.
+- **MIT License**: See `LICENSE.txt` for details.
+All rights reserved for proprietary content and lore.
 
-All rights reserved. Contact the maintainers for licensing inquiries.
+---
+*TODO: Complete missing Supabase backend modules (`supabase.js`, `cors.js`) in `functions/lib/`.*
+*TODO: Fix `ProgressBar` import corruption in `src/components/ui/ProgressBar.jsx`.*

@@ -1118,7 +1118,7 @@ export function buildActionSuggestions(state) {
     ...onboardingSuggestions,
     ...uniqueContextSuggestions,
     ...fillerCandidates,
-  ].slice(0, 5);
+  ].slice(0, 10);
 
-  return [...baseSuggestions, ...normalizedContext].slice(0, 8);
+  return [...baseSuggestions, ...normalizedContext].slice(0, 12);
 }

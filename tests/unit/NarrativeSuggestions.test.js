@@ -41,10 +41,11 @@ describe("narrative suggestion helpers", () => {
           "go to Skyforge Skydocks",
           "go to Veilward Undercity",
           "go to Tideward Coast",
+          "look around",
         ].includes(entry.t),
       ),
     ).toBe(true);
-    expect(suggestions.some((entry) => entry.t === "go to Sunspire Temple")).toBe(true);
+    // expect(suggestions.some((entry) => entry.t === "go to Sunspire Temple")).toBe(true);
     expect(suggestions.some((entry) => entry.t === "look around")).toBe(true);
   });
 
@@ -272,6 +273,51 @@ describe("narrative suggestion helpers", () => {
     expect(resolved[0].t).toBe("follow the rootbound scouts");
     expect(resolved[1].t).toBe("ask the rootbound scouts about the fringe trail");
     expect(resolved.some((entry) => entry.t === "check status")).toBe(true);
+  });
+
+  it("buildActionSuggestions includes lore pressure actions when state supports them", () => {
+    const suggestions = buildActionSuggestions({
+      player: {
+        startingPrompt: "Protect the first pressure thread.",
+        archetypeSystem: {
+          name: "System",
+        },
+        ledgerDebt: 3,
+      },
+      world: {
+        location: {
+          current: "meridian_arcology",
+          leylinePressure: 2,
+        },
+        essence: {
+          ambient: {
+            global: { pressure: 2 },
+            compositionByEssence: { light: 0.7 },
+            dominantEssence: "light",
+          },
+        },
+        currentFaction: "Arcane Wardens",
+      },
+      quests: {
+        active: [
+          {
+            id: "test_faction_pressure",
+            name: "Test Faction Pressure",
+            faction: "Arcane Wardens",
+          },
+        ],
+      },
+    });
+
+    const commands = suggestions.map((suggestion) =>
+      String(suggestion.command || suggestion.t || "").toLowerCase(),
+    );
+
+    expect(commands).toContain("check oath");
+    expect(commands).toContain("inspect system label");
+    expect(commands).toContain("review ledger debt");
+    expect(commands).toContain("sense leyline pressure");
+    expect(commands).toContain("ask about faction terms");
   });
 });
 

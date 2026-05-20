@@ -29,11 +29,17 @@ export function parseAction(userInput, gameState) {
     )
     .trim();
 
+  const loreAction = parseLoreAction(cleanedInput, userInput);
+  if (loreAction) return loreAction;
+
   const magicAction = parseMagic(cleanedInput);
   if (magicAction) return magicAction;
 
   const devourerAction = parseDevourer(cleanedInput);
   if (devourerAction) return devourerAction;
+
+  const restAction = parseRest(cleanedInput);
+  if (restAction) return restAction;
 
 
   // Parse different action types
@@ -58,14 +64,8 @@ export function parseAction(userInput, gameState) {
   const statusAction = parseStatus(cleanedInput);
   if (statusAction) return statusAction;
 
-  const restAction = parseRest(cleanedInput);
-  if (restAction) return restAction;
-
   const lookAction = parseLook(cleanedInput);
   if (lookAction) return lookAction;
-
-  const loreAction = parseLoreAction(cleanedInput, userInput);
-  if (loreAction) return loreAction;
 
   const dialogueAction = parseDialogue(cleanedInput, userInput, gameState);
   if (dialogueAction) return dialogueAction;

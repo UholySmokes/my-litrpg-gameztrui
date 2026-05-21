@@ -9,8 +9,8 @@ This contract defines the supported environment for native Godot Android deliver
 
 ## Required Versions
 1. Node.js: `>=20` locally, CI may pin newer.
-2. Godot: `4.6.1 stable` with matching export templates installed.
-3. Java: `17` JDK for Android export and Gradle fallback builds.
+2. Godot: `4.6.2 stable` with matching export templates installed.
+3. Java: `21` JDK for Android export and Gradle fallback builds.
 4. Android SDK:
    - `platform-tools`
    - `build-tools;35.0.1`

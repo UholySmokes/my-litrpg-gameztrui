@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { spawnSync } from "node:child_process";
+import {spawnSync} from "node:child_process";
 
 const cwd = process.cwd();
 const projectPath = path.resolve(cwd, "godot");
@@ -10,11 +10,12 @@ const exportCredentialsPath = path.join(projectPath, "export_credentials.cfg");
 const appData = process.env.APPDATA || "";
 const localAppData = process.env.LOCALAPPDATA || "";
 const home = process.env.HOME || "";
+const supportedJavaMajor = 21;
+const supportedGodotTemplateVersion = "4.6.2.stable";
 const sdkRoot = path.resolve(resolveAndroidSdkRoot());
 const templatesRoot = resolveTemplatesRoot();
 const buildTemplateRoot = path.join(projectPath, "android", "build");
 const editorSettingsPath = resolveEditorSettingsPath();
-const supportedJavaMajor = 17;
 
 const results = [];
 
@@ -64,7 +65,7 @@ function resolveTemplatesRoot() {
     return path.join(appData, "Godot", "export_templates", "4.6.1.stable");
   }
   const xdgDataHome = process.env.XDG_DATA_HOME || path.join(home, ".local", "share");
-  return path.join(xdgDataHome, "godot", "export_templates", "4.6.1.stable");
+  return path.join(xdgDataHome, "godot", "export_templates", supportedGodotTemplateVersion);
 }
 
 function resolveEditorSettingsPath() {

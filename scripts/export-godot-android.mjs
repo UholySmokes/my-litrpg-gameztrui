@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import {spawnSync} from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -23,7 +23,7 @@ const ASSET_PACK_PATH = path.join(ASSET_PACK_DIR, "assets.sparsepck");
 const PROJECT_BINARY_PATH = path.join(ASSET_PACK_DIR, "project.binary");
 const APP_ASSETS_DIR = path.join(ANDROID_BUILD_TEMPLATE_PATH, "src", "main", "assets");
 const LOCAL_PROPERTIES_PATH = path.join(ANDROID_BUILD_TEMPLATE_PATH, "local.properties");
-const SUPPORTED_JAVA_MAJOR = 17;
+const SUPPORTED_JAVA_MAJOR = 21;
 const DEFAULT_RELEASE_ALIAS = "androiddebugkey";
 const STAGED_APK_RUNTIME_ASSETS = [
   path.join(APP_ASSETS_DIR, "_cl_"),

@@ -1,0 +1,1221 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "LitRPG Game API",
+    "description" : "A LitRPG (Literary Role-Playing Game) backend API built on Firebase Functions.\nProvides AI-powered narration, deterministic game state synchronization,\nsave management, and bulk content generation capabilities.\n",
+    "contact" : {
+      "email" : "you@your-company.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.1"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/voidverse/voidt/1.1",
+    "description" : "SwaggerHub API Auto Mocking"
+  }, {
+    "url" : "https://your-project-url.cloudfunctions.net/api"
+  } ],
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "Secured Admin-only calls"
+  }, {
+    "name" : "developers",
+    "description" : "Operations available to regular developers"
+  }, {
+    "name" : "narration",
+    "description" : "AI narration and story endpoints"
+  }, {
+    "name" : "sync",
+    "description" : "Game state synchronization and save management"
+  }, {
+    "name" : "telemetry",
+    "description" : "Telemetry and analytics ingestion"
+  }, {
+    "name" : "bulk-gen",
+    "description" : "Bulk content generation admin endpoints"
+  } ],
+  "paths" : {
+    "/api/health" : {
+      "get" : {
+        "tags" : [ "admins" ],
+        "summary" : "Health check endpoint",
+        "operationId" : "getHealth",
+        "responses" : {
+          "200" : {
+            "description" : "API is healthy",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean",
+                      "example" : true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/agents" : {
+      "get" : {
+        "tags" : [ "admins" ],
+        "summary" : "List available AI agents",
+        "operationId" : "listAgents",
+        "responses" : {
+          "200" : {
+            "description" : "List of AI agents",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean",
+                      "example" : true
+                    },
+                    "agents" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "string"
+                          },
+                          "name" : {
+                            "type" : "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "firebaseAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/agents/run" : {
+      "post" : {
+        "tags" : [ "admins" ],
+        "summary" : "Execute an AI agent",
+        "operationId" : "runAgent",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "description" : "Agent execution parameters"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Agent execution result",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "firebaseAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/narrate" : {
+      "post" : {
+        "tags" : [ "narration" ],
+        "summary" : "Synchronous AI narration",
+        "operationId" : "narrate",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NarrationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Narration response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NarrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/narrate-start" : {
+      "post" : {
+        "tags" : [ "narration" ],
+        "summary" : "Start asynchronous narration run",
+        "operationId" : "narrateStart",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NarrationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "202" : {
+            "description" : "Narration run started",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    },
+                    "runId" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/narrate-poll" : {
+      "get" : {
+        "tags" : [ "narration" ],
+        "summary" : "Poll async narration status",
+        "operationId" : "narratePoll",
+        "parameters" : [ {
+          "name" : "runId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Narration run status",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NarrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/story/event" : {
+      "post" : {
+        "tags" : [ "narration" ],
+        "summary" : "Alias for narrate",
+        "operationId" : "storyEvent",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NarrationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Narration response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NarrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/story/start" : {
+      "post" : {
+        "tags" : [ "narration" ],
+        "summary" : "Alias for narrate-start",
+        "operationId" : "storyStart",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NarrationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "202" : {
+            "description" : "Narration run started",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    },
+                    "runId" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/story/poll" : {
+      "get" : {
+        "tags" : [ "narration" ],
+        "summary" : "Alias for narrate-poll",
+        "operationId" : "storyPoll",
+        "parameters" : [ {
+          "name" : "runId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Narration run status",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NarrationResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sync/commit" : {
+      "post" : {
+        "tags" : [ "sync" ],
+        "summary" : "Commit single game state change",
+        "operationId" : "syncCommit",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SyncCommit"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Commit accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Commit rejected"
+          }
+        }
+      }
+    },
+    "/api/sync/commit-batch" : {
+      "post" : {
+        "tags" : [ "sync" ],
+        "summary" : "Commit multiple state changes",
+        "operationId" : "syncCommitBatch",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/SyncCommit"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Batch commit accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Commit rejected"
+          }
+        }
+      }
+    },
+    "/api/sync/command" : {
+      "post" : {
+        "tags" : [ "sync" ],
+        "summary" : "Command-based state changes",
+        "operationId" : "syncCommand",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "description" : "Command details"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Command accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sync/action" : {
+      "post" : {
+        "tags" : [ "sync" ],
+        "summary" : "Legacy action endpoint (deprecated)",
+        "operationId" : "syncAction",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "description" : "Legacy action payload"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Action accepted",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : true
+      }
+    },
+    "/api/sync/pull" : {
+      "get" : {
+        "tags" : [ "sync" ],
+        "summary" : "Pull current game state",
+        "operationId" : "syncPull",
+        "responses" : {
+          "200" : {
+            "description" : "Current game state",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/GameState"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sync/replay" : {
+      "get" : {
+        "tags" : [ "sync" ],
+        "summary" : "Replay game event timeline",
+        "operationId" : "syncReplay",
+        "responses" : {
+          "200" : {
+            "description" : "Event timeline replay",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "events" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/saves" : {
+      "get" : {
+        "tags" : [ "sync" ],
+        "summary" : "List user saves",
+        "operationId" : "listSaves",
+        "responses" : {
+          "200" : {
+            "description" : "List of saves",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    },
+                    "saves" : {
+                      "type" : "array",
+                      "items" : {
+                        "$ref" : "#/components/schemas/Save"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "firebaseAuth" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "sync" ],
+        "summary" : "Create new save",
+        "operationId" : "createSave",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Save"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Save created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Save"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid input"
+          }
+        },
+        "security" : [ {
+          "firebaseAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/saves/{saveId}" : {
+      "get" : {
+        "tags" : [ "sync" ],
+        "summary" : "Get specific save",
+        "operationId" : "getSaveById",
+        "parameters" : [ {
+          "name" : "saveId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Save object",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Save"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Save not found"
+          }
+        },
+        "security" : [ {
+          "firebaseAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "sync" ],
+        "summary" : "Update save with version control",
+        "operationId" : "updateSave",
+        "parameters" : [ {
+          "name" : "saveId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Save"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Save updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Save"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Save version conflict"
+          }
+        },
+        "security" : [ {
+          "firebaseAuth" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "sync" ],
+        "summary" : "Delete save",
+        "operationId" : "deleteSave",
+        "parameters" : [ {
+          "name" : "saveId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Save deleted successfully"
+          },
+          "404" : {
+            "description" : "Save not found"
+          }
+        },
+        "security" : [ {
+          "firebaseAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/saves/reset-legacy" : {
+      "post" : {
+        "tags" : [ "sync" ],
+        "summary" : "Reset legacy progress",
+        "operationId" : "resetLegacyProgress",
+        "responses" : {
+          "200" : {
+            "description" : "Legacy progress reset",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "firebaseAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/telemetry" : {
+      "post" : {
+        "tags" : [ "telemetry" ],
+        "summary" : "Ingest analytics/telemetry data",
+        "operationId" : "ingestTelemetry",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "description" : "Telemetry data payload"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Telemetry ingested",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bulk-gen/run/start" : {
+      "post" : {
+        "tags" : [ "bulk-gen" ],
+        "summary" : "Start bulk generation run",
+        "operationId" : "bulkGenRunStart",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "description" : "Parameters to start bulk generation"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Bulk generation started",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    },
+                    "runId" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bulk-gen/run/tick" : {
+      "post" : {
+        "tags" : [ "bulk-gen" ],
+        "summary" : "Process bulk generation tasks",
+        "operationId" : "bulkGenRunTick",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "description" : "Tick processing parameters"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Tick processed",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bulk-gen/run/status" : {
+      "get" : {
+        "tags" : [ "bulk-gen" ],
+        "summary" : "Get bulk generation status",
+        "operationId" : "bulkGenRunStatus",
+        "responses" : {
+          "200" : {
+            "description" : "Bulk generation status",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    },
+                    "status" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bulk-gen/run/pause" : {
+      "post" : {
+        "tags" : [ "bulk-gen" ],
+        "summary" : "Pause bulk generation",
+        "operationId" : "bulkGenRunPause",
+        "responses" : {
+          "200" : {
+            "description" : "Bulk generation paused",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bulk-gen/run/resume" : {
+      "post" : {
+        "tags" : [ "bulk-gen" ],
+        "summary" : "Resume bulk generation",
+        "operationId" : "bulkGenRunResume",
+        "responses" : {
+          "200" : {
+            "description" : "Bulk generation resumed",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bulk-gen/style" : {
+      "post" : {
+        "tags" : [ "bulk-gen" ],
+        "summary" : "Update generation style profile",
+        "operationId" : "bulkGenStyleUpdate",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "description" : "Style profile update"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Style profile updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bulk-gen/budget-alert" : {
+      "post" : {
+        "tags" : [ "bulk-gen" ],
+        "summary" : "Handle budget alerts",
+        "operationId" : "bulkGenBudgetAlert",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "description" : "Budget alert payload"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Budget alert handled",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "ok" : {
+                      "type" : "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "NarrationRequest" : {
+        "required" : [ "mode", "prompt" ],
+        "type" : "object",
+        "properties" : {
+          "prompt" : {
+            "type" : "string"
+          },
+          "mode" : {
+            "type" : "string",
+            "enum" : [ "narrator", "combat", "dialogue", "system-event", "scene-transition" ]
+          },
+          "model" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "temperature" : {
+            "type" : "number",
+            "nullable" : true
+          },
+          "topP" : {
+            "type" : "number",
+            "nullable" : true
+          },
+          "npcContext" : {
+            "type" : "object",
+            "nullable" : true
+          },
+          "reactionContext" : {
+            "type" : "object",
+            "nullable" : true
+          }
+        }
+      },
+      "NarrationResponse" : {
+        "type" : "object",
+        "properties" : {
+          "ok" : {
+            "type" : "boolean"
+          },
+          "story" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "narrative" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "mood" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "suggestions" : {
+            "type" : "array",
+            "nullable" : true,
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "sceneMemory" : {
+            "type" : "object",
+            "nullable" : true
+          },
+          "choiceMeta" : {
+            "type" : "object",
+            "nullable" : true
+          },
+          "outputHash" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "mode" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "agentId" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "backend" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "provider" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "fallbackUsed" : {
+            "type" : "boolean",
+            "nullable" : true
+          },
+          "model" : {
+            "type" : "string",
+            "nullable" : true
+          },
+          "status" : {
+            "type" : "string",
+            "nullable" : true
+          }
+        }
+      },
+      "SyncCommit" : {
+        "required" : [ "clientId", "clientSeq", "contentVersion", "createdAt", "id", "runId", "triggerType" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "runId" : {
+            "type" : "string"
+          },
+          "clientId" : {
+            "type" : "string"
+          },
+          "clientSeq" : {
+            "type" : "integer"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "contentVersion" : {
+            "type" : "string"
+          },
+          "triggerType" : {
+            "type" : "string"
+          },
+          "trigger" : {
+            "type" : "object",
+            "properties" : {
+              "triggerId" : {
+                "type" : "string"
+              },
+              "mapId" : {
+                "type" : "string"
+              },
+              "x" : {
+                "type" : "number"
+              },
+              "y" : {
+                "type" : "number"
+              },
+              "targetId" : {
+                "type" : "string"
+              }
+            }
+          }
+        }
+      },
+      "GameState" : {
+        "required" : [ "contentVersion", "cooldowns", "entityStates", "mapId", "playerPos", "questFlags", "runSeed", "seq", "stateHash", "stateVersion", "tick", "worldId" ],
+        "type" : "object",
+        "properties" : {
+          "worldId" : {
+            "type" : "string"
+          },
+          "mapId" : {
+            "type" : "string"
+          },
+          "playerPos" : {
+            "type" : "object",
+            "properties" : {
+              "x" : {
+                "type" : "number"
+              },
+              "y" : {
+                "type" : "number"
+              }
+            }
+          },
+          "entityStates" : {
+            "type" : "object"
+          },
+          "questFlags" : {
+            "type" : "object"
+          },
+          "cooldowns" : {
+            "type" : "object"
+          },
+          "seq" : {
+            "type" : "integer"
+          },
+          "tick" : {
+            "type" : "integer"
+          },
+          "contentVersion" : {
+            "type" : "string"
+          },
+          "runSeed" : {
+            "type" : "string"
+          },
+          "stateVersion" : {
+            "type" : "integer"
+          },
+          "stateHash" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Save" : {
+        "required" : [ "created_at", "game_state", "id", "save_name", "state_hash", "updated_at" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "save_name" : {
+            "type" : "string"
+          },
+          "game_state" : {
+            "type" : "object"
+          },
+          "state_hash" : {
+            "type" : "string"
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updated_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "firebaseAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}

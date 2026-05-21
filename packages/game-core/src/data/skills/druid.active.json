@@ -7,7 +7,17 @@
     "description": "Burn an enemy with lunar energy.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "light"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "druid_sunfire",
@@ -17,7 +27,18 @@
     "description": "Burn all nearby enemies with solar energy.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "fire",
+        "light"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "druid_wrath",
@@ -27,7 +48,17 @@
     "description": "Hurl a ball of nature energy at an enemy.",
     "level": 1,
     "manaCost": 8,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "druid_starfall",
@@ -37,7 +68,18 @@
     "description": "Call down stars to damage all enemies in an area.",
     "level": 1,
     "manaCost": 35,
-    "cooldown": 60
+    "cooldown": 60,
+    "magicProfile": {
+      "essences": [
+        "light",
+        "life"
+      ],
+      "form": "cone",
+      "delivery": "channeled",
+      "scale": 3,
+      "pattern": "vortex",
+      "targeting": "zone"
+    }
   },
   {
     "id": "druid_bear_form",
@@ -47,7 +89,18 @@
     "description": "Shift into a bear for increased defense and threat.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "earth",
+        "life"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "shield",
+      "targeting": "self"
+    }
   },
   {
     "id": "druid_cat_form",
@@ -57,7 +110,18 @@
     "description": "Shift into a cat for stealth and agility.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "air"
+      ],
+      "form": "veil",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "veil",
+      "targeting": "self"
+    }
   },
   {
     "id": "druid_travel_form",
@@ -67,7 +131,18 @@
     "description": "Shift into a travel form for increased speed.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "air",
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "self"
+    }
   },
   {
     "id": "druid_rejuvenation",
@@ -77,7 +152,17 @@
     "description": "Place a healing over time effect on an ally.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "ally"
+    }
   },
   {
     "id": "druid_regrowth",
@@ -87,7 +172,17 @@
     "description": "A quick heal that also leaves a HoT.",
     "level": 1,
     "manaCost": 22,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "ally"
+    }
   },
   {
     "id": "druid_wild_growth",
@@ -97,7 +192,17 @@
     "description": "Heal multiple allies over time.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "cone",
+      "delivery": "sustained",
+      "scale": 2,
+      "pattern": "lattice",
+      "targeting": "zone"
+    }
   },
   {
     "id": "druid_tranquility",
@@ -107,7 +212,18 @@
     "description": "Channel powerful healing to all nearby allies.",
     "level": 1,
     "manaCost": 45,
-    "cooldown": 180
+    "cooldown": 180,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "water"
+      ],
+      "form": "cone",
+      "delivery": "channeled",
+      "scale": 3,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "druid_entangling_roots",
@@ -117,7 +233,18 @@
     "description": "Root an enemy in place with vines.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "earth",
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "druid_hurricane",
@@ -127,7 +254,18 @@
     "description": "Create a violent storm that damages and slows.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 20
+    "cooldown": 20,
+    "magicProfile": {
+      "essences": [
+        "air",
+        "water"
+      ],
+      "form": "vortex",
+      "delivery": "channeled",
+      "scale": 2,
+      "pattern": "vortex",
+      "targeting": "zone"
+    }
   },
   {
     "id": "druid_barkskin",
@@ -137,7 +275,17 @@
     "description": "Your skin becomes bark, reducing damage taken.",
     "level": 1,
     "manaCost": 0,
-    "cooldown": 60
+    "cooldown": 60,
+    "magicProfile": {
+      "essences": [
+        "earth"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 2,
+      "pattern": "shield",
+      "targeting": "self"
+    }
   },
   {
     "id": "druid_thorns",
@@ -147,7 +295,18 @@
     "description": "Shield that damages attackers.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 45
+    "cooldown": 45,
+    "magicProfile": {
+      "essences": [
+        "earth",
+        "life"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "shield",
+      "targeting": "self"
+    }
   },
   {
     "id": "druid_natures_cure",
@@ -157,7 +316,18 @@
     "description": "Remove curses, poisons, and magic effects.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "water"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "ally"
+    }
   },
   {
     "id": "druid_rebirth",
@@ -177,7 +347,17 @@
     "description": "Empower your current form significantly.",
     "level": 1,
     "manaCost": 0,
-    "cooldown": 180
+    "cooldown": 180,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "veil",
+      "delivery": "sustained",
+      "scale": 3,
+      "pattern": "veil",
+      "targeting": "self"
+    }
   },
   {
     "id": "druid_treant_form",
@@ -187,7 +367,18 @@
     "description": "Transform into a treant for enhanced healing.",
     "level": 1,
     "manaCost": 25,
-    "cooldown": 180
+    "cooldown": 180,
+    "magicProfile": {
+      "essences": [
+        "earth",
+        "life"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 2,
+      "pattern": "shield",
+      "targeting": "self"
+    }
   },
   {
     "id": "druid_force_of_nature",
@@ -197,6 +388,17 @@
     "description": "Summon treant allies to fight or heal.",
     "level": 1,
     "manaCost": 35,
-    "cooldown": 60
+    "cooldown": 60,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "earth"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   }
 ]

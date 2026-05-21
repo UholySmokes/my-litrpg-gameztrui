@@ -27,6 +27,16 @@
       ],
       "synergies": [],
       "source": "ClassAbilityRegistry"
+    },
+    "magicProfile": {
+      "essences": [
+        "fire"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
     }
   },
   {
@@ -57,6 +67,16 @@
       ],
       "synergies": [],
       "source": "ClassAbilityRegistry"
+    },
+    "magicProfile": {
+      "essences": [
+        "water"
+      ],
+      "form": "lance",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
     }
   },
   {
@@ -87,6 +107,16 @@
       ],
       "synergies": [],
       "source": "ClassAbilityRegistry"
+    },
+    "magicProfile": {
+      "essences": [
+        "lightning"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
     }
   },
   {
@@ -111,6 +141,16 @@
       "elements": [],
       "synergies": [],
       "source": "ClassAbilityRegistry"
+    },
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 2,
+      "pattern": "shield",
+      "targeting": "self"
     }
   }
 ]

@@ -3,7 +3,7 @@
  * Balanced mana costs for 1000-level LitRPG with exponential scaling
  */
 
-const MANA_COST_TIERS = {
+const FALLBACK_MANA_COST_TIERS = {
   // Basic utility (1-20 mana)
   TIER_1: { min: 1, max: 20, description: "Basic attacks and utility" },
 
@@ -26,7 +26,7 @@ const MANA_COST_TIERS = {
   TIER_7: { min: 1001, max: 5000, description: "World-altering magic" },
 };
 
-const MANA_COST_MULTIPLIERS = {
+const FALLBACK_MANA_COST_MULTIPLIERS = {
   // Level scaling multipliers (exponential growth)
   LEVEL_MULTIPLIERS: {
     1: 1.0, // Level 1-100
@@ -68,23 +68,33 @@ const MANA_COST_MULTIPLIERS = {
   },
 };
 
+function getManaCostTiers(state) {
+  return state?.config?.magicBalance?.manaCostTiers || FALLBACK_MANA_COST_TIERS;
+}
+
+function getManaCostMultipliers(state) {
+  return state?.config?.magicBalance?.manaCostMultipliers || FALLBACK_MANA_COST_MULTIPLIERS;
+}
+
 /**
  * Calculate balanced mana cost for a skill
  * @param {Object} skill - Skill definition
  * @param {number} playerLevel - Player level
+ * @param {Object} state - Game state for config access
  * @returns {number} Balanced mana cost
  */
-export function calculateManaCost(skill, playerLevel = 1) {
+export function calculateManaCost(skill, playerLevel = 1, state = {}) {
   const baseCost = skill?.manaCost || 10;
+  const multipliers = getManaCostMultipliers(state);
 
   // Apply level scaling
-  const levelMultiplier = getLevelMultiplier(playerLevel);
+  const levelMultiplier = getLevelMultiplier(playerLevel, state);
 
   // Apply type multiplier
-  const typeMultiplier = getTypeMultiplier(skill);
+  const typeMultiplier = getTypeMultiplier(skill, state);
 
   // Apply cooldown efficiency
-  const cooldownMultiplier = getCooldownMultiplier(skill?.cooldown || 0);
+  const cooldownMultiplier = getCooldownMultiplier(skill?.cooldown || 0, state);
 
   // Calculate final cost
   let finalCost =
@@ -97,14 +107,15 @@ export function calculateManaCost(skill, playerLevel = 1) {
 /**
  * Get level-based multiplier
  */
-function getLevelMultiplier(level) {
-  const tiers = Object.keys(MANA_COST_MULTIPLIERS.LEVEL_MULTIPLIERS)
+function getLevelMultiplier(level, state) {
+  const multipliers = getManaCostMultipliers(state);
+  const tiers = Object.keys(multipliers.LEVEL_MULTIPLIERS)
     .map(Number)
     .sort((a, b) => b - a);
 
   for (const tier of tiers) {
     if (level >= tier) {
-      return MANA_COST_MULTIPLIERS.LEVEL_MULTIPLIERS[tier];
+      return multipliers.LEVEL_MULTIPLIERS[tier];
     }
   }
 
@@ -114,8 +125,9 @@ function getLevelMultiplier(level) {
 /**
  * Get type-based multiplier
  */
-function getTypeMultiplier(skill) {
+function getTypeMultiplier(skill, state) {
   if (!skill) return 1.0;
+  const multipliers = getManaCostMultipliers(state);
 
   // Determine skill type from effects and properties
   let type = "instant";
@@ -141,20 +153,21 @@ function getTypeMultiplier(skill) {
     if (skill.tags.includes("Heal")) type = "heal";
   }
 
-  return MANA_COST_MULTIPLIERS.TYPE_MULTIPLIERS[type] || 1.0;
+  return multipliers.TYPE_MULTIPLIERS[type] || 1.0;
 }
 
 /**
  * Get cooldown-based multiplier
  */
-function getCooldownMultiplier(cooldown) {
-  const tiers = Object.keys(MANA_COST_MULTIPLIERS.COOLDOWN_EFFICIENCY)
+function getCooldownMultiplier(cooldown, state) {
+  const multipliers = getManaCostMultipliers(state);
+  const tiers = Object.keys(multipliers.COOLDOWN_EFFICIENCY)
     .map(Number)
     .sort((a, b) => b - a);
 
   for (const tier of tiers) {
     if (cooldown >= tier) {
-      return MANA_COST_MULTIPLIERS.COOLDOWN_EFFICIENCY[tier];
+      return multipliers.COOLDOWN_EFFICIENCY[tier];
     }
   }
 
@@ -183,14 +196,16 @@ export function validateManaCost(manaCost, player) {
 /**
  * Get mana cost tier for display
  * @param {number} manaCost - Mana cost
+ * @param {Object} state - Game state for config access
  * @returns {string} Tier description
  */
-export function getManaCostTier(manaCost) {
-  const tiers = Object.entries(MANA_COST_TIERS).sort(
+export function getManaCostTier(manaCost, state = {}) {
+  const tiers = getManaCostTiers(state);
+  const tierEntries = Object.entries(tiers).sort(
     (a, b) => a[1].min - b[1].min,
   );
 
-  for (const [, data] of tiers) {
+  for (const [, data] of tierEntries) {
     if (manaCost <= data.max) {
       return data.description;
     }

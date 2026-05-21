@@ -7,7 +7,17 @@
     "description": "A basic healing spell that restores health to an ally.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_flash_heal",
@@ -17,7 +27,17 @@
     "description": "A fast but expensive heal for emergencies.",
     "level": 1,
     "manaCost": 25,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_renew",
@@ -27,7 +47,17 @@
     "description": "Place a heal over time effect on an ally.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_prayer_of_healing",
@@ -37,7 +67,17 @@
     "description": "Heal all nearby party members.",
     "level": 1,
     "manaCost": 35,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "priest_power_word_shield",
@@ -47,7 +87,17 @@
     "description": "Shield an ally, absorbing damage.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 4
+    "cooldown": 4,
+    "magicProfile": {
+      "essences": [
+        "light"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 2,
+      "pattern": "shield",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_smite",
@@ -57,7 +107,17 @@
     "description": "Smite an enemy with holy fire.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "light"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "priest_holy_fire",
@@ -67,7 +127,18 @@
     "description": "Blast an enemy with holy fire that burns over time.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "light",
+        "fire"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "priest_shadow_word_pain",
@@ -77,7 +148,17 @@
     "description": "Afflict the enemy with shadow damage over time.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "shadow"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "priest_mind_blast",
@@ -87,7 +168,17 @@
     "description": "Blast the enemy mind with shadow energy.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "shadow"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "priest_resurrection",
@@ -107,7 +198,17 @@
     "description": "Remove a magical effect from friend or foe.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "light"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_mass_dispel",
@@ -117,7 +218,17 @@
     "description": "Dispel magic effects from all nearby targets.",
     "level": 1,
     "manaCost": 40,
-    "cooldown": 45
+    "cooldown": 45,
+    "magicProfile": {
+      "essences": [
+        "light"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "priest_psychic_scream",
@@ -127,7 +238,17 @@
     "description": "Cause nearby enemies to flee in fear.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 30
+    "cooldown": 30,
+    "magicProfile": {
+      "essences": [
+        "shadow"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "priest_fade",
@@ -137,7 +258,17 @@
     "description": "Fade into the shadows, reducing threat.",
     "level": 1,
     "manaCost": 8,
-    "cooldown": 30
+    "cooldown": 30,
+    "magicProfile": {
+      "essences": [
+        "shadow"
+      ],
+      "form": "veil",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "veil",
+      "targeting": "self"
+    }
   },
   {
     "id": "priest_guardian_spirit",
@@ -147,7 +278,18 @@
     "description": "Spirit watches over ally, preventing death once.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 180
+    "cooldown": 180,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "light"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 3,
+      "pattern": "shield",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_divine_hymn",
@@ -157,7 +299,17 @@
     "description": "Channel a hymn that heals all nearby allies.",
     "level": 1,
     "manaCost": 45,
-    "cooldown": 180
+    "cooldown": 180,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "cone",
+      "delivery": "channeled",
+      "scale": 3,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "priest_pain_suppression",
@@ -167,7 +319,17 @@
     "description": "Reduce all damage taken by an ally significantly.",
     "level": 1,
     "manaCost": 25,
-    "cooldown": 180
+    "cooldown": 180,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 3,
+      "pattern": "shield",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_leap_of_faith",
@@ -177,7 +339,17 @@
     "description": "Pull an ally to your location.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 90
+    "cooldown": 90,
+    "magicProfile": {
+      "essences": [
+        "space"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_holy_word_serenity",
@@ -187,7 +359,18 @@
     "description": "A powerful single-target heal with long cooldown.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 60
+    "cooldown": 60,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "light"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 3,
+      "pattern": "pulse",
+      "targeting": "ally"
+    }
   },
   {
     "id": "priest_spirit_of_redemption",

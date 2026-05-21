@@ -263,12 +263,12 @@ function describeResonance(current, max) {
   return "quiet";
 }
 
-export function normalizeUnifiedMagicState(rawMagic, { player } = {}) {
+export function normalizeUnifiedMagicState(rawMagic, {player, state} = {}) {
   const magic =
     rawMagic && typeof rawMagic === "object" && !Array.isArray(rawMagic)
       ? rawMagic
       : {};
-  const profile = getClassProfile(player);
+  const profile = getClassProfile(player, state);
   const manaMax =
     toNumberSafe(magic?.mana?.max, null) ??
     toNumberSafe(player?.mana?.max, 50);
@@ -393,9 +393,9 @@ export function normalizeUnifiedMagicState(rawMagic, { player } = {}) {
   };
 }
 
-export function syncPlayerMagicState(player, nextMagic) {
+export function syncPlayerMagicState(player, nextMagic, state) {
   const currentPlayer = player || {};
-  const normalizedMagic = normalizeUnifiedMagicState(nextMagic, { player: currentPlayer });
+  const normalizedMagic = normalizeUnifiedMagicState(nextMagic, {player: currentPlayer, state});
   return {
     ...currentPlayer,
     mana: {
@@ -438,7 +438,7 @@ function inferPattern(action) {
 
 function buildCanonicalRequest(action, state) {
   const player = state?.player || {};
-  const magic = normalizeUnifiedMagicState(player.magic, { player });
+  const magic = normalizeUnifiedMagicState(player.magic, {player, state});
   const formDefs = getFormDefinitions(state);
   const usingPrepared =
     action?.usePrepared === true ||
@@ -769,7 +769,7 @@ export function validateUnifiedMagicAction(action, state) {
     return { valid: true };
   }
   const player = state?.player || {};
-  const magic = normalizeUnifiedMagicState(player.magic, { player });
+  const magic = normalizeUnifiedMagicState(player.magic, {player, state});
   const request = buildCanonicalRequest(action, state);
   const validationError = validateRequestAgainstGrammar(magic, request);
   if (validationError) return { valid: false, reason: validationError };
@@ -778,7 +778,7 @@ export function validateUnifiedMagicAction(action, state) {
 
 export function prepareMagic(state, action) {
   const player = state?.player || {};
-  const magic = normalizeUnifiedMagicState(player.magic, { player });
+  const magic = normalizeUnifiedMagicState(player.magic, {player, state});
   const request = buildCanonicalRequest(action, state);
   const validationError = validateRequestAgainstGrammar(magic, request);
   if (validationError) {
@@ -794,7 +794,7 @@ export function prepareMagic(state, action) {
         displayName: preview.displayName || buildDisplayName(request),
       },
     },
-  });
+  }, state);
   return {
     ok: true,
     state: { ...state, player: nextPlayer },
@@ -832,7 +832,7 @@ export function castMagic(state, action) {
       makeWorkingEntry(resolution.request, resolution, state),
     ];
   }
-  const nextPlayer = syncPlayerMagicState(player, nextMagic);
+  const nextPlayer = syncPlayerMagicState(player, nextMagic, state);
   return {
     ok: true,
     state: { ...state, player: nextPlayer },
@@ -852,7 +852,7 @@ export function castPreparedMagic(state, action) {
 // eslint-disable-next-line no-unused-vars
 export function sustainMagic(state, action) {
   const player = state?.player || {};
-  const magic = normalizeUnifiedMagicState(player.magic, { player });
+  const magic = normalizeUnifiedMagicState(player.magic, {player, state});
   const workings = Array.isArray(magic.activeWorkings) ? [...magic.activeWorkings] : [];
   if (workings.length === 0) {
     return { ok: false, reason: "No active working to sustain.", state };
@@ -877,7 +877,7 @@ export function sustainMagic(state, action) {
       ),
     },
   };
-  const nextPlayer = syncPlayerMagicState(player, nextMagic);
+  const nextPlayer = syncPlayerMagicState(player, nextMagic, state);
   return {
     ok: true,
     state: { ...state, player: nextPlayer },
@@ -887,7 +887,7 @@ export function sustainMagic(state, action) {
 
 export function stabilizeMagic(state, action = {}) {
   const player = state?.player || {};
-  const magic = normalizeUnifiedMagicState(player.magic, { player });
+  const magic = normalizeUnifiedMagicState(player.magic, {player, state});
   const strainRecovery = 16 + Math.max(0, Math.floor(toNumberSafe(player?.attributes?.willpower, 0) * 0.5));
   const nextStrain = clamp(magic.strain.current - strainRecovery, 0, magic.strain.max);
   const focusedEssence =
@@ -908,7 +908,7 @@ export function stabilizeMagic(state, action = {}) {
       focusedEssence,
     },
   };
-  const nextPlayer = syncPlayerMagicState(player, nextMagic);
+  const nextPlayer = syncPlayerMagicState(player, nextMagic, state);
   return {
     ok: true,
     state: { ...state, player: nextPlayer },
@@ -922,7 +922,7 @@ export function stabilizeMagic(state, action = {}) {
 export function senseMagic(state) {
   const ambient = state?.world?.essence?.ambient?.global || {};
   const player = state?.player || {};
-  const magic = normalizeUnifiedMagicState(player.magic, { player });
+  const magic = normalizeUnifiedMagicState(player.magic, {player, state});
   const focused = magic.attunement?.focusedEssence
     ? ` Focus: ${magic.attunement.focusedEssence}.`
     : "";

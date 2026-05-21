@@ -7,7 +7,17 @@
     "description": "Infuse your weapon with arcane energy for a powerful strike.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "battlemage_flame_blade",
@@ -17,7 +27,17 @@
     "description": "Enchant your weapon with fire for burning strikes.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "fire"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "self"
+    }
   },
   {
     "id": "battlemage_frost_weapon",
@@ -27,7 +47,17 @@
     "description": "Enchant your weapon with ice that slows enemies.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "water"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "self"
+    }
   },
   {
     "id": "battlemage_shock_touch",
@@ -37,7 +67,17 @@
     "description": "Electrify your attacks to chain to nearby enemies.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "lightning"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "battlemage_spell_thrust",
@@ -47,7 +87,17 @@
     "description": "Thrust forward with a spell-enhanced lunge.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 4
+    "cooldown": 4,
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "lance",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "battlemage_blink_strike",
@@ -57,7 +107,17 @@
     "description": "Teleport to an enemy and strike them.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 12
+    "cooldown": 12,
+    "magicProfile": {
+      "essences": [
+        "space"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "battlemage_arcane_shield",
@@ -67,7 +127,17 @@
     "description": "Create a magical barrier around yourself.",
     "level": 1,
     "manaCost": 25,
-    "cooldown": 30
+    "cooldown": 30,
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 2,
+      "pattern": "shield",
+      "targeting": "self"
+    }
   },
   {
     "id": "battlemage_elemental_burst",
@@ -77,7 +147,19 @@
     "description": "Release all elemental energy in an explosion.",
     "level": 1,
     "manaCost": 35,
-    "cooldown": 20
+    "cooldown": 20,
+    "magicProfile": {
+      "essences": [
+        "fire",
+        "lightning",
+        "earth"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 3,
+      "pattern": "vortex",
+      "targeting": "zone"
+    }
   },
   {
     "id": "battlemage_magic_missile",
@@ -87,7 +169,17 @@
     "description": "Fire a rapid burst of magic missiles.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 6
+    "cooldown": 6,
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "battlemage_enchant_armor",
@@ -97,7 +189,17 @@
     "description": "Magically reinforce your armor.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 60
+    "cooldown": 60,
+    "magicProfile": {
+      "essences": [
+        "earth"
+      ],
+      "form": "shield",
+      "delivery": "sustained",
+      "scale": 2,
+      "pattern": "shield",
+      "targeting": "self"
+    }
   },
   {
     "id": "battlemage_dispelling_strike",
@@ -107,7 +209,17 @@
     "description": "Strike that removes magical buffs from the target.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 15
+    "cooldown": 15,
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "battlemage_mana_burn",
@@ -117,7 +229,17 @@
     "description": "Burn enemy mana with your attacks.",
     "level": 1,
     "manaCost": 22,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "destruction"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "battlemage_combat_teleport",
@@ -127,7 +249,17 @@
     "description": "Short-range teleport that can be used in combat.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "space"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "self"
+    }
   },
   {
     "id": "battlemage_force_push",
@@ -137,7 +269,17 @@
     "description": "Push enemies away with magical force.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "air"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "battlemage_war_magic",
@@ -147,7 +289,18 @@
     "description": "Enter a state where spells and attacks enhance each other.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 90
+    "cooldown": 90,
+    "magicProfile": {
+      "essences": [
+        "creation",
+        "fire"
+      ],
+      "form": "veil",
+      "delivery": "sustained",
+      "scale": 3,
+      "pattern": "veil",
+      "targeting": "self"
+    }
   },
   {
     "id": "battlemage_elemental_weapon",
@@ -157,7 +310,17 @@
     "description": "Imbue weapon with chosen element for duration.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "fire"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "self"
+    }
   },
   {
     "id": "battlemage_counterspell",
@@ -167,7 +330,17 @@
     "description": "Interrupt and counter enemy spellcasting.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 24
+    "cooldown": 24,
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "battlemage_spellstrike",
@@ -177,7 +350,17 @@
     "description": "Combine a spell and weapon attack into one.",
     "level": 1,
     "manaCost": 25,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "lance",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "battlemage_arcane_explosion",
@@ -187,7 +370,17 @@
     "description": "Explode with arcane energy, damaging all nearby.",
     "level": 1,
     "manaCost": 28,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "creation"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "battlemage_time_stop",
@@ -197,6 +390,16 @@
     "description": "Briefly freeze time to reposition and attack.",
     "level": 1,
     "manaCost": 50,
-    "cooldown": 180
+    "cooldown": 180,
+    "magicProfile": {
+      "essences": [
+        "time"
+      ],
+      "form": "veil",
+      "delivery": "channeled",
+      "scale": 4,
+      "pattern": "veil",
+      "targeting": "zone"
+    }
   }
 ]

@@ -7,7 +7,17 @@
     "description": "Fire a bolt of shadow magic at an enemy.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "shadow"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_corruption",
@@ -17,7 +27,18 @@
     "description": "Corrupt an enemy, dealing shadow damage over time.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "shadow",
+        "destruction"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_curse_agony",
@@ -27,7 +48,18 @@
     "description": "Curse that deals increasing damage over time.",
     "level": 1,
     "manaCost": 12,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "shadow",
+        "destruction"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_summon_imp",
@@ -37,7 +69,18 @@
     "description": "Summon an imp to cast fire bolts.",
     "level": 1,
     "manaCost": 25,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "fire"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "warlock_summon_voidwalker",
@@ -47,7 +90,18 @@
     "description": "Summon a voidwalker to tank enemies.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "shadow"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "warlock_summon_succubus",
@@ -57,7 +111,18 @@
     "description": "Summon a succubus to seduce and damage.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "shadow"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "warlock_summon_felhunter",
@@ -67,7 +132,17 @@
     "description": "Summon a felhunter to interrupt and devour magic.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "destruction"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "warlock_fear",
@@ -77,7 +152,17 @@
     "description": "Cause an enemy to flee in terror.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "shadow"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "warlock_drain_life",
@@ -87,7 +172,18 @@
     "description": "Drain health from the enemy to yourself.",
     "level": 1,
     "manaCost": 0,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "shadow",
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "channeled",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_drain_soul",
@@ -97,7 +193,18 @@
     "description": "Drain the soul of a dying enemy for resources.",
     "level": 1,
     "manaCost": 0,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "shadow"
+      ],
+      "form": "pulse",
+      "delivery": "channeled",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_immolate",
@@ -107,7 +214,18 @@
     "description": "Burn an enemy with fel fire over time.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "fire"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "lattice",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_conflagrate",
@@ -117,7 +235,18 @@
     "description": "Instantly damage an immolated target.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 12
+    "cooldown": 12,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "fire"
+      ],
+      "form": "bolt",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_chaos_bolt",
@@ -127,7 +256,19 @@
     "description": "Fire a devastating bolt that always critically strikes.",
     "level": 1,
     "manaCost": 35,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "fire",
+        "shadow"
+      ],
+      "form": "lance",
+      "delivery": "instant",
+      "scale": 3,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_rain_of_fire",
@@ -137,7 +278,18 @@
     "description": "Call down fire on an area.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 8
+    "cooldown": 8,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "fire"
+      ],
+      "form": "cone",
+      "delivery": "channeled",
+      "scale": 2,
+      "pattern": "vortex",
+      "targeting": "zone"
+    }
   },
   {
     "id": "warlock_banish",
@@ -147,7 +299,18 @@
     "description": "Banish a demon or elemental from the fight.",
     "level": 1,
     "manaCost": 18,
-    "cooldown": 30
+    "cooldown": 30,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "shadow"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_demonic_circle",
@@ -157,7 +320,18 @@
     "description": "Place a circle you can teleport back to.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 30
+    "cooldown": 30,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "space"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "self"
+    }
   },
   {
     "id": "warlock_dark_pact",
@@ -167,7 +341,17 @@
     "description": "Sacrifice demon health for a shield.",
     "level": 1,
     "manaCost": 0,
-    "cooldown": 60
+    "cooldown": 60,
+    "magicProfile": {
+      "essences": [
+        "destruction"
+      ],
+      "form": "shield",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "shield",
+      "targeting": "self"
+    }
   },
   {
     "id": "warlock_soul_fire",
@@ -177,7 +361,19 @@
     "description": "Launch a massive bolt of soul fire.",
     "level": 1,
     "manaCost": 45,
-    "cooldown": 45
+    "cooldown": 45,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "shadow",
+        "fire"
+      ],
+      "form": "lance",
+      "delivery": "instant",
+      "scale": 3,
+      "pattern": "pulse",
+      "targeting": "enemy"
+    }
   },
   {
     "id": "warlock_summon_infernal",
@@ -187,7 +383,18 @@
     "description": "Summon a massive infernal that crashes down.",
     "level": 1,
     "manaCost": 50,
-    "cooldown": 180
+    "cooldown": 180,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "fire"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 4,
+      "pattern": "vortex",
+      "targeting": "zone"
+    }
   },
   {
     "id": "warlock_ritual_of_doom",
@@ -197,6 +404,17 @@
     "description": "Summon a doomguard at the cost of a sacrifice.",
     "level": 1,
     "manaCost": 60,
-    "cooldown": 600
+    "cooldown": 600,
+    "magicProfile": {
+      "essences": [
+        "destruction",
+        "shadow"
+      ],
+      "form": "pulse",
+      "delivery": "channeled",
+      "scale": 5,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   }
 ]

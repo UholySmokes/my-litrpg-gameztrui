@@ -7,7 +7,18 @@
     "description": "Summon a fire elemental to fight for you.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 15
+    "cooldown": 15,
+    "magicProfile": {
+      "essences": [
+        "fire",
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_summon_water_elemental",
@@ -17,7 +28,18 @@
     "description": "Summon a water elemental that can heal.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 15
+    "cooldown": 15,
+    "magicProfile": {
+      "essences": [
+        "water",
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_summon_earth_elemental",
@@ -27,7 +49,18 @@
     "description": "Summon a tanky earth elemental.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 15
+    "cooldown": 15,
+    "magicProfile": {
+      "essences": [
+        "earth",
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_summon_air_elemental",
@@ -37,7 +70,18 @@
     "description": "Summon a swift air elemental.",
     "level": 1,
     "manaCost": 30,
-    "cooldown": 15
+    "cooldown": 15,
+    "magicProfile": {
+      "essences": [
+        "air",
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_summon_familiar",
@@ -47,7 +91,18 @@
     "description": "Summon a magical familiar to assist you.",
     "level": 1,
     "manaCost": 20,
-    "cooldown": 10
+    "cooldown": 10,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "light"
+      ],
+      "form": "pulse",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_summon_golem",
@@ -57,7 +112,18 @@
     "description": "Create a powerful golem from materials.",
     "level": 1,
     "manaCost": 40,
-    "cooldown": 60
+    "cooldown": 60,
+    "magicProfile": {
+      "essences": [
+        "earth",
+        "creation"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 3,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_summon_beast",
@@ -67,7 +133,17 @@
     "description": "Summon a wild beast to attack enemies.",
     "level": 1,
     "manaCost": 25,
-    "cooldown": 20
+    "cooldown": 20,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_command_attack",
@@ -77,7 +153,17 @@
     "description": "Command all summons to focus a target.",
     "level": 1,
     "manaCost": 5,
-    "cooldown": 3
+    "cooldown": 3,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_command_defend",
@@ -87,7 +173,17 @@
     "description": "Command summons to protect you.",
     "level": 1,
     "manaCost": 5,
-    "cooldown": 3
+    "cooldown": 3,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "shield",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "shield",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_fusion_summon",
@@ -97,7 +193,18 @@
     "description": "Fuse two summons into a more powerful entity.",
     "level": 1,
     "manaCost": 45,
-    "cooldown": 120
+    "cooldown": 120,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "creation"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 3,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_dismiss",
@@ -107,7 +214,17 @@
     "description": "Dismiss a summon, recovering some mana.",
     "level": 1,
     "manaCost": 0,
-    "cooldown": 0
+    "cooldown": 0,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_sacrifice",
@@ -117,7 +234,18 @@
     "description": "Sacrifice a summon for a powerful effect.",
     "level": 1,
     "manaCost": 0,
-    "cooldown": 30
+    "cooldown": 30,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "destruction"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_empower_summon",
@@ -127,7 +255,18 @@
     "description": "Temporarily strengthen a summon greatly.",
     "level": 1,
     "manaCost": 25,
-    "cooldown": 45
+    "cooldown": 45,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "creation"
+      ],
+      "form": "veil",
+      "delivery": "sustained",
+      "scale": 2,
+      "pattern": "veil",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_summon_storm",
@@ -137,7 +276,21 @@
     "description": "Summon multiple weak elementals at once.",
     "level": 1,
     "manaCost": 50,
-    "cooldown": 90
+    "cooldown": 90,
+    "magicProfile": {
+      "essences": [
+        "fire",
+        "water",
+        "earth",
+        "air",
+        "life"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 3,
+      "pattern": "vortex",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_planar_ally",
@@ -147,7 +300,18 @@
     "description": "Summon a powerful being from another plane.",
     "level": 1,
     "manaCost": 60,
-    "cooldown": 300
+    "cooldown": 300,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "space"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 4,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_spirit_link",
@@ -157,7 +321,17 @@
     "description": "Link with a summon to share its senses.",
     "level": 1,
     "manaCost": 10,
-    "cooldown": 30
+    "cooldown": 30,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "veil",
+      "delivery": "sustained",
+      "scale": 1,
+      "pattern": "veil",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_transfer_life",
@@ -167,7 +341,17 @@
     "description": "Transfer health between you and summons.",
     "level": 1,
     "manaCost": 15,
-    "cooldown": 15
+    "cooldown": 15,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 1,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_summon_swarm",
@@ -177,7 +361,17 @@
     "description": "Summon a swarm of creatures to overwhelm enemies.",
     "level": 1,
     "manaCost": 35,
-    "cooldown": 45
+    "cooldown": 45,
+    "magicProfile": {
+      "essences": [
+        "life"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 2,
+      "pattern": "vortex",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_greater_summon",
@@ -187,7 +381,18 @@
     "description": "Summon an extremely powerful creature.",
     "level": 1,
     "manaCost": 75,
-    "cooldown": 600
+    "cooldown": 600,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "creation"
+      ],
+      "form": "pulse",
+      "delivery": "instant",
+      "scale": 4,
+      "pattern": "pulse",
+      "targeting": "zone"
+    }
   },
   {
     "id": "summoner_army_of_summons",
@@ -197,6 +402,17 @@
     "description": "Summon your entire army at once.",
     "level": 1,
     "manaCost": 100,
-    "cooldown": 300
+    "cooldown": 300,
+    "magicProfile": {
+      "essences": [
+        "life",
+        "creation"
+      ],
+      "form": "cone",
+      "delivery": "instant",
+      "scale": 5,
+      "pattern": "vortex",
+      "targeting": "zone"
+    }
   }
 ]

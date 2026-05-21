@@ -11,7 +11,7 @@ This folder contains a desktop-first Godot 4 scaffold for the locked vertical sl
 
 ## Godot Version
 
-Use Godot `4.6.1 stable` plus the matching Android export templates and a JDK `17` install for Android export.
+Use Godot `4.6.2 stable` plus the matching Android export templates and a JDK `21` install for Android export.
 
 ## Android Export Profiles (Dual Track)
 

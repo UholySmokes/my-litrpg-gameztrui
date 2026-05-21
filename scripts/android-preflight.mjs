@@ -62,7 +62,7 @@ function resolveAndroidSdkRoot() {
 
 function resolveTemplatesRoot() {
   if (process.platform === "win32") {
-    return path.join(appData, "Godot", "export_templates", "4.6.1.stable");
+    return path.join(appData, "Godot", "export_templates", supportedGodotTemplateVersion);
   }
   const xdgDataHome = process.env.XDG_DATA_HOME || path.join(home, ".local", "share");
   return path.join(xdgDataHome, "godot", "export_templates", supportedGodotTemplateVersion);

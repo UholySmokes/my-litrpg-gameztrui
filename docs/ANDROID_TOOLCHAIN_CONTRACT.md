@@ -60,7 +60,7 @@ This contract defines the supported environment for native Godot Android deliver
 1. Godot CLI resolution.
 2. JDK 17 resolution.
 3. Android SDK + NDK required directories.
-4. Godot 4.6.1 export templates.
+4. Godot 4.6.2 export templates.
 5. Export preset names.
 6. Export credentials file.
 7. Android build template files and `project.binary`.

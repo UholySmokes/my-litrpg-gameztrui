@@ -44,9 +44,9 @@
 ## 6) Evidence Pack
 - [ ] CI run links for `app-quality`, `godot-headless`, and `godot-android-export`.
 - [x] Artifact hashes + file sizes for singleplayer APK, internal APK, and release AAB.
-  - `build/android/developer-singleplayer.apk`: 35M, SHA-256
-    `5188ca8c9368a602d0c768df1e3fd0bc289e98236d5265a871843c7583bb904d`
-  - `build/android/internal-debug.apk`: 65M, SHA-256 `0aa07520902dc1dc1b5483d89e53456b6feebb04844ce7e1b5edc3324a0813e0`
+  - `build/android/developer-singleplayer.apk`: 38M, SHA-256
+    `d0dc21ba05e65295a5aeb04a321aa0aec26ce1319fa33f3e4556a0feedbef1b0`
+  - `build/android/internal-debug.apk`: 65M, SHA-256 `a9d47bf2edc43fe05242ef8d2fc858754599dd66b49ff92816ad6a6e720ae376`
   - `build/android/release-candidate.aab`: 28M, SHA-256
-    `6402a848c975f1621a763ae4f10f47d97630f92831e36661a43e8c4d54db9a80`
+    `6781e363882b525541a78d4c9ce7ef1cdcf9fa9f055bcaa4b16ac2b3835923ef`
 - [ ] Manual smoke notes (singleplayer local creation, local save/load, one story refresh, one map transition).

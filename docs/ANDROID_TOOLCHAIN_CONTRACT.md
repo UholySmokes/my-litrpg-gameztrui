@@ -58,7 +58,7 @@ This contract defines the supported environment for native Godot Android deliver
 `npm run android:preflight` must validate:
 
 1. Godot CLI resolution.
-2. JDK 17 resolution.
+2. JDK 21 resolution.
 3. Android SDK + NDK required directories.
 4. Godot 4.6.2 export templates.
 5. Export preset names.

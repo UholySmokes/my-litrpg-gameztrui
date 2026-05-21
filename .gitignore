@@ -102,5 +102,6 @@ godot/android/build/.gradle/
 godot/android/build/build/
 godot/android/build/**/build/
 godot/android/build/local.properties
+godot/android/build/libs/
 
 .vercel

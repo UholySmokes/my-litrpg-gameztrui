@@ -1,5 +1,5 @@
-import { random, randomChoice } from "../../utils/DeterministicRandom.js";
-import { normalizeUnifiedMagicState } from "./UnifiedMagicSystem.js";
+import {random, randomChoice} from "../../utils/DeterministicRandom.js";
+import {normalizeUnifiedMagicState} from "./UnifiedMagicSystem.js";
 import {
   DEFAULT_START_LOCATION_ID,
   findLocationsByZone,
@@ -8,7 +8,7 @@ import {
   getEssenceAnomalyIdsForBiome,
   getRareEssenceSourceById,
 } from "../../world/WorldDataRegistry.js";
-import { hasCreationPerk } from "../../core/creationPerks.js";
+import {hasCreationPerk} from "../../core/creationPerks.js";
 
 export const ESSENCE_PRIMES = [
   "fire",
@@ -103,6 +103,10 @@ function resolveMagicRollout(config) {
     layerC: toBooleanFlag(node.layerC, DEFAULT_MAGIC_ROLLOUT.layerC),
     layerD: toBooleanFlag(node.layerD, DEFAULT_MAGIC_ROLLOUT.layerD),
   };
+}
+
+function getEssenceWeavingConfig(state) {
+  return state?.config?.magicBalance?.essenceWeaving || {};
 }
 
 function computeStoredEssenceTotals(magic) {
@@ -394,26 +398,35 @@ function selectOverloadEssence(magic, preferredEssence) {
 
 function applyResonanceOverloadEvent(
   magic,
-  { ambient, turn, preferredEssence } = {},
+  {ambient, turn, preferredEssence, state} = {},
 ) {
+  const config = getEssenceWeavingConfig(state);
   const resonanceValue = clamp(toNumberSafe(magic?.resonance?.current, 0), 0, 100);
-  if (resonanceValue < 85) {
+  const resonanceOverload = config.resonanceOverload || {};
+  const triggerThreshold = toNumberSafe(resonanceOverload.triggerThreshold, 85);
+  if (resonanceValue < triggerThreshold) {
     return { magic, line: "", triggered: false };
   }
 
   const pressure = computeEnvironmentalPressure(ambient || {});
+  const criticalThreshold = toNumberSafe(resonanceOverload.criticalThreshold, 95);
+  const baseChance = toNumberSafe(resonanceOverload.baseChance, 0.12);
+  const resonanceChanceMultiplier = toNumberSafe(resonanceOverload.resonanceChanceMultiplier, 0.045);
+  const pressureChanceMultiplier = toNumberSafe(resonanceOverload.pressureChanceMultiplier, 0.07);
+  const maxChance = toNumberSafe(resonanceOverload.maxChance, 0.75);
   const triggerChance =
-    resonanceValue >= 95
+    resonanceValue >= criticalThreshold
       ? 1
-      : clamp(0.12 + (resonanceValue - 85) * 0.045 + pressure * 0.07, 0, 0.75);
+      : clamp(baseChance + (resonanceValue - triggerThreshold) * resonanceChanceMultiplier + pressure * pressureChanceMultiplier, 0, maxChance);
   if (random() >= triggerChance) {
     return { magic, line: "", triggered: false };
   }
 
   const severity =
-    resonanceValue >= 95 ? "critical" : resonanceValue >= 90 ? "major" : "minor";
+    resonanceValue >= criticalThreshold ? "critical" : resonanceValue >= 90 ? "major" : "minor";
+  const severityMultipliers = config.severityMultipliers || {};
   const severityMult =
-    severity === "critical" ? 1.75 : severity === "major" ? 1.35 : 1.0;
+    severity === "critical" ? toNumberSafe(severityMultipliers.critical, 1.75) : severity === "major" ? toNumberSafe(severityMultipliers.major, 1.35) : toNumberSafe(severityMultipliers.minor, 1.0);
   const reserves = magic?.reserves && typeof magic.reserves === "object" ? magic.reserves : {};
   const hasReserve = ESSENCE_PRIMES.some((essence) => toNumberSafe(reserves[essence], 0) > 0.01);
   const hasCharges = Array.isArray(magic?.charges) && magic.charges.length > 0;
@@ -430,7 +443,12 @@ function applyResonanceOverloadEvent(
   const targetEssence = selectOverloadEssence(nextMagic, preferredEssence);
 
   if (effectId === "taint_bloom") {
-    const taintDelta = clamp(0.05 * severityMult + 0.015 * pressure, 0.03, 0.2);
+    const taintBloom = config.taintBloom || {};
+    const baseDelta = toNumberSafe(taintBloom.baseDelta, 0.05);
+    const pressureMultiplier = toNumberSafe(taintBloom.pressureMultiplier, 0.015);
+    const minDelta = toNumberSafe(taintBloom.minDelta, 0.03);
+    const maxDelta = toNumberSafe(taintBloom.maxDelta, 0.2);
+    const taintDelta = clamp(baseDelta * severityMult + pressureMultiplier * pressure, minDelta, maxDelta);
     const currentTaint = clamp(toNumberSafe(nextMagic?.reservesTaint?.[targetEssence], 0), 0, 1);
     nextMagic = {
       ...nextMagic,
@@ -453,10 +471,20 @@ function applyResonanceOverloadEvent(
     }
     if (targetIndex >= 0) {
       const charge = charges[targetIndex];
-      const lossFraction = clamp(0.08 * severityMult, 0.05, 0.25);
+      const chargeFracture = config.chargeFracture || {};
+      const lossFractionBase = toNumberSafe(chargeFracture.lossFractionBase, 0.08);
+      const minLossFraction = toNumberSafe(chargeFracture.minLossFraction, 0.05);
+      const maxLossFraction = toNumberSafe(chargeFracture.maxLossFraction, 0.25);
+      const lossFraction = clamp(lossFractionBase * severityMult, minLossFraction, maxLossFraction);
       const amountLoss = toNumberSafe(charge?.amount, 0) * lossFraction;
-      const purityLoss = clamp(0.04 * severityMult, 0.02, 0.2);
-      const potencyLoss = clamp(0.06 * severityMult, 0.03, 0.3);
+      const purityLossBase = toNumberSafe(chargeFracture.purityLossBase, 0.04);
+      const minPurityLoss = toNumberSafe(chargeFracture.minPurityLoss, 0.02);
+      const maxPurityLoss = toNumberSafe(chargeFracture.maxPurityLoss, 0.2);
+      const purityLoss = clamp(purityLossBase * severityMult, minPurityLoss, maxPurityLoss);
+      const potencyLossBase = toNumberSafe(chargeFracture.potencyLossBase, 0.06);
+      const minPotencyLoss = toNumberSafe(chargeFracture.minPotencyLoss, 0.03);
+      const maxPotencyLoss = toNumberSafe(chargeFracture.maxPotencyLoss, 0.3);
+      const potencyLoss = clamp(potencyLossBase * severityMult, minPotencyLoss, maxPotencyLoss);
       charges[targetIndex] = {
         ...charge,
         amount: Math.max(0, toNumberSafe(charge?.amount, 0) - amountLoss),
@@ -472,8 +500,11 @@ function applyResonanceOverloadEvent(
   } else if (effectId === "reserve_bleed") {
     const currentReserve = Math.max(0, toNumberSafe(nextMagic?.reserves?.[targetEssence], 0));
     if (currentReserve > 0.01) {
+      const reserveBleed = config.reserveBleed || {};
+      const baseMultiplier = toNumberSafe(reserveBleed.baseMultiplier, 0.08);
+      const pressureMultiplier = toNumberSafe(reserveBleed.pressureMultiplier, 0.02);
       const loss = clamp(
-        Math.max(1, currentReserve * (0.08 * severityMult + 0.02 * pressure)),
+        Math.max(1, currentReserve * (baseMultiplier * severityMult + pressureMultiplier * pressure)),
         0,
         currentReserve,
       );
@@ -489,8 +520,13 @@ function applyResonanceOverloadEvent(
   }
 
   if (!line) {
-    const mindLoss = 1.8 * severityMult + 0.6 * pressure;
-    const bodyLoss = 1.2 * severityMult + 0.45 * pressure;
+    const stabilityFeedback = config.stabilityFeedback || {};
+    const mindLossBase = toNumberSafe(stabilityFeedback.mindLossBase, 1.8);
+    const bodyLossBase = toNumberSafe(stabilityFeedback.bodyLossBase, 1.2);
+    const mindPressureMultiplier = toNumberSafe(stabilityFeedback.mindPressureMultiplier, 0.6);
+    const bodyPressureMultiplier = toNumberSafe(stabilityFeedback.bodyPressureMultiplier, 0.45);
+    const mindLoss = mindLossBase * severityMult + mindPressureMultiplier * pressure;
+    const bodyLoss = bodyLossBase * severityMult + bodyPressureMultiplier * pressure;
     nextMagic = applyStabilityDelta(nextMagic, {
       mind: -mindLoss,
       body: -bodyLoss,
@@ -498,7 +534,12 @@ function applyResonanceOverloadEvent(
     line = `Overload surge (${severity}): feedback lashes your channels (${mindLoss.toFixed(1)} mind, ${bodyLoss.toFixed(1)} body).`;
   }
 
-  const ventAmount = clamp(3 + 3 * severityMult, 2, 12);
+  const resonanceVent = config.resonanceVent || {};
+  const baseAmount = toNumberSafe(resonanceVent.baseAmount, 3);
+  const severityMultiplier = toNumberSafe(resonanceVent.severityMultiplier, 3);
+  const minVent = toNumberSafe(resonanceVent.minVent, 2);
+  const maxVent = toNumberSafe(resonanceVent.maxVent, 12);
+  const ventAmount = clamp(baseAmount + severityMultiplier * severityMult, minVent, maxVent);
   nextMagic = applyResonanceDelta(nextMagic, -ventAmount);
 
   const overloadNode =
@@ -531,6 +572,7 @@ function resolveOverloadResult(
     ambient,
     turn,
     preferredEssence,
+    state,
   } = {},
 ) {
   if (!enabled) {
@@ -540,6 +582,7 @@ function resolveOverloadResult(
     ambient,
     turn,
     preferredEssence,
+    state,
   });
 }
 
@@ -1507,6 +1550,7 @@ export function magicDraw(state, action) {
     ambient,
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
+    state: hydrated,
   });
   const training = rollout.layerD
     ? applyPerkTraining(
@@ -1629,6 +1673,7 @@ export function magicRefine(state, action) {
     ambient,
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
+    state: hydrated,
   });
   const training = rollout.layerD
     ? applyPerkTraining(
@@ -1682,7 +1727,9 @@ export function magicCompress(state, action) {
   }
 
   const charge = charges[idx];
-  const targetDensity = DENSITY_BY_TIER[tier] ?? 1.0;
+  const config = getEssenceWeavingConfig(hydrated);
+  const densityByTier = config.densityByTier || {};
+  const targetDensity = toNumberSafe(densityByTier[tier], 1.0);
   const amount = toNumberSafe(charge.amount, 0);
   const currentDensity = clamp(toNumberSafe(charge.density, 1), 0.1, 100);
   if (targetDensity <= currentDensity + 1e-6) {
@@ -1826,6 +1873,7 @@ export function magicCompress(state, action) {
     ambient,
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: essence,
+    state: hydrated,
   });
   const training = rollout.layerD
     ? applyPerkTraining(
@@ -1973,6 +2021,7 @@ export function magicPurge(state, action) {
     ambient,
     turn: toNumberSafe(hydrated.world?.turnCount, 0),
     preferredEssence: requestedEssence,
+    state: hydrated,
   });
   const training = rollout.layerD
     ? applyPerkTraining(
@@ -2035,6 +2084,7 @@ export function magicShape(state, action) {
     ambient,
     turn,
     preferredEssence: essence,
+    state: hydrated,
   });
 
   const nextState = {
@@ -2086,6 +2136,7 @@ export function magicWeave(state, action) {
     enabled: rollout.layerC,
     ambient,
     turn,
+    state: hydrated,
   });
 
   const nextState = {
@@ -2259,6 +2310,7 @@ export function magicRelease(state) {
       ambient,
       turn,
       preferredEssence: essence,
+      state: hydrated,
     });
     const training = rollout.layerD
       ? applyPerkTraining(
@@ -2415,6 +2467,7 @@ export function magicRelease(state) {
       enabled: rollout.layerC,
       ambient,
       turn,
+      state: hydrated,
     });
     const training = rollout.layerD
       ? applyPerkTraining(

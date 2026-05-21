@@ -1,6 +1,10 @@
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const toNumberSafe = (value, fallback = 0) => (Number.isFinite(value) ? Number(value) : fallback);
 
+function getPhysicsMagicConfig(state) {
+  return state?.config?.magicBalance?.physicsMagic || {};
+}
+
 export const MAGIC_SCHOOLS = Object.freeze({
   thermomancy: {
     domain: "thermodynamics",
@@ -51,26 +55,37 @@ export function normalizePhysicsMagicState(rawState = {}) {
 }
 
 function computeSchoolEfficiency(school, state, geometry = {}) {
+  const config = getPhysicsMagicConfig(state);
   const angle = toNumberSafe(geometry?.angle, state.resonanceAngle);
-  const deviation = Math.min(Math.abs(angle - 60), Math.abs(angle - 300));
-  const resonanceBoost = clamp(1.15 - deviation / 180, 0.65, 1.15);
+  const resonanceAngleOptimal = toNumberSafe(config.resonanceAngleOptimal, 60);
+  const resonanceAngleAlt = toNumberSafe(config.resonanceAngleAlt, 300);
+  const deviation = Math.min(Math.abs(angle - resonanceAngleOptimal), Math.abs(angle - resonanceAngleAlt));
+  const resonanceBoostBase = toNumberSafe(config.resonanceBoostBase, 1.15);
+  const resonanceBoostDeviationDivisor = toNumberSafe(config.resonanceBoostDeviationDivisor, 180);
+  const resonanceBoostMin = toNumberSafe(config.resonanceBoostMin, 0.65);
+  const resonanceBoost = clamp(resonanceBoostBase - deviation / resonanceBoostDeviationDivisor, resonanceBoostMin, resonanceBoostBase);
 
-  const turbulencePenalty = school === "fluidmancy" ? clamp(1 - state.turbulence, 0.35, 1) : 1;
-  const topologyPenalty = school === "topomancy" ? clamp(state.topologyIntegrity, 0.25, 1) : 1;
+  const turbulencePenaltyMin = toNumberSafe(config.turbulencePenaltyMin, 0.35);
+  const turbulencePenalty = school === "fluidmancy" ? clamp(1 - state.turbulence, turbulencePenaltyMin, 1) : 1;
+  const topologyPenaltyMin = toNumberSafe(config.topologyPenaltyMin, 0.25);
+  const topologyPenalty = school === "topomancy" ? clamp(state.topologyIntegrity, topologyPenaltyMin, 1) : 1;
 
   return resonanceBoost * turbulencePenalty * topologyPenalty;
 }
 
 export function resolvePhysicsMagicCast(rawState, castRequest = {}) {
   const state = normalizePhysicsMagicState(rawState);
+  const config = getPhysicsMagicConfig(state);
   const school = castRequest.school in MAGIC_SCHOOLS ? castRequest.school : "thermomancy";
   const scale = clamp(toNumberSafe(castRequest.scale, 1), 0.2, 5);
   const reversesEntropy = castRequest.reversesEntropy === true;
   const topologicalShift = clamp(toNumberSafe(castRequest.topologicalShift, 0.1), 0, 10);
 
-  const baseEnergy = 12 * scale;
-  const irreversibilityTax = reversesEntropy ? 3.2 : 1;
-  const topologyTax = 1 + topologicalShift * 0.22;
+  const baseEnergyScale = toNumberSafe(config.baseEnergyScale, 12);
+  const baseEnergy = baseEnergyScale * scale;
+  const irreversibilityTax = reversesEntropy ? toNumberSafe(config.irreversibilityTax, 3.2) : toNumberSafe(config.reversibilityTax, 1);
+  const topologyTaxMultiplier = toNumberSafe(config.topologyTaxMultiplier, 0.22);
+  const topologyTax = 1 + topologicalShift * topologyTaxMultiplier;
   const efficiency = computeSchoolEfficiency(school, state, castRequest.geometry);
 
   const requiredEnergy = baseEnergy * irreversibilityTax * topologyTax / efficiency;
@@ -86,11 +101,19 @@ export function resolvePhysicsMagicCast(rawState, castRequest = {}) {
     };
   }
 
-  const takeMetabolic = Math.min(state.reservoirs.metabolic, requiredEnergy * 0.5);
-  const takeThermal = Math.min(state.reservoirs.thermal, requiredEnergy * 0.25);
+  const reservoirDistribution = config.reservoirDistribution || {};
+  const takeMetabolic = Math.min(state.reservoirs.metabolic, requiredEnergy * toNumberSafe(reservoirDistribution.metabolic, 0.5));
+  const takeThermal = Math.min(state.reservoirs.thermal, requiredEnergy * toNumberSafe(reservoirDistribution.thermal, 0.25));
   const remaining = requiredEnergy - takeMetabolic - takeThermal;
-  const takeKinetic = Math.min(state.reservoirs.kinetic, remaining * 0.6);
+  const takeKinetic = Math.min(state.reservoirs.kinetic, remaining * toNumberSafe(reservoirDistribution.kinetic, 0.6));
   const takePotential = Math.max(0, requiredEnergy - takeMetabolic - takeThermal - takeKinetic);
+
+  const entropyDebtMultiplier = config.entropyDebtMultiplier || {};
+  const entropyMultiplier = reversesEntropy ? toNumberSafe(entropyDebtMultiplier.reversible, 0.45) : toNumberSafe(entropyDebtMultiplier.normal, 0.15);
+  const strainMultiplier = toNumberSafe(config.strainMultiplier, 0.08);
+  const turbulenceMultiplier = config.turbulenceMultiplier || {};
+  const turbulenceMult = school === "fluidmancy" ? toNumberSafe(turbulenceMultiplier.fluidmancy, 0.08) : toNumberSafe(turbulenceMultiplier.default, 0.03);
+  const topologyIntegrityDecay = toNumberSafe(config.topologyIntegrityDecay, 0.03);
 
   const nextState = normalizePhysicsMagicState({
     ...state,
@@ -100,18 +123,23 @@ export function resolvePhysicsMagicCast(rawState, castRequest = {}) {
       kinetic: state.reservoirs.kinetic - takeKinetic,
       potential: state.reservoirs.potential - takePotential,
     },
-    entropyDebt: state.entropyDebt + requiredEnergy * (reversesEntropy ? 0.45 : 0.15),
-    strain: state.strain + requiredEnergy * 0.08,
-    turbulence: state.turbulence + (school === "fluidmancy" ? 0.08 * scale : 0.03 * scale),
-    topologyIntegrity: state.topologyIntegrity - topologicalShift * 0.03,
+    entropyDebt: state.entropyDebt + requiredEnergy * entropyMultiplier,
+    strain: state.strain + requiredEnergy * strainMultiplier,
+    turbulence: state.turbulence + turbulenceMult * scale,
+    topologyIntegrity: state.topologyIntegrity - topologicalShift * topologyIntegrityDecay,
   });
+
+  const stabilityRiskWeights = config.stabilityRiskWeights || {};
+  const strainWeight = toNumberSafe(stabilityRiskWeights.strain, 0.01);
+  const turbulenceWeight = toNumberSafe(stabilityRiskWeights.turbulence, 0.4);
+  const topologyWeight = toNumberSafe(stabilityRiskWeights.topology, 0.5);
 
   return {
     ok: true,
     school,
     requiredEnergy,
     efficiency,
-    stabilityRisk: clamp(nextState.strain / 100 + nextState.turbulence * 0.4 + (1 - nextState.topologyIntegrity) * 0.5, 0, 2),
+    stabilityRisk: clamp(nextState.strain * strainWeight + nextState.turbulence * turbulenceWeight + (1 - nextState.topologyIntegrity) * topologyWeight, 0, 2),
     nextState,
   };
 }

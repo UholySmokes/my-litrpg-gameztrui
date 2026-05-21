@@ -144,6 +144,20 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
+        exclude 'META-INF/*.version'
+        exclude 'DebugProbesKt.bin'
+        exclude '**/*.kotlin_builtins'
+        exclude '**/*.kotlin_metadata'
+        exclude 'META-INF/com/android/build/gradle/app-metadata.properties'
+        exclude 'META-INF/version-control-info.textproto'
+        exclude 'kotlin-tooling-metadata.json'
+        exclude 'assets/dexopt/*'
+        exclude 'classes.dex'
+
+        pickFirst 'lib/arm64-v8a/libgodot_android.so'
+        pickFirst 'lib/armeabi-v7a/libgodot_android.so'
+        pickFirst 'lib/x86/libgodot_android.so'
+        pickFirst 'lib/x86_64/libgodot_android.so'
 
         // Debug symbols are kept for development within Android Studio.
         if (shouldNotStrip()) {

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-const presetsPath = path.resolve(process.cwd(), "godot", "export_presets.cfg");
+const credentialsPath = path.resolve(process.cwd(), "godot", "export_credentials.cfg");
 
 function requireEnv(name) {
   const value = String(process.env[name] || "").trim();
@@ -23,8 +23,8 @@ function upsertOption(content, key, value) {
 }
 
 function main() {
-  if (!fs.existsSync(presetsPath)) {
-    throw new Error("Missing godot/export_presets.cfg");
+  if (!fs.existsSync(credentialsPath)) {
+    throw new Error("Missing godot/export_credentials.cfg");
   }
 
   const keystorePath = requireEnv("GODOT_ANDROID_KEYSTORE_PATH");
@@ -32,14 +32,14 @@ function main() {
   const keyAlias = requireEnv("GODOT_ANDROID_KEY_ALIAS");
   const keyAliasPassword = requireEnv("GODOT_ANDROID_KEY_ALIAS_PASSWORD");
 
-  let content = fs.readFileSync(presetsPath, "utf8");
+  let content = fs.readFileSync(credentialsPath, "utf8");
   content = upsertOption(content, "keystore/release", keystorePath);
   content = upsertOption(content, "keystore/release_password", keystorePassword);
   content = upsertOption(content, "keystore/release_user", keyAlias);
   content = upsertOption(content, "keystore/debug", keystorePath);
   content = upsertOption(content, "keystore/debug_password", keystorePassword);
   content = upsertOption(content, "keystore/debug_user", keyAlias);
-  fs.writeFileSync(presetsPath, content, "utf8");
+  fs.writeFileSync(credentialsPath, content, "utf8");
 
   // Godot 4 also reads env vars for jarsigner in some export templates.
   process.env.ANDROID_KEYSTORE_PATH = keystorePath;
@@ -47,7 +47,7 @@ function main() {
   process.env.ANDROID_KEY_ALIAS = keyAlias;
   process.env.ANDROID_KEY_ALIAS_PASSWORD = keyAliasPassword;
 
-  console.log(`[android-signing] configured export presets at ${presetsPath}`);
+  console.log(`[android-signing] configured export credentials at ${credentialsPath}`);
 }
 
 try {

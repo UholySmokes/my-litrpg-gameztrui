@@ -1937,6 +1937,239 @@
   }
 }
 
+/* ═══ Creation Mode Select ═══ */
+.creation-mode-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.mode-select-container {
+  text-align: center;
+  max-width: 600px;
+}
+
+.mode-select-title {
+  font-family: monospace;
+  font-size: 1.8rem;
+  color: var(--holo-cyan);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.mode-select-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+}
+
+.mode-select-options {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.mode-select-card {
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 243, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text-main);
+  font-family: monospace;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.mode-select-card:hover {
+  border-color: var(--holo-cyan);
+  background: rgba(0, 243, 255, 0.08);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.1);
+}
+
+.mode-select-card-icon {
+  font-size: 2rem;
+  color: var(--holo-gold);
+}
+
+.mode-select-card-title {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--holo-cyan);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.mode-select-card-desc {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* ═══ Quickstart UI ═══ */
+.quickstart-container {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 1.5rem;
+  min-height: 50vh;
+}
+
+.quickstart-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 243, 255, 0.1);
+  border-radius: 6px;
+}
+
+.quickstart-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quickstart-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  transition: all 0.2s ease;
+}
+
+.quickstart-step.active {
+  color: var(--holo-cyan);
+  background: rgba(0, 243, 255, 0.08);
+}
+
+.quickstart-step.done {
+  color: var(--holo-green);
+}
+
+.quickstart-step-marker {
+  font-family: monospace;
+  font-size: 0.7rem;
+  width: 1.5rem;
+  text-align: center;
+}
+
+.quickstart-advanced-toggle {
+  margin-top: auto;
+  padding: 0.4rem 0.6rem;
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 4px;
+  color: var(--holo-gold);
+  font-family: monospace;
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quickstart-advanced-toggle:hover {
+  background: rgba(255, 215, 0, 0.15);
+}
+
+.quickstart-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.quickstart-panel {
+  flex: 1;
+}
+
+.quickstart-header h2 {
+  font-family: monospace;
+  font-size: 1.3rem;
+  color: var(--holo-cyan);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.3rem;
+}
+
+.quickstart-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-bottom: 1rem;
+}
+
+.quickstart-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 243, 255, 0.1);
+}
+
+.quickstart-nav-spacer {
+  flex: 1;
+}
+
+.quickstart-btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.quickstart-btn-back {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-dim);
+}
+
+.quickstart-btn-back:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.quickstart-btn-next {
+  background: rgba(0, 243, 255, 0.12);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  color: var(--holo-cyan);
+}
+
+.quickstart-btn-next:hover {
+  background: rgba(0, 243, 255, 0.2);
+}
+
+.quickstart-btn-next:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.quickstart-btn-final {
+  background: rgba(150, 242, 215, 0.15);
+  border: 1px solid rgba(150, 242, 215, 0.35);
+  color: #96F2D7;
+}
+
+.quickstart-btn-final:hover {
+  background: rgba(150, 242, 215, 0.25);
+}
+
+.quickstart-btn-final:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 @media (max-width: 1100px) {
   .app-frame {
     padding: 0.75rem;

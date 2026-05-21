@@ -53,9 +53,9 @@ export function calculateDamage(attacker, defender, isMagic = false) {
   const baseDamage = scalingStat * 2;
 
   const defense = defender.defense || 0;
-  const reducedDamage = baseDamage - defense * 0.5;
+  const reductionRatio = defense / (defense + 50);
+  const reducedDamage = Math.floor(baseDamage * (1 - reductionRatio));
 
-  // Minimum damage is 10% of base
   return Math.max(baseDamage * 0.1, reducedDamage);
 }
 
@@ -75,8 +75,9 @@ export function calculateCritChance(luck = 0) {
  * @param {boolean} isCritical - Whether this is a critical hit
  * @returns {number} Damage multiplier
  */
-export function calculateCritMultiplier(isCritical) {
-  return isCritical ? 1.5 : 1.0;
+export function calculateCritMultiplier(isCritical, luck = 0) {
+  if (!isCritical) return 1.0;
+  return 1.5 + luck * 0.005;
 }
 
 /**

@@ -1,37 +1,29 @@
+import {createEnemy, getEnemySkillById,} from "../../entities/Enemy.js";
+import {getModifiedSkill, getSkillById} from "../skills/SkillRegistry.js";
 import {
-  createEnemy,
-  getEnemySkillById,
-} from "../../entities/Enemy.js";
-import { getSkillById } from "../skills/SkillRegistry.js";
-import {
-  hasRaceTag,
-  EFFECT_TAGS as RACE_EFFECT_TAGS,
-  getRaceRebirth,
   canRaceRebirth,
-  getRandomStartBuff,
+  getRaceRebirth,
   getRandomDebuff,
-  rollGambleCast,
   getRandomElementAbsorption,
+  getRandomStartBuff,
+  hasRaceTag,
+  rollGambleCast,
 } from "../../data/registries/RaceDataRegistry.js";
+import {getEffectTagMagnitude, hasEffectTag,} from "../effects/EffectSystem.js";
 import {
-  hasEffectTag,
-  getEffectTagMagnitude,
-} from "../effects/EffectSystem.js";
-import {
-  resolveBypasses,
-  applyCostOverride,
   applyCooldownOverride,
+  applyCostOverride,
   applyDropOverrides,
   getMagnitudeCaps,
+  resolveBypasses,
 } from "../skills/TalentManager.js";
-import { getModifiedSkill } from "../skills/SkillRegistry.js";
-import { effectApplicationSystem } from "../effects/EffectApplicationSystem.js";
+import {effectApplicationSystem} from "../effects/EffectApplicationSystem.js";
 import {
   consumeAbilityCostForActor,
   resolveCombatAbilityMagic,
   syncPlayerAbilityState,
 } from "../abilities/UnifiedAbilityEngine.js";
-import { emit } from "../../core/EventBus.js";
+import {emit} from "../../core/EventBus.js";
 import {
   allowsZeroDamage,
   applyHealToPlayer,
@@ -48,14 +40,43 @@ import {
   removeEffectsByTypes,
   resolveAbilityTargets,
 } from "./combatPreparation.js";
+import {calculateDamage, calculateDamagePipeline,} from "./combatResolution.js";
+import {endCombatPhase, handleEnemyDefeatPhase,} from "./combatAftermath.js";
+import {gainRage, processRageDecay,} from "../class/RageSystem.js";
 import {
-  calculateDamage,
-  calculateDamagePipeline,
-} from "./combatResolution.js";
+  handleStealthAttack,
+  processStealthDetection,
+  processVanishDuration,
+  useVanish as applyVanish,
+} from "./StealthSystem.js";
+import {getComboMultiplier, processChiOnHit, resetCombo,} from "../class/ChiSystem.js";
+import {getClassAbilityById, isClassAbilityAllowed,} from "../class/ClassAbilityRegistry.js";
+import {getRaceAbilityById, isRaceAbilityAllowed,} from "../race/RaceAbilityRegistry.js";
 import {
-  endCombatPhase,
-  handleEnemyDefeatPhase,
-} from "./combatAftermath.js";
+  checkIllusionTarget,
+  damageIllusion,
+  processCharmDuration,
+  processCharmedEnemyAction,
+} from "../effects/CharmSystem.js";
+import {processTimeEffects} from "../world/TimeSystem.js";
+import {applyChainLightning, checkItemProc} from "../items/ItemProcSystem.js";
+import {getAttributeValue} from "../../utils/AttributeMath.js";
+import {getEffectiveAttributes, getTitleBonuses,} from "../titles/TitleSystem.js";
+import {random, randomChoice} from "../../utils/DeterministicRandom.js";
+import {SimBridge} from "../../simulation/bridge/SimulationContext.js";
+import {
+  DEFAULT_COMBAT_LANE_CONFIG,
+  DEFAULT_ELEMENTAL_REACTIONS,
+  getBalanceConfig,
+} from "../../data/balance/balanceConfig.js";
+import {
+  escapeSkirmish,
+  playerAttackSkirmish,
+  processSkirmishEnemyTurns,
+  startSkirmishCombat,
+} from "../skirmish/SkirmishSystem.js";
+import {isSkirmishCombat} from "../skirmish/SkirmishState.js";
+
 const handleEnemyDefeat = handleEnemyDefeatPhase;
 const endCombat = endCombatPhase;
 export function applyCastingInterruptionFromDamage(state, damageApplied) {
@@ -157,56 +178,7 @@ export function applyCastingInterruptionFromDamage(state, damageApplied) {
       : state.combat,
   };
 }
-import {
-  gainRage,
-  processRageDecay,
-} from "../class/RageSystem.js";
-import {
-  handleStealthAttack,
-  processStealthDetection,
-  processVanishDuration,
-  useVanish as applyVanish,
-} from "./StealthSystem.js";
-import {
-  processChiOnHit,
-  resetCombo,
-  getComboMultiplier,
-} from "../class/ChiSystem.js";
-import {
-  getClassAbilityById,
-  isClassAbilityAllowed,
-} from "../class/ClassAbilityRegistry.js";
-import {
-  getRaceAbilityById,
-  isRaceAbilityAllowed,
-} from "../race/RaceAbilityRegistry.js";
-import {
-  processCharmDuration,
-  processCharmedEnemyAction,
-  checkIllusionTarget,
-  damageIllusion,
-} from "../effects/CharmSystem.js";
-import { processTimeEffects } from "../world/TimeSystem.js";
-import { checkItemProc, applyChainLightning } from "../items/ItemProcSystem.js";
-import { getAttributeValue } from "../../utils/AttributeMath.js";
-import {
-  getEffectiveAttributes,
-  getTitleBonuses,
-} from "../titles/TitleSystem.js";
-import { random, randomChoice } from "../../utils/DeterministicRandom.js";
-import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
-import {
-  DEFAULT_COMBAT_LANE_CONFIG,
-  DEFAULT_ELEMENTAL_REACTIONS,
-  getBalanceConfig,
-} from "../../data/balance/balanceConfig.js";
-import {
-  escapeSkirmish,
-  playerAttackSkirmish,
-  processSkirmishEnemyTurns,
-  startSkirmishCombat,
-} from "../skirmish/SkirmishSystem.js";
-import { isSkirmishCombat } from "../skirmish/SkirmishState.js";
+
 const DEBUG_LOGGING_ENABLED = false;
 const STANCE_KEYS = new Set(["open", "focused", "guarded"]);
 const EXTRA_ELEMENTAL_REACTIONS = [
@@ -676,6 +648,7 @@ export function startCombat(state, enemyIds) {
   if (!enemyIds || enemyIds.length === 0) {
     return state;
   }
+  console.warn("[DEPRECATED] Legacy single-enemy combat in use. Migrate to skirmish via useSkirmishCombat config flag.");
   const enemies = enemyIds
     .map((id) => createEnemy(id))
     .filter((e) => e !== null)

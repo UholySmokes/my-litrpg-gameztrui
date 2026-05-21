@@ -3,13 +3,10 @@
 // Handles time-based mechanics for Nature Spirit, Shadow Walker, etc.
 // =================================================================
 
-import { emit } from "../../core/EventBus.js";
-import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
-import { regenerateMana } from "../magic/ManaSystem.js";
-import {
-  DEFAULT_START_ZONE_ID,
-  resolveZoneId,
-} from "../../world/WorldDataRegistry.js";
+import {emit} from "../../core/EventBus.js";
+import {SimBridge} from "../../simulation/bridge/SimulationContext.js";
+import {regenerateMana} from "../magic/ManaSystem.js";
+import {DEFAULT_START_ZONE_ID, resolveZoneId,} from "../../world/WorldDataRegistry.js";
 
 /**
  * TIME CONFIGURATION
@@ -436,7 +433,10 @@ export function processTimeEffects(state) {
   let combatLog = state.combat?.log ? [...state.combat.log] : [];
   let playerUpdates = {};
 
-  const manaRegenPerTurn = state.config?.manaRegenPerTurn ?? 0;
+  const baseRegen = state.config?.manaRegenPerTurn ?? 0;
+  const wisdom = player.attributes?.wisdom ?? 0;
+  const wisdomRegen = Math.floor(wisdom * 0.1);
+  const manaRegenPerTurn = baseRegen + wisdomRegen;
 
   if (
     manaRegenPerTurn > 0 &&

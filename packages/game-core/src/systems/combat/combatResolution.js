@@ -1,28 +1,25 @@
 import {
-  hasRaceTag,
   EFFECT_TAGS as RACE_EFFECT_TAGS,
   getRaceEntityTags,
+  hasRaceTag,
 } from "../../data/registries/RaceDataRegistry.js";
-import { getSetBonuses } from "../items/SetBonusSystem.js";
+import {getSetBonuses} from "../items/SetBonusSystem.js";
 import {
-  resolveBypasses,
-  applyCritOverride,
   applyCritMultiplier,
-  getMagnitudeCaps,
+  applyCritOverride,
   applyMagnitudeDamageCap,
+  getMagnitudeCaps,
+  resolveBypasses,
 } from "../skills/TalentManager.js";
-import { hasEffectTag, getEffectTagMagnitude } from "../effects/EffectSystem.js";
-import {
-  ensureAttributeShape,
-  getAttributeValue,
-} from "../../utils/AttributeMath.js";
-import { getEffectiveAttributes, getTitleBonuses } from "../titles/TitleSystem.js";
-import { random } from "../../utils/DeterministicRandom.js";
-import { emit } from "../../core/EventBus.js";
-import { getRageMultipliers } from "../class/RageSystem.js";
-import { getComboMultiplier } from "../class/ChiSystem.js";
-import { allowsZeroDamage, toNumberSafe } from "./combatPreparation.js";
-import { hasCreationPerk } from "../../core/creationPerks.js";
+import {getEffectTagMagnitude, hasEffectTag} from "../effects/EffectSystem.js";
+import {ensureAttributeShape, getAttributeValue,} from "../../utils/AttributeMath.js";
+import {getEffectiveAttributes, getTitleBonuses} from "../titles/TitleSystem.js";
+import {random} from "../../utils/DeterministicRandom.js";
+import {emit} from "../../core/EventBus.js";
+import {getRageMultipliers} from "../class/RageSystem.js";
+import {getComboMultiplier} from "../class/ChiSystem.js";
+import {allowsZeroDamage, toNumberSafe} from "./combatPreparation.js";
+import {hasCreationPerk} from "../../core/creationPerks.js";
 
 const buildCombatSnapshot = (attacker, defender, skill = null, config = {}) => {
   const isPlayer = Boolean(attacker?.race);
@@ -212,8 +209,9 @@ export function calculateDamage(attacker, defender, skill = null, config = {}) {
       attacker.race &&
       hasRaceTag(attacker.race.id, "CRIT_DMG_BOOST")
     ) {
-      critMultiplier = 1.7;
+      critMultiplier += 0.2;
     }
+    critMultiplier += luck * 0.005;
     damage = Math.floor(damage * critMultiplier);
     messages.push("Critical Hit!");
   }
@@ -222,14 +220,16 @@ export function calculateDamage(attacker, defender, skill = null, config = {}) {
   const defenseValue = Number.isFinite(defenseInput)
     ? defenseInput
     : Number(getAttributeValue(snapshot.defenderStats, "strength") || 0);
-  let finalDefense = Math.floor(defenseValue * snapshot.defenseReductionFactor);
+  let effectiveDefense = defenseValue;
   const defenseDown = getEffectTagMagnitude(defender, "DEFENSE_DOWN");
   if (defenseDown) {
-    finalDefense = Math.max(0, Math.floor(finalDefense * (1 - defenseDown)));
+    effectiveDefense = Math.max(0, Math.floor(effectiveDefense * (1 - defenseDown)));
     messages.push(`Defense Down: -${Math.round(defenseDown * 100)}%`);
   }
 
-  let finalDamage = Math.max(minDamage, damage - finalDefense);
+  const reductionRatio = effectiveDefense / (effectiveDefense + 50);
+  let finalDamage = Math.max(minDamage, Math.floor(damage * (1 - reductionRatio)));
+  messages.push(`DR: ${Math.round(reductionRatio * 100)}% mitigated`);
   const element = skill ? skill.element : "physical";
   if (defender.race) {
     const raceId = defender.race.id;
@@ -415,15 +415,17 @@ export function calculateDamagePipeline(
   const defenseValue = Number.isFinite(defenseInput)
     ? defenseInput
     : Number(getAttributeValue(snapshot.defenderStats, "strength") || 0);
-  let defense = Math.floor(defenseValue * snapshot.defenseReductionFactor);
-  const defReasons = [`Defense ${defense}`];
+  let effectiveDefense = defenseValue;
+  const defReasons = [`Defense ${defenseValue}`];
   const defenseDown = getEffectTagMagnitude(defender, "DEFENSE_DOWN");
   if (defenseDown) {
-    defense = Math.max(0, Math.floor(defense * (1 - defenseDown)));
+    effectiveDefense = Math.max(0, Math.floor(effectiveDefense * (1 - defenseDown)));
     defReasons.push(`Defense Down -${Math.round(defenseDown * 100)}%`);
   }
 
-  let afterMitigation = Math.max(minDamage, afterAttackers - defense);
+  const reductionRatio = effectiveDefense / (effectiveDefense + 50);
+  let afterMitigation = Math.max(minDamage, Math.floor(afterAttackers * (1 - reductionRatio)));
+  defReasons.push(`DR ${Math.round(reductionRatio * 100)}%`);
   const element = skill ? skill.element : "physical";
   if (
     element === "fire" &&

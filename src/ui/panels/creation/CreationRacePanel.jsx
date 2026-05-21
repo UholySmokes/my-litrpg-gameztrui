@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import {useMemo, useState} from "react";
 import {
   getCharacterCreationRaceAbilitySummaries,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
-import { CANONICAL_ATTRIBUTES } from "../../../constants/attributes.js";
+import {BEGINNER_RECOMMENDED_RACES} from "../../../data/registries/RaceDataRegistry.js";
+import {CANONICAL_ATTRIBUTES} from "../../../constants/attributes.js";
 
 const RACE_CATEGORIES = {
   "Human Variants": ["pure_human", "neo_human", "ancient_bloodline"],
@@ -271,17 +272,38 @@ export default function CreationRacePanel({
                           gap: "0.35rem",
                         }}
                       >
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <span style={{ fontWeight: "bold", letterSpacing: "1px" }}>{race.name.toUpperCase()}</span>
-                          <div style={{ display: "flex", gap: "0.35rem", alignItems: "center" }}>
+                        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                          <span style={{fontWeight: "bold", letterSpacing: "1px"}}>{race.name.toUpperCase()}</span>
+                          <div style={{display: "flex", gap: "0.35rem", alignItems: "center"}}>
+                            {BEGINNER_RECOMMENDED_RACES.has(race.id) && (
+                              <span style={{
+                                fontSize: "0.5rem",
+                                color: "#96F2D7",
+                                fontWeight: "bold",
+                                padding: "0.08rem 0.3rem",
+                                background: "rgba(150, 242, 215, 0.12)",
+                                border: "1px solid rgba(150, 242, 215, 0.25)",
+                                borderRadius: "3px"
+                              }}>
+                                  BEGINNER FRIENDLY
+                                </span>
+                            )}
                             {recommended.has(race.id) ? (
-                              <span style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-end" }}>
-                                <span style={{ fontSize: "0.55rem", color: "#8CE99A", fontWeight: "bold" }}>SYSTEM MATCH</span>
-                                <span style={{ fontSize: "0.45rem", color: "#8CE99A", opacity: 0.7 }}>Favored by your bound system</span>
-                              </span>
+                              <span style={{display: "inline-flex", flexDirection: "column", alignItems: "flex-end"}}>
+                                  <span style={{
+                                    fontSize: "0.55rem",
+                                    color: "#8CE99A",
+                                    fontWeight: "bold"
+                                  }}>SYSTEM MATCH</span>
+                                  <span style={{fontSize: "0.45rem", color: "#8CE99A", opacity: 0.7}}>Favored by your bound system</span>
+                                </span>
                             ) : null}
                             {isSelected && (
-                              <span style={{ fontSize: "0.55rem", color: "var(--holo-gold)", fontWeight: "bold" }}>SELECTED</span>
+                              <span style={{
+                                fontSize: "0.55rem",
+                                color: "var(--holo-gold)",
+                                fontWeight: "bold"
+                              }}>SELECTED</span>
                             )}
                           </div>
                         </div>

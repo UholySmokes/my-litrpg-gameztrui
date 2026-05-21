@@ -5,31 +5,31 @@ import {
   Entity,
   EntityDeathEvent,
   EntityId,
+  EquipItemCommand,
   Event,
   HealEvent,
+  MagicAnchorCommand,
+  MagicAttuneCommand,
+  MagicCompressCommand,
+  MagicDrawCommand,
+  MagicPurgeCommand,
+  MagicRefineCommand,
+  MagicReleaseCommand,
+  MagicSenseCommand,
+  MagicShapeCommand,
+  MagicWeaveCommand,
+  MoveCommand,
+  RestCommand,
   SkillUsedEvent,
-  StateChangedEvent,
   StatBlock,
   StatChangedEvent,
+  StateChangedEvent,
   Tick,
   UseItemCommand,
   UseSkillCommand,
-  MoveCommand,
-  EquipItemCommand,
-  RestCommand,
-  MagicSenseCommand,
-  MagicAttuneCommand,
-  MagicDrawCommand,
-  MagicRefineCommand,
-  MagicCompressCommand,
-  MagicShapeCommand,
-  MagicWeaveCommand,
-  MagicAnchorCommand,
-  MagicPurgeCommand,
-  MagicReleaseCommand,
 } from "../types/core";
-import { spendActionPoints } from "./ActionScheduler";
-import { applyEffect as applySimulationEffect } from "../effects/EffectEngine";
+import {spendActionPoints} from "./ActionScheduler";
+import {applyEffect as applySimulationEffect} from "../effects/EffectEngine";
 
 const STACKING_RULES = {
   DONT_STACK: "DONT_STACK",
@@ -697,10 +697,12 @@ export function resolveUseSkillCommand(
     updatedAttacker.stats.attackPower + updatedAttacker.stats.strength * 0.5;
   const defense =
     updatedTarget.stats.defense + updatedTarget.stats.constitution * 0.3;
-  const baseDamage = Math.max(1, Math.floor(attackPower - defense * 0.5));
+  const reductionRatio = defense / (defense + 50);
+  const baseDamage = Math.max(1, Math.floor(attackPower * (1 - reductionRatio)));
   const critChance = clamp(updatedAttacker.stats.criticalChance ?? 0, 0, 1);
   const isCritical = ctx.rng() < critChance;
-  const critMultiplier = updatedAttacker.stats.criticalMultiplier || 1.5;
+  const luck = updatedAttacker.stats.luck ?? 0;
+  const critMultiplier = (updatedAttacker.stats.criticalMultiplier || 1.5) + luck * 0.005;
   const finalDamage = Math.max(
     0,
     Math.floor(baseDamage * (isCritical ? critMultiplier : 1)),

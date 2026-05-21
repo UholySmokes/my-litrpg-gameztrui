@@ -1,6 +1,7 @@
 import {
   getCharacterCreationClassAbilitySummaries,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
+import {getSpecializationsFor} from "../../../data/registries/ClassDataRegistry.js";
 
 const RESOURCE_COLORS = {
   rage: "#FF6B6B",
@@ -187,6 +188,46 @@ export default function CreationClassPanel({
                   </span>
                 )}
               </div>
+
+              {/* Evolution tree */}
+              {(() => {
+                const evos = getSpecializationsFor(cls.id);
+                if (!evos || evos.length === 0) return null;
+                return (
+                  <div style={{
+                    marginTop: "0.25rem",
+                    fontSize: "0.55rem",
+                    color: "var(--text-dim)",
+                    borderTop: "1px solid rgba(0,243,255,0.1)",
+                    paddingTop: "0.25rem"
+                  }}>
+                    <span style={{color: "#E599F7", fontWeight: "bold"}}>Evolution Paths (Lv 12+):</span>
+                    <div style={{display: "flex", gap: "0.3rem", flexWrap: "wrap", marginTop: "0.1rem"}}>
+                      {evos.map((evo) => {
+                        const req = evo.requirements || {};
+                        const parts = [];
+                        if (req.minLevel) parts.push(`Lv ${req.minLevel}`);
+                        if (req.minTotalKills) parts.push(`${req.minTotalKills} kills`);
+                        if (req.minAttributes) {
+                          for (const [attr, val] of Object.entries(req.minAttributes)) {
+                            parts.push(`${attr.slice(0, 3).toUpperCase()} ${val}`);
+                          }
+                        }
+                        return (
+                          <span key={evo.id} style={{
+                            padding: "0.1rem 0.3rem",
+                            background: "rgba(229, 153, 247, 0.1)",
+                            border: "1px solid rgba(229, 153, 247, 0.2)",
+                            borderRadius: "3px"
+                          }}>
+                            {evo.name}{parts.length > 0 ? ` (${parts.join(", ")})` : ""}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
             </button>
           );
         })}

@@ -1,6 +1,7 @@
-import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
-import { hasEffectTag, getEffectTagMagnitude } from "../effects/EffectSystem.js";
-import { hasCreationPerk } from "../../core/creationPerks.js";
+import {SimBridge} from "../../simulation/bridge/SimulationContext.js";
+import {getEffectTagMagnitude, hasEffectTag} from "../effects/EffectSystem.js";
+import {hasCreationPerk} from "../../core/creationPerks.js";
+import {hasRaceTag} from "../../data/registries/RaceDataRegistry.js";
 
 export const toNumberSafe = (value, fallback = 0) =>
   Number.isFinite(value) ? value : fallback;
@@ -94,8 +95,14 @@ export const applyHealToPlayer = (player, heal) => {
   const maxHp = player.hp.max || 0;
   const flat = Number.isFinite(heal.flat) ? heal.flat : 0;
   const percent = Number.isFinite(heal.percent) ? heal.percent : 0;
-  const amount = Math.max(0, Math.floor(flat + maxHp * percent));
+  let amount = Math.max(0, Math.floor(flat + maxHp * percent));
   if (amount <= 0) return player;
+  if (player.race && hasRaceTag(player.race.id, "HEAL_MALUS")) {
+    amount = Math.floor(amount * 0.5);
+  }
+  if (player.race && hasRaceTag(player.race.id, "HEAL_BOOST")) {
+    amount = Math.floor(amount * 1.2);
+  }
   const nextHp = Math.min(maxHp, player.hp.current + amount);
   return {
     ...player,

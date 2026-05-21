@@ -4,13 +4,21 @@
 // Migrated from: src/systems/race/RaceRegistry.js, src/systems/skills/TalentDefinitions.js
 // =================================================================
 
-import { random, randomChoice } from "../../utils/DeterministicRandom.js";
-import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
+import {random, randomChoice} from "../../utils/DeterministicRandom.js";
+import {SimBridge} from "../../simulation/bridge/SimulationContext.js";
 
 /**
  * EFFECT TAG DEFINITIONS
  * Standardized tags for the combat system to interpret.
  */
+export const BEGINNER_RECOMMENDED_RACES = new Set([
+  "pure_human",
+  "dragon_blood",
+  "nature_spirit",
+  "celestial_descendant",
+  "beast_kin",
+]);
+
 export const EFFECT_TAGS = {
   // Defensive
   IMMUNE_BLEED: "IMMUNE_BLEED",

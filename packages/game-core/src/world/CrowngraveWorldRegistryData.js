@@ -503,6 +503,11 @@ const LEGACY_LOCATION_ALIASES = freezeObject({
   lucent_verge_gateway: freezeObject(["dreamscape_wisp_meadow", "dreamscape_mnemonic_siltbank", "dreamscape_mirrorpool_thin_place", "dreamscape_lucid_switchyard"]),
 });
 
+export const COMMON_LOCATION_KEYWORD_ALIASES = freezeObject({
+  temple: "city_sunspire_temple",
+  forge: "mountain_starforge_foundry",
+});
+
 function buildConnectionsById() {
   const map = new Map(LANDMASS_DATA.map((entry) => [entry.id, new Set()]));
   CONNECTION_PAIRS.forEach(([left, right]) => {
@@ -655,6 +660,15 @@ export const DEFAULT_WORLD_LOCATIONS = freezeObject(
     createLocation(entry, "gateway"),
     createLocation(entry, "death_zone"),
     createLocation(entry, "mystical_place"),
+  ]).concat([
+    freezeObject({
+      id: "skydocks_drydock_seven",
+      zoneId: "skybound_marches",
+      name: "Drydock Seven",
+      summary: "A massive floating drydock where airships are repaired and refitted.",
+      aliases: freezeObject(["drydock seven", "drydock"]),
+      travelPolicy: "public",
+    }),
   ]),
 );
 

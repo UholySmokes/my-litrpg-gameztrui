@@ -1,8 +1,5 @@
-import { describe, expect, it } from "@jest/globals";
-import {
-  buildCreationChamberManifest,
-  validateCreationChamber,
-} from "../../src/ui/modes/creationChamberManifest.js";
+import {describe, expect, it} from "@jest/globals";
+import {buildCreationChamberManifest, validateCreationChamber,} from "../../src/ui/modes/creationChamberManifest.js";
 
 describe("creation chamber manifest", () => {
   it("omits advanced-only steps in basic mode", () => {
@@ -45,7 +42,7 @@ describe("creation chamber manifest", () => {
       }),
     ).toEqual({
       valid: false,
-      error: "Bind a governing system to proceed. Your designation is set.",
+      error: "A ruling system must be bound before the descent can continue.",
     });
 
     expect(
@@ -58,7 +55,7 @@ describe("creation chamber manifest", () => {
       }),
     ).toEqual({
       valid: false,
-      error: "Choose an alignment to complete the Soul Crucible.",
+      error: "Choose the moral current that will color the chronicle's opening pressure.",
     });
   });
 

@@ -11,7 +11,7 @@ import {
   moveSkirmishUnit,
   selectSkirmishTarget,
   selectSkirmishUnit,
-  skirmishUseItem,
+  useSkirmishItem as skirmishUseItem,
   waitSkirmishTurn,
 } from "../../systems/skirmish/SkirmishSystem.js";
 import {isSkirmishCombat} from "../../systems/skirmish/SkirmishState.js";

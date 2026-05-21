@@ -1,7 +1,7 @@
-import { describe, it, expect } from "@jest/globals";
-import { executeAction } from "../../packages/game-core/src/core/ActionDispatcher.js";
-import { initialGameState } from "../../packages/game-core/src/data/initialState.js";
-import { startCombat } from "../../packages/game-core/src/systems/combat/CombatSystem.js";
+import {describe, expect, it} from "@jest/globals";
+import {executeAction} from "../../packages/game-core/src/core/ActionDispatcher.js";
+import {initialGameState} from "../../packages/game-core/src/data/initialState.js";
+import {startCombat} from "../../packages/game-core/src/systems/combat/CombatSystem.js";
 
 describe("ActionDispatcher", () => {
   const baseState = {
@@ -417,7 +417,11 @@ describe("ActionDispatcher", () => {
     it("refines reserves into a charge", () => {
       const state = {
         ...baseState,
-        config: { ...baseState.config, manaRegenPerTurn: 0 },
+        config: {
+          ...baseState.config,
+          manaRegenPerTurn: 0,
+          magicRollout: {layerA: true, layerB: true, layerC: true, layerD: true}
+        },
         world: {
           ...baseState.world,
           turnCount: 0,
@@ -448,7 +452,11 @@ describe("ActionDispatcher", () => {
     it("purges contamination from reserves taint", () => {
       const state = {
         ...baseState,
-        config: { ...baseState.config, manaRegenPerTurn: 0 },
+        config: {
+          ...baseState.config,
+          manaRegenPerTurn: 0,
+          magicRollout: {layerA: true, layerB: true, layerC: true, layerD: true}
+        },
         world: { ...baseState.world, turnCount: 3 },
         player: {
           ...baseState.player,

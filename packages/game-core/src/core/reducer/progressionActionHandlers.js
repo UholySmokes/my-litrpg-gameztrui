@@ -1,19 +1,16 @@
-import { DataRegistry } from "../../data/DataRegistry.js";
-import { xpForNextLevel } from "../xpCurve.js";
-import { performLevelUp } from "../../systems/leveling/LevelingManager.js";
-import { toCanonicalAttributeKey } from "../../constants/attributes.js";
-import {
-  applyRaceEvolution,
-  getRaceEvolutionOptions,
-} from "../../data/registries/RaceDataRegistry.js";
+import {DataRegistry} from "../../data/DataRegistry.js";
+import {xpForNextLevel} from "../xpCurve.js";
+import {performLevelUp} from "../../systems/leveling/LevelingManager.js";
+import {toCanonicalAttributeKey} from "../../constants/attributes.js";
+import {applyRaceEvolution, getRaceEvolutionOptions,} from "../../data/registries/RaceDataRegistry.js";
 import {
   buyPrestigeUpgrade,
   defaultPrestigeStats,
   performPrestigeReset,
   PRESTIGE_MIN_LEVEL,
 } from "../../systems/PrestigeSystem";
-import { updatePlayerVitals } from "../PlayerVitals.js";
-import { applyAutoTitleUnlocks } from "../../systems/titles/TitleApplication.js";
+import {updatePlayerVitals} from "../PlayerVitals.js";
+import {applyAutoTitleUnlocks} from "../../systems/titles/TitleApplication.js";
 import {
   getProgressionModifiers,
   isPlainObject,
@@ -62,7 +59,16 @@ export function handleProgressionAction(state, action, helpers) {
       };
       // Check base requirements
       if (!meetsRequirements(mergedRequirements, state, player)) return state;
-      // TODO: Check loreReqs (faction rep, quest flags, etc.)
+      // Check loreReqs (faction rep, quest flags, etc.)
+      if (selectedOption.loreReqs && typeof selectedOption.loreReqs === 'object') {
+        const loreReqKeys = Object.keys(selectedOption.loreReqs);
+        if (loreReqKeys.length > 0) {
+          // Lore requirements not yet fully implemented - for now, only allow evolution if loreReqs is empty
+          // TODO: Implement full loreReqs checking for faction, quest, item, mastery requirements
+          console.warn(`Class evolution has unimplemented loreReqs: ${loreReqKeys.join(', ')}`);
+          return state;
+        }
+      }
 
       const history = Array.isArray(progress.classEvolutionHistory)
         ? [...progress.classEvolutionHistory]

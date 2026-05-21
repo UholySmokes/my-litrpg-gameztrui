@@ -1,23 +1,16 @@
 // QuestManager.js - Manages quest generation and assignment
-import { BEGINNER_QUESTS, MAIN_QUESTS, SIDE_QUESTS } from "../../data/QuestCatalog.js";
-import { DataRegistry } from "../../data/DataRegistry.js";
-import { randomInt } from "../../utils/DeterministicRandom.js";
-import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
-import {
-  getPlayerArchetypeSystemId,
-  resolvePlayerArchetypeSystem,
-} from "../archetype/resolvePlayerArchetypeSystem.js";
-import { getOpeningArcForPlayer } from "../../world/OpeningArcRegistry.js";
-import {
-  createOpeningTutorialQuest,
-  getOpeningTutorialBundle,
-} from "../../world/OpeningTutorialBundleRegistry.js";
-import { resolveZoneId } from "../../world/WorldDataRegistry.js";
+import {BEGINNER_QUESTS, MAIN_QUESTS, SIDE_QUESTS} from "../../data/QuestCatalog.js";
+import {randomInt} from "../../utils/DeterministicRandom.js";
+import {SimBridge} from "../../simulation/bridge/SimulationContext.js";
+import {getPlayerArchetypeSystemId, resolvePlayerArchetypeSystem,} from "../archetype/resolvePlayerArchetypeSystem.js";
+import {getOpeningArcForPlayer} from "../../world/OpeningArcRegistry.js";
+import {createOpeningTutorialQuest, getOpeningTutorialBundle,} from "../../world/OpeningTutorialBundleRegistry.js";
+import {resolveZoneId} from "../../world/WorldDataRegistry.js";
 
 const TUTORIAL_QUEST_IDS = [
   "bq_first_stride",
-  "bq_system_basics",
   "bq_first_conflict",
+  "bq_system_basics",
 ];
 
 export class QuestManager {

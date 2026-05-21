@@ -96,6 +96,7 @@ export function createWorldRegistryRuntime({
   zones = [],
   locations = [],
   defaultStartLocationId = null,
+                                             commonLocationKeywordAliases = {},
 } = {}) {
   const factionById = new Map();
   const zoneById = new Map();
@@ -322,6 +323,14 @@ export function createWorldRegistryRuntime({
         Array.isArray(ids)
           ? ids.filter((id) => !allowedSet || allowedSet.has(id))
           : [];
+
+      // Check common keyword aliases first
+      if (commonLocationKeywordAliases && commonLocationKeywordAliases[rawLower]) {
+        const keywordLocationId = commonLocationKeywordAliases[rawLower];
+        if (!allowedSet || allowedSet.has(keywordLocationId)) {
+          return keywordLocationId;
+        }
+      }
 
       if ((!allowedSet || allowedSet.has(rawLower)) && locationById.has(rawLower)) {
         return rawLower;

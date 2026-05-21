@@ -1,16 +1,16 @@
-import { afterEach, describe, expect, it } from "@jest/globals";
+import {afterEach, describe, expect, it} from "@jest/globals";
 import {
   DEFAULT_START_LOCATION_ID,
   factions,
-  zones,
-  locations,
-  setWorldRegistry,
+  findLocationsByZone,
+  getFactionSummaries,
   getLocationById,
   getLocationSummaries,
   getZoneSummaries,
-  getFactionSummaries,
-  findLocationsByZone,
+  locations,
   resolveLocationId,
+  setWorldRegistry,
+  zones,
 } from "../../src/world/WorldDataRegistry.js";
 
 let worldSnapshot = null;
@@ -62,8 +62,8 @@ describe("world registry runtime", () => {
     expect(locationSummary).toEqual(
       expect.objectContaining({
         id: DEFAULT_START_LOCATION_ID,
-        name: "Neon Bazaar",
-        zoneId: "city",
+        name: "Gilt Causeway",
+        zoneId: "auric_crown",
         travelPolicy: "public",
       }),
     );
@@ -71,7 +71,7 @@ describe("world registry runtime", () => {
 
     expect(zoneSummary).toEqual(
       expect.objectContaining({
-        id: "city",
+        id: "auric_crown",
         name: expect.any(String),
         connections: expect.any(Array),
       }),
@@ -90,7 +90,7 @@ describe("world registry runtime", () => {
     expect(locations.length).toBeGreaterThanOrEqual(39);
     expect(getLocationById("skydocks_drydock_seven")).toEqual(
       expect.objectContaining({
-        zoneId: "skydocks",
+        zoneId: "skybound_marches",
         name: "Drydock Seven",
       }),
     );

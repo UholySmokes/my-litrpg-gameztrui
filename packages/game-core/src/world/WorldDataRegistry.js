@@ -1,6 +1,7 @@
-import { createWorldRegistryRuntime } from "./WorldRegistryRuntime.js";
+import {createWorldRegistryRuntime} from "./WorldRegistryRuntime.js";
 import {
   BIOME_ESSENCE_PROFILES,
+  COMMON_LOCATION_KEYWORD_ALIASES,
   DEFAULT_START_LOCATION_ID,
   DEFAULT_START_ZONE_ID,
   DEFAULT_WORLD_FACTIONS,
@@ -18,6 +19,7 @@ import {
 
 export {
   BIOME_ESSENCE_PROFILES,
+  COMMON_LOCATION_KEYWORD_ALIASES,
   DEFAULT_START_LOCATION_ID,
   DEFAULT_START_ZONE_ID,
   ESSENCE_ANOMALY_DEFS,
@@ -39,6 +41,7 @@ let worldRuntime = createWorldRegistryRuntime({
   zones,
   locations,
   defaultStartLocationId: DEFAULT_START_LOCATION_ID,
+  commonLocationKeywordAliases: COMMON_LOCATION_KEYWORD_ALIASES,
 });
 
 export function getRareEssenceSourceById(id) {

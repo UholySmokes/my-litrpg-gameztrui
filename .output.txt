@@ -1,0 +1,200 @@
+Command finished with exit code 1.
+Command output:
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by net.rubygrapefruit.platform.internal.NativeLibraryLoader in an unnamed module (file:/home/aena/.gradle/wrapper/dists/gradle-8.11.1-bin/bpt9gzteqjrbo1mjrsomdt32c/gradle-8.11.1/lib/native-platform-0.22-milestone-26.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+
+> Configure project :
+WARNING: The option setting 'android.overridePathCheck=true' is experimental.
+The current default is 'false'.
+
+> Task :clean
+> Task :assetPackInstallTime:clean
+
+BUILD SUCCESSFUL in 1s
+2 actionable tasks: 2 executed
+
+> my-litrpg-game@0.0.0 android:export:release
+> npm run generate:godot-config:prod && node scripts/export-godot-android.mjs --preset "Android Release Candidate" --mode release --output "build/android/release-candidate.aab"
+
+
+> my-litrpg-game@0.0.0 generate:godot-config:prod
+> npm run generate:godot-character-options && node scripts/generate-godot-config.js --profile production
+
+
+> my-litrpg-game@0.0.0 generate:godot-character-options
+> node scripts/generate-godot-character-options.mjs
+
+[godot-character-options] wrote godot/data/character_options.json with 24 systems
+[godot-config] wrote godot/data/config.json from dist/runtime-config.js (profile=production)
+[android-export] configured Godot editor settings -> /home/aena/.config/godot/editor_settings-4.6.tres
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:4 - ext_resource, invalid UID: uid://dp3nkgnpb61vc - using text path instead: res://addons/quarkphysics/src/icon_select_tool.svg
+Godot Engine v4.6.2.stable.fedora.71f334935 - https://godotengine.org
+     at: load (scene/resources/resource_format_text.cpp:500)
+
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:5 - ext_resource, invalid UID: uid://dxqm8s0qwcci - using text path instead: res://addons/quarkphysics/src/icon_particle_tool.svg
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Projektinitialisierung (5 steps)[39m[0m
+     at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:6 - ext_resource, invalid UID: uid://4flsqjsp3hwi - using text path instead: res://addons/quarkphysics/src/icon_spring_tool.svg
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Lese Dateistrucktur …[39m[0m
+     at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:7 - ext_resource, invalid UID: uid://cq6tapejdqkxs - using text path instead: res://addons/quarkphysics/src/icon_polygon_tool.svg
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Globale Klassennamen laden …[39m[0m
+     at: load (scene/resources/resource_format_text.cpp:500)
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifiziere GDExtensions…[39m[0m
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:8 - ext_resource, invalid UID: uid://24koqbn2wrt6 - using text path instead: res://addons/quarkphysics/src/icon_uv_tool.svg
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Autoload-Skripte erzeugen …[39m[0m
+     at: load (scene/resources/resource_format_text.cpp:500)
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Plugins initialisieren…[39m[0m
+ERROR: Cannot export project with preset "Android Release Candidate" due to configuration errors:
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Dateiscan starten …[39m[0m
+Android build version mismatch:
+| Template installed: 4.6.1.stable
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+| Requested version: 4.6.2.stable
+[0m
+Please reinstall Android build template from 'Project' menu.
+
+   at: _fs_changed (editor/editor_node.cpp:1332)
+ERROR: Project export for preset "Android Release Candidate" failed.
+   at: _fs_changed (editor/editor_node.cpp:1348)
+WARNING: 10 RIDs of type "CanvasItem" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2692)
+ERROR: 10 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 85 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+ERROR: 19 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced27FontAdvancedLinkedVariationE' were leaked at exit.
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2641)
+ERROR: 3 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:810)
+[android-export] direct Godot export failed for "Android Release Candidate". Falling back to Gradle assembly.
+Godot Engine v4.6.2.stable.fedora.71f334935 - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Projektinitialisierung (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Lese Dateistrucktur …[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Globale Klassennamen laden …[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifiziere GDExtensions…[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Autoload-Skripte erzeugen …[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Plugins initialisieren…[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Dateiscan starten …[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1msavepack[22m | Started Packe (102 steps)[39m[0m
+[   1% ] [90m[1msavepack[22m | Speichere Datei: res://.godot/exported/133200997/export-4a24720ee5e787dbe30abc634fa3679d-Main.scn[39m[0m
+[   8% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/world_controller.gdc[39m[0m
+[  15% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/firebase_auth_client.gdc[39m[0m
+[  22% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/sync_client.gdc[39m[0m
+[  29% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/trigger_queue.gdc[39m[0m
+[  35% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/prose_panel.gdc[39m[0m
+[  42% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/config_loader.gdc[39m[0m
+[  50% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/story_client.gdc[39m[0m
+[  57% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/pixel_map_renderer.gdc[39m[0m
+[  64% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/telemetry_reporter.gdc[39m[0m
+[  70% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/character_creation_controller.gdc[39m[0m
+[  77% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/character_creation_panel.gdc[39m[0m
+[  84% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/character_creation_summary_panel.gdc[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: uid://yxgy7tvjpvc7[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scenes/Main.tscn.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/world_controller.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/firebase_auth_client.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/sync_client.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/trigger_queue.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/prose_panel.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/config_loader.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/story_client.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/pixel_map_renderer.gd.remap[39m[0m
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:4 - ext_resource, invalid UID: uid://dp3nkgnpb61vc - using text path instead: res://addons/quarkphysics/src/icon_select_tool.svg
+     at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:5 - ext_resource, invalid UID: uid://dxqm8s0qwcci - using text path instead: res://addons/quarkphysics/src/icon_particle_tool.svg
+     at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:6 - ext_resource, invalid UID: uid://4flsqjsp3hwi - using text path instead: res://addons/quarkphysics/src/icon_spring_tool.svg
+     at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:7 - ext_resource, invalid UID: uid://cq6tapejdqkxs - using text path instead: res://addons/quarkphysics/src/icon_polygon_tool.svg
+     at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: res://addons/quarkphysics/qmesh_editor/qmesh_editor_tool_bar.tscn:8 - ext_resource, invalid UID: uid://24koqbn2wrt6 - using text path instead: res://addons/quarkphysics/src/icon_uv_tool.svg
+     at: load (scene/resources/resource_format_text.cpp:500)
+WARNING: 10 RIDs of type "CanvasItem" were leaked.
+     at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2692)
+ERROR: 10 RID allocations of type 'PN13RendererDummy14TextureStorage12DummyTextureE' were leaked at exit.
+ERROR: 85 RID allocations of type 'PN18TextServerAdvanced22ShapedTextDataAdvancedE' were leaked at exit.
+ERROR: 19 RID allocations of type 'PN18TextServerAdvanced12FontAdvancedE' were leaked at exit.
+ERROR: 1 RID allocations of type 'PN18TextServerAdvanced27FontAdvancedLinkedVariationE' were leaked at exit.
+WARNING: ObjectDB instances leaked at exit (run with --verbose for details).
+     at: cleanup (core/object/object.cpp:2641)
+ERROR: 3 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:810)
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/telemetry_reporter.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/character_creation_controller.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/character_creation_panel.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://scripts/character_creation_summary_panel.gd.remap[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://.godot/global_script_class_cache.cfg[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://.godot/uid_cache.bin[39m[0m
+Using text server data from export templates.
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://icudt_godot.dat[39m[0m
+[  91% ] [90m[1msavepack[22m | Speichere Datei: res://project.binary[39m[0m
+[92m[ DONE ][39m [1msavepack[22m
+[0m
+[android-export] wrote /run/media/aena/73fd44e8-bc02-4ac8-923a-59b8e1ea6098/Ash /voidverse/godot/android/build/local.properties
+
+
+> Configure project :
+FAILURE: Build failed with an exception.
+WARNING: The option setting 'android.overridePathCheck=true' is experimental.
+
+The current default is 'false'.
+* What went wrong:
+
+Execution failed for task ':processStandardReleaseResources'.
+> Task :preBuild UP-TO-DATE
+> Could not resolve all files for configuration ':standardReleaseRuntimeClasspath'.
+> Task :preStandardReleaseBuild UP-TO-DATE
+   > Failed to transform godot-lib.template_release.aar to match attributes {artifactType=android-compiled-dependencies-resources}.
+> Task :assetPackInstallTime:generateAssetPackManifest
+      > Execution failed for AarResourcesCompilerTransform: /run/media/aena/73fd44e8-bc02-4ac8-923a-59b8e1ea6098/home_data/.gradle/caches/8.11.1/transforms/856b5bcd7124029c9ac005475f9e7f06/transformed/jetified-godot-lib.template_release.
+> Task :generateStandardReleaseResValues
+         > /run/media/aena/73fd44e8-bc02-4ac8-923a-59b8e1ea6098/home_data/.gradle/caches/8.11.1/transforms/856b5bcd7124029c9ac005475f9e7f06/transformed/jetified-godot-lib.template_release/AndroidManifest.xml
+> Task :processStandardReleaseAssetPackManifests
+
+> Task :mapStandardReleaseSourceSetPaths
+* Try:
+> Task :generateStandardReleaseResources
+> Run with --stacktrace option to get the stack trace.
+> Task :linkStandardReleaseManifestForAssetPacks
+> Run with --info or --debug option to get more log output.
+> Task :createStandardReleaseCompatibleScreenManifests
+> Run with --scan to get full insights.
+> Task :extractDeepLinksStandardRelease
+> Get more help at https://help.gradle.org.
+> Task :mergeStandardReleaseResources
+
+> Task :assetPackStandardReleasePreBundleTask
+BUILD FAILED in 2s
+
+> Task :processStandardReleaseMainManifest
+/run/media/aena/73fd44e8-bc02-4ac8-923a-59b8e1ea6098/Ash /voidverse/godot/android/build/src/release/AndroidManifest.xml:11:5-132 Warning:
+	uses-feature#android.hardware.vulkan.level was tagged at AndroidManifest.xml:11 to replace another declaration but no other declaration present
+/run/media/aena/73fd44e8-bc02-4ac8-923a-59b8e1ea6098/Ash /voidverse/godot/android/build/src/release/AndroidManifest.xml:12:5-140 Warning:
+	uses-feature#android.hardware.vulkan.version was tagged at AndroidManifest.xml:12 to replace another declaration but no other declaration present
+/run/media/aena/73fd44e8-bc02-4ac8-923a-59b8e1ea6098/Ash /voidverse/godot/android/build/src/release/AndroidManifest.xml:23:9-114 Warning:
+	meta-data#org.godotengine.rendering.method was tagged at AndroidManifest.xml:23 to replace another declaration but no other declaration present
+/run/media/aena/73fd44e8-bc02-4ac8-923a-59b8e1ea6098/Ash /voidverse/godot/android/build/src/release/AndroidManifest.xml:24:9-118 Warning:
+	meta-data#org.godotengine.editor.version was tagged at AndroidManifest.xml:24 to replace another declaration but no other declaration present
+
+> Task :processStandardReleaseManifest
+> Task :processApplicationManifestStandardReleaseForBundle
+> Task :checkStandardReleaseAarMetadata
+> Task :packageStandardReleaseResources
+> Task :extractStandardReleaseVersionControlInfo
+> Task :parseStandardReleaseLocalResources
+> Task :checkStandardReleaseDuplicateClasses
+[android-export] FAIL: Gradle fallback build failed for preset "Android Release Candidate".
+> Task :buildKotlinToolingMetadata
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :generateStandardReleaseBuildConfig
+> Task :processStandardReleaseManifestForPackage
+> Task :javaPreCompileStandardRelease
+> Task :processStandardReleaseResources FAILED
+23 actionable tasks: 23 executed

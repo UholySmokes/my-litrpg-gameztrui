@@ -642,13 +642,12 @@ function takeDamage(state, amount) {
  * Handles race-specific combat start effects (Mutant buffs, Elemental absorption)
  */
 export function startCombat(state, enemyIds) {
-  if (Array.isArray(enemyIds) && enemyIds.length > 1) {
+  if (Array.isArray(enemyIds) && enemyIds.length > 0) {
     return startSkirmishCombat(state, enemyIds);
   }
   if (!enemyIds || enemyIds.length === 0) {
     return state;
   }
-  console.warn("[DEPRECATED] Legacy single-enemy combat in use. Migrate to skirmish via useSkirmishCombat config flag.");
   const enemies = enemyIds
     .map((id) => createEnemy(id))
     .filter((e) => e !== null)

@@ -1,18 +1,20 @@
 import {
-  magicDraw,
-  magicSense,
-  magicRefine,
   ensureEssenceWeavingState,
-  processEssenceEcologyTurn,
   magicCompress,
-  magicWeave,
+  magicDraw,
   magicPurge,
+  magicRefine,
   magicRelease,
+  magicSense,
+  magicWeave,
+  processEssenceEcologyTurn,
 } from "../packages/game-core/src/systems/magic/EssenceWeavingSystem.js";
-import { SimBridge } from "../packages/game-core/src/simulation/bridge/SimulationContext.js";
+import {SimBridge} from "../packages/game-core/src/simulation/bridge/SimulationContext.js";
+import {INITIAL_CONFIG} from "../packages/game-core/src/data/initialState.js";
 
 function makeBaseState() {
   return {
+    config: INITIAL_CONFIG,
     player: {
       name: "Tester",
       hp: { current: 10, max: 10 },

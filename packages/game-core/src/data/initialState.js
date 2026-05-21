@@ -1,15 +1,11 @@
-import { xpForNextLevel } from "../core/xpCurve.js";
-import { createInitialChronicleState } from "../chronicle/ChronicleRuntime.js";
-import { calculateMaxHp, calculateMaxMana } from "../utils/AttributeMath.js";
-import { createInitialWorldState } from "../world/WorldInitializer.js";
-import {
-  DEFAULT_ELEMENTAL_REACTIONS,
-  DEFAULT_XP_BRACKETS,
-  describeBalanceConfig,
-} from "./balance/balanceConfig.js";
+import {xpForNextLevel} from "../core/xpCurve.js";
+import {createInitialChronicleState} from "../chronicle/ChronicleRuntime.js";
+import {calculateMaxHp, calculateMaxMana} from "../utils/AttributeMath.js";
+import {createInitialWorldState} from "../world/WorldInitializer.js";
+import {DEFAULT_ELEMENTAL_REACTIONS, DEFAULT_XP_BRACKETS, describeBalanceConfig,} from "./balance/balanceConfig.js";
 import * as saveCutover from "../../../../shared/save-cutover.js";
-import { normalizeAbilityState } from "../systems/abilities/UnifiedAbilityEngine.js";
-import { createDefaultCombatState } from "../systems/skirmish/SkirmishState.js";
+import {normalizeAbilityState} from "../systems/abilities/UnifiedAbilityEngine.js";
+import {createDefaultCombatState} from "../systems/skirmish/SkirmishState.js";
 
 const { GAME_STATE_VERSION } = saveCutover;
 
@@ -38,6 +34,107 @@ export const INITIAL_CONFIG = {
     layerB: true,
     layerC: true,
     layerD: true,
+  },
+
+  magicBalance: {
+    formDefinitions: {
+      bolt: {baseMana: 8, baseStrain: 6, damage: 1.05, delivery: "instant", tags: []},
+      pulse: {baseMana: 10, baseStrain: 7, damage: 1.0, delivery: "instant", tags: []},
+      lance: {baseMana: 14, baseStrain: 9, damage: 1.25, delivery: "instant", tags: []},
+      cone: {baseMana: 13, baseStrain: 10, damage: 1.12, delivery: "instant", tags: ["AoE"]},
+      wall: {baseMana: 12, baseStrain: 8, damage: 0.7, delivery: "sustained", tags: []},
+      shield: {baseMana: 9, baseStrain: 6, damage: 0.55, delivery: "sustained", tags: []},
+      vortex: {baseMana: 16, baseStrain: 12, damage: 1.18, delivery: "sustained", tags: ["AoE"]},
+      veil: {baseMana: 11, baseStrain: 7, damage: 0.62, delivery: "sustained", tags: []},
+      lattice: {baseMana: 15, baseStrain: 11, damage: 1.08, delivery: "sustained", tags: []},
+    },
+    classProfiles: {
+      wanderer: {
+        manaMultiplier: 1,
+        strainMultiplier: 1,
+        potencyByEssence: {},
+      },
+      mage: {
+        manaMultiplier: 0.92,
+        strainMultiplier: 0.95,
+        potencyByEssence: {fire: 0.12, lightning: 0.14, shadow: 0.08},
+      },
+      battlemage: {
+        manaMultiplier: 0.96,
+        strainMultiplier: 0.9,
+        potencyByEssence: {fire: 0.1, earth: 0.08, lightning: 0.1},
+      },
+      priest: {
+        manaMultiplier: 0.94,
+        strainMultiplier: 0.92,
+        potencyByEssence: {light: 0.14, life: 0.14, water: 0.06},
+      },
+      druid: {
+        manaMultiplier: 0.95,
+        strainMultiplier: 0.94,
+        potencyByEssence: {life: 0.1, earth: 0.08, water: 0.08},
+      },
+      warlock: {
+        manaMultiplier: 1.02,
+        strainMultiplier: 0.96,
+        potencyByEssence: {shadow: 0.16, destruction: 0.14, fire: 0.08},
+      },
+      summoner: {
+        manaMultiplier: 0.98,
+        strainMultiplier: 0.93,
+        potencyByEssence: {life: 0.1, space: 0.12},
+      },
+      templar: {
+        manaMultiplier: 0.95,
+        strainMultiplier: 0.9,
+        potencyByEssence: {light: 0.12, fire: 0.08, earth: 0.08},
+      },
+    },
+    manaCostTiers: {
+      TIER_1: {min: 1, max: 20, description: "Basic attacks and utility"},
+      TIER_2: {min: 21, max: 50, description: "Core combat abilities"},
+      TIER_3: {min: 51, max: 100, description: "Strong AoE and control"},
+      TIER_4: {min: 101, max: 200, description: "High-impact ultimates"},
+      TIER_5: {min: 201, max: 500, description: "Game-changing effects"},
+      TIER_6: {min: 501, max: 1000, description: "Reality-bending powers"},
+      TIER_7: {min: 1001, max: 5000, description: "World-altering magic"},
+    },
+    manaCostMultipliers: {
+      LEVEL_MULTIPLIERS: {
+        1: 1.0,
+        101: 1.5,
+        201: 2.0,
+        301: 3.0,
+        401: 5.0,
+        501: 8.0,
+        601: 13.0,
+        701: 21.0,
+        801: 34.0,
+        901: 55.0,
+      },
+      TYPE_MULTIPLIERS: {
+        instant: 1.0,
+        channel: 0.8,
+        dot: 0.6,
+        aoe: 1.3,
+        single_target: 1.0,
+        buff: 0.7,
+        debuff: 0.9,
+        heal: 1.1,
+        utility: 0.5,
+      },
+      COOLDOWN_EFFICIENCY: {
+        0: 1.5,
+        1: 1.2,
+        3: 1.0,
+        5: 0.9,
+        10: 0.8,
+        20: 0.7,
+        30: 0.6,
+        60: 0.5,
+        120: 0.4,
+      },
+    },
   },
 
   xpBrackets: DEFAULT_XP_BRACKETS,

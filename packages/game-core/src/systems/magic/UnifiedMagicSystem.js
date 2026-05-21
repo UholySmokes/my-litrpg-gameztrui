@@ -23,7 +23,7 @@ const ESSENCE_ALIASES = {
   arcane: "creation",
 };
 
-const FORM_DEFINITIONS = {
+const FALLBACK_FORM_DEFINITIONS = {
   bolt: { baseMana: 8, baseStrain: 6, damage: 1.05, delivery: "instant", tags: [] },
   pulse: { baseMana: 10, baseStrain: 7, damage: 1.0, delivery: "instant", tags: [] },
   lance: { baseMana: 14, baseStrain: 9, damage: 1.25, delivery: "instant", tags: [] },
@@ -34,6 +34,10 @@ const FORM_DEFINITIONS = {
   veil: { baseMana: 11, baseStrain: 7, damage: 0.62, delivery: "sustained", tags: [] },
   lattice: { baseMana: 15, baseStrain: 11, damage: 1.08, delivery: "sustained", tags: [] },
 };
+
+function getFormDefinitions(state) {
+  return state?.config?.magicBalance?.formDefinitions || FALLBACK_FORM_DEFINITIONS;
+}
 
 const DEFAULT_DELIVERIES = ["instant", "sustained", "channeled"];
 
@@ -50,6 +54,49 @@ const BASE_PROFILE = Object.freeze({
   strainMultiplier: 1,
   potencyByEssence: {},
 });
+
+const FALLBACK_CLASS_PROFILES = {
+  wanderer: {
+    manaMultiplier: 1,
+    strainMultiplier: 1,
+    potencyByEssence: {},
+  },
+  mage: {
+    manaMultiplier: 0.92,
+    strainMultiplier: 0.95,
+    potencyByEssence: { fire: 0.12, lightning: 0.14, shadow: 0.08 },
+  },
+  battlemage: {
+    manaMultiplier: 0.96,
+    strainMultiplier: 0.9,
+    potencyByEssence: { fire: 0.1, earth: 0.08, lightning: 0.1 },
+  },
+  priest: {
+    manaMultiplier: 0.94,
+    strainMultiplier: 0.92,
+    potencyByEssence: { light: 0.14, life: 0.14, water: 0.06 },
+  },
+  druid: {
+    manaMultiplier: 0.95,
+    strainMultiplier: 0.94,
+    potencyByEssence: { life: 0.1, earth: 0.08, water: 0.08 },
+  },
+  warlock: {
+    manaMultiplier: 1.02,
+    strainMultiplier: 0.96,
+    potencyByEssence: { shadow: 0.16, destruction: 0.14, fire: 0.08 },
+  },
+  summoner: {
+    manaMultiplier: 0.98,
+    strainMultiplier: 0.93,
+    potencyByEssence: { life: 0.1, space: 0.12 },
+  },
+  templar: {
+    manaMultiplier: 0.95,
+    strainMultiplier: 0.9,
+    potencyByEssence: { light: 0.12, fire: 0.08, earth: 0.08 },
+  },
+};
 
 const CLASS_MAGIC_PROFILES = {
   wanderer: BASE_PROFILE,
@@ -118,6 +165,10 @@ const CLASS_MAGIC_PROFILES = {
   },
 };
 
+function getClassProfiles(state) {
+  return state?.config?.magicBalance?.classProfiles || FALLBACK_CLASS_PROFILES;
+}
+
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const toNumberSafe = (value, fallback = 0) =>
   Number.isFinite(value) ? Number(value) : fallback;
@@ -167,9 +218,16 @@ function getPlayerClassId(player) {
   return "wanderer";
 }
 
-function getClassProfile(player) {
+function getClassProfile(player, state) {
   const classId = getPlayerClassId(player);
-  return CLASS_MAGIC_PROFILES[classId] || BASE_PROFILE;
+  const classProfiles = getClassProfiles(state);
+  const biasProfile = classProfiles[classId] || classProfiles.wanderer || FALLBACK_CLASS_PROFILES.wanderer;
+  return {
+    ...BASE_PROFILE,
+    manaMultiplier: biasProfile.manaMultiplier,
+    strainMultiplier: biasProfile.strainMultiplier,
+    potencyByEssence: biasProfile.potencyByEssence || {},
+  };
 }
 
 function buildAffinityMap(rawAffinities, profile) {
@@ -381,6 +439,7 @@ function inferPattern(action) {
 function buildCanonicalRequest(action, state) {
   const player = state?.player || {};
   const magic = normalizeUnifiedMagicState(player.magic, { player });
+  const formDefs = getFormDefinitions(state);
   const usingPrepared =
     action?.usePrepared === true ||
     action?.type === "magic_release" ||
@@ -399,8 +458,8 @@ function buildCanonicalRequest(action, state) {
     typeof action?.form === "string" && action.form.trim()
       ? action.form.trim().toLowerCase()
       : "bolt";
-  const form = FORM_DEFINITIONS[formName] ? formName : "bolt";
-  const delivery = normalizeDelivery(action, FORM_DEFINITIONS[form]);
+  const form = formDefs[formName] ? formName : "bolt";
+  const delivery = normalizeDelivery(action, formDefs[form]);
   const scale = normalizeScale(action);
   const pattern = inferPattern(action);
 
@@ -471,8 +530,9 @@ function buildStatusEffects(primaryEssence, request) {
   }
 }
 
-function buildSyntheticSkill(request, resolution) {
-  const formDef = FORM_DEFINITIONS[request.form] || FORM_DEFINITIONS.bolt;
+function buildSyntheticSkill(request, resolution, state) {
+  const formDefs = getFormDefinitions(state);
+  const formDef = formDefs[request.form] || formDefs.bolt;
   const tags = [...(formDef.tags || [])];
   return {
     id: `unified_magic_${request.essences.join("_")}_${request.form}_${request.delivery}`,
@@ -513,18 +573,19 @@ function buildDisplayName(request) {
   return request.delivery === "sustained" ? `${label} Weaving` : label;
 }
 
-function normalizeMagicProfile(rawProfile) {
+function normalizeMagicProfile(rawProfile, state) {
   const profile =
     rawProfile && typeof rawProfile === "object" && !Array.isArray(rawProfile)
       ? rawProfile
       : null;
   if (!profile) return null;
 
+  const formDefs = getFormDefinitions(state);
   const essences = normalizeEssenceList(profile.essences);
   const formCandidate =
     typeof profile.form === "string" ? profile.form.trim().toLowerCase() : "bolt";
-  const form = FORM_DEFINITIONS[formCandidate] ? formCandidate : "bolt";
-  const delivery = normalizeDelivery(profile, FORM_DEFINITIONS[form]);
+  const form = formDefs[formCandidate] ? formCandidate : "bolt";
+  const delivery = normalizeDelivery(profile, formDefs[form]);
 
   return {
     essences,
@@ -544,9 +605,9 @@ function normalizeMagicProfile(rawProfile) {
 }
 
 function buildRequestFromMagicProfile(skill, state) {
-  void state;
   const profile = normalizeMagicProfile(
     skill?.magicProfile || skill?.template?.meta?.magicProfile,
+    state,
   );
   if (!profile || profile.essences.length === 0) return null;
 
@@ -609,7 +670,8 @@ function computeResolution(state, request) {
     return { ok: false, reason: validationError, magic };
   }
 
-  const formDef = FORM_DEFINITIONS[request.form] || FORM_DEFINITIONS.bolt;
+  const formDefs = getFormDefinitions(state);
+  const formDef = formDefs[request.form] || formDefs.bolt;
   const ambientPotency = getAmbientPotency(state, request.primaryEssence);
   const attunement = getAttunementMultipliers(magic, request);
   const classBias = magic.classBias || {};
@@ -895,7 +957,7 @@ export function buildCombatMagicSkill(state, action) {
     syntheticSkill: buildSyntheticSkill(resolution.request, {
       ...resolution,
       attackerMagic,
-    }),
+    }, state),
   };
 }
 
@@ -960,4 +1022,4 @@ export function translateLegacyMagicAction(action) {
   }
 }
 
-export { MAGIC_ESSENCES, FORM_DEFINITIONS };
+export {MAGIC_ESSENCES, FALLBACK_FORM_DEFINITIONS};

@@ -107,6 +107,7 @@ export function inferStartingLocation(
 
 export function optimizeStartCommand(
   input,
+  // eslint-disable-next-line no-unused-vars
   { fallbackLocationId = DEFAULT_START_LOCATION_ID } = {},
 ) {
   const trimmedInput = sanitizeStartCommand(input);

@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import GameWindow from "./GameWindow.jsx";
 import DockZone from "./DockZone.jsx";
-import { useWindowLayout } from "./useWindowLayout.js";
+import {useWindowLayout} from "./useWindowLayout.js";
 
 const DEFAULT_DOCK_METRICS = {
   left: { min: 280, max: 340, width: 320 },
@@ -91,7 +91,7 @@ export default function WindowManager({
       try {
         localStorage.setItem(storageKey, "1");
       } catch {
-        return;
+        // Ignore localStorage errors
       }
     });
   }, [bounds.height, bounds.width, mode, setWindowState, shouldForceFloating, windows]);

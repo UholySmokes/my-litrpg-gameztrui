@@ -1,4 +1,4 @@
-import { escapeCombat } from "../../systems/combat/CombatSystem.js";
+import {escapeCombat} from "../../systems/combat/CombatSystem.js";
 
 /**
  * Handle escape actions — attempt to flee from combat.
@@ -6,6 +6,7 @@ import { escapeCombat } from "../../systems/combat/CombatSystem.js";
  * @param {object} _action - The action object (unused)
  * @returns {{ newState: object, description: string, changes: object, incrementsTurn: boolean }|{ earlyReturn: object }}
  */
+// eslint-disable-next-line no-unused-vars
 export function handleEscape(state, _action) {
   if (!state.combat || state.combat.status !== "active") {
     return {

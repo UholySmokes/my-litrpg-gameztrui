@@ -1,8 +1,8 @@
-import { useCallback } from "react";
-import { gachaPools } from "../../data/gachaData.js";
-import { getTitleBonuses } from "../../core/titleLogic.js";
-import { mergeInventoryItems } from "../../utils/shared.js";
-import { applyShopServicePurchase } from "./shopServiceUtils.js";
+import {useCallback} from "react";
+import {gachaPools} from "../../data/gachaData.js";
+import {getTitleBonuses} from "../../core/titleLogic.js";
+import {mergeInventoryItems} from "../../utils/shared.js";
+import {applyShopServicePurchase} from "./shopServiceUtils.js";
 
 const normalizeAttributeLabel = (attributeKey) => {
   if (!attributeKey) return "attribute";
@@ -164,7 +164,7 @@ export function useGameUiInteractionHandlers({
         "system",
       );
 
-      return;
+
     },
     [addSystemMessage, dispatchSystemEvent, state],
   );

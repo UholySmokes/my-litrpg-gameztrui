@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 
 const STUDY_METHODS = [
   {
@@ -94,29 +94,47 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
   const grammar = magic.grammar || {};
   const prepared = magic.prepared;
 
-  const essenceOptions =
-    Array.isArray(grammar.essences) && grammar.essences.length > 0
-      ? grammar.essences
-      : ["fire", "water", "earth", "air"];
-  const formOptions =
-    Array.isArray(grammar.forms) && grammar.forms.length > 0
-      ? grammar.forms
-      : ["bolt", "pulse", "shield"];
+  const essenceOptions = useMemo(
+    () =>
+      Array.isArray(grammar.essences) && grammar.essences.length > 0
+        ? grammar.essences
+        : ["fire", "water", "earth", "air"],
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization
+    [grammar.essences],
+  );
+  const formOptions = useMemo(
+    () =>
+      Array.isArray(grammar.forms) && grammar.forms.length > 0
+        ? grammar.forms
+        : ["bolt", "pulse", "shield"],
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization
+    [grammar.forms],
+  );
 
   const [selectedEssence, setSelectedEssence] = useState(
     () => attunement.focusedEssence || essenceOptions[0] || "fire",
   );
   const [selectedForm, setSelectedForm] = useState(() => formOptions[0] || "bolt");
 
+  // Sync selected essence when options change
+  const prevEssenceOptionsRef = useRef(essenceOptions);
   useEffect(() => {
-    if (!essenceOptions.includes(selectedEssence)) {
-      setSelectedEssence(attunement.focusedEssence || essenceOptions[0] || "fire");
+    if (prevEssenceOptionsRef.current !== essenceOptions) {
+      if (!essenceOptions.includes(selectedEssence)) {
+        setTimeout(() => setSelectedEssence(attunement.focusedEssence || essenceOptions[0] || "fire"), 0);
+      }
+      prevEssenceOptionsRef.current = essenceOptions;
     }
   }, [attunement.focusedEssence, essenceOptions, selectedEssence]);
 
+  // Sync selected form when options change
+  const prevFormOptionsRef = useRef(formOptions);
   useEffect(() => {
-    if (!formOptions.includes(selectedForm)) {
-      setSelectedForm(formOptions[0] || "bolt");
+    if (prevFormOptionsRef.current !== formOptions) {
+      if (!formOptions.includes(selectedForm)) {
+        setTimeout(() => setSelectedForm(formOptions[0] || "bolt"), 0);
+      }
+      prevFormOptionsRef.current = formOptions;
     }
   }, [formOptions, selectedForm]);
 
@@ -160,6 +178,7 @@ export default function MagicStudyPanel({ player, latestEntryText, onSubmitComma
     const form =
       safeForms[(journal.length + 1) % safeForms.length] || safeForms[0] || "bolt";
     return { essence, form };
+    // eslint-disable-next-line react-hooks/preserve-manual-memoization
   }, [essenceOptions, formOptions, journal.length]);
 
   return (

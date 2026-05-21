@@ -77,7 +77,7 @@ export function initBrowserFixes() {
 
     if (ignoredErrors.some((err) => msg.includes(err))) {
       event.preventDefault(); // Stop propagation/logging
-      return;
+
     }
   });
 

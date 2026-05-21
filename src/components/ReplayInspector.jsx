@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { fetchSyncReplay } from "../core/SyncReplayService.js";
+import {useEffect, useMemo, useState} from "react";
+import {fetchSyncReplay} from "../core/SyncReplayService.js";
 
 const RUN_ID_STORAGE_KEY = "dev_sync_replay_run_id";
 const LIMIT_STORAGE_KEY = "dev_sync_replay_limit";
@@ -67,7 +67,7 @@ export default function ReplayInspector({ gameState = null }) {
       const normalized = String(runId || "").trim();
       if (normalized) localStorage.setItem(RUN_ID_STORAGE_KEY, normalized);
     } catch {
-      return;
+      // Ignore localStorage errors
     }
   }, [runId]);
 
@@ -78,7 +78,7 @@ export default function ReplayInspector({ gameState = null }) {
       const normalized = Number.isFinite(parsedLimit) && parsedLimit > 0 ? String(parsedLimit) : "200";
       localStorage.setItem(LIMIT_STORAGE_KEY, normalized);
     } catch {
-      return;
+      // Ignore localStorage errors
     }
   }, [limit]);
 
@@ -90,7 +90,7 @@ export default function ReplayInspector({ gameState = null }) {
         includeRejected ? "true" : "false",
       );
     } catch {
-      return;
+      // Ignore localStorage errors
     }
   }, [includeRejected]);
 

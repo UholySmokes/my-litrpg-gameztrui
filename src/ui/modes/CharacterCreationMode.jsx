@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {
   buildCharacterCreationDerivedState,
   useCharacterCreationReworked,
@@ -16,20 +16,14 @@ import CreationArchetypeSystemPanel from "../panels/creation/CreationArchetypeSy
 import CreationSummaryPanel from "../panels/creation/CreationSummaryPanel.jsx";
 import CreationStartingPointPanel from "../panels/creation/CreationStartingPointPanel.jsx";
 import CreationImpactPreviewPanel from "../panels/creation/CreationImpactPreviewPanel.jsx";
-import { ensureAttributeShape } from "../../constants/attributes.js";
+import {ensureAttributeShape} from "../../constants/attributes.js";
+import {buildCreationStepSequence, calculateCreationSyncProgress,} from "../../core/characterCreationWizardFlow.js";
 import {
-  buildCreationStepSequence,
-  calculateCreationSyncProgress,
-} from "../../core/characterCreationWizardFlow.js";
-import {
-  describeStartingPointSelection,
   buildStarterKitPreview,
+  describeStartingPointSelection,
   mergeCreationOnboardingData,
 } from "../../core/creationOnboarding.js";
-import {
-  createTelemetryEvent,
-  postTelemetryBatch,
-} from "../../core/telemetryClient.js";
+import {createTelemetryEvent, postTelemetryBatch,} from "../../core/telemetryClient.js";
 import {
   patchCharacterCreationDraft,
   readCharacterCreationDraft,
@@ -37,10 +31,7 @@ import {
 import {
   getCharacterCreationRaceAbilitySummaries,
 } from "@voidverse/game-core/characterCreation/CharacterCreationContentPack.js";
-import {
-  buildCreationChamberManifest,
-  validateCreationChamber,
-} from "./creationChamberManifest.js";
+import {buildCreationChamberManifest, validateCreationChamber,} from "./creationChamberManifest.js";
 
 let audioContext = null;
 const SOUND_PROFILES = {
@@ -104,7 +95,7 @@ function playSystemSound(sound) {
     osc.start(now);
     osc.stop(now + profile.duration + 0.02);
   } catch {
-    return;
+    // Ignore audio errors
   }
 }
 

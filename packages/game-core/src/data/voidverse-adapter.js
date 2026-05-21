@@ -5,9 +5,9 @@
 // Usage: call `bridgeVoidGeneratorContent()` at startup (e.g. in DataRegistry.js)
 // =================================================================
 
-import { races as _races } from "./registries/RaceDataRegistry.js";
-import { classes as _classes } from "./registries/ClassDataRegistry.js";
-import { itemDatabase, setItemDatabase } from "./registries/ItemDataRegistry.js";
+import {races as _races} from "./registries/RaceDataRegistry.js";
+import {classes as _classes} from "./registries/ClassDataRegistry.js";
+import {itemDatabase, setItemDatabase} from "./registries/ItemDataRegistry.js";
 
 // Lazily loaded — callers must invoke loadVoidGeneratorData() first.
 let _vg = null;
@@ -92,7 +92,7 @@ const STAT_MAP = { Strength: "str", Dexterity: "dex", Constitution: "vit", Intel
 
 function toGameClass(vc) {
   const id = `vg_${vc.id}`;
-  const baseStats = { str: 0, agi: 0, dex: 0, int: 0, cha: 0, will: 0, soul: 0, vit: 0, luck: 0, luck: 0 };
+  const baseStats = {str: 0, agi: 0, dex: 0, int: 0, cha: 0, will: 0, soul: 0, vit: 0, luck: 0};
   if (vc.abilityBonuses) {
     for (const [k, v] of Object.entries(vc.abilityBonuses)) {
       baseStats[STAT_MAP[k] ?? k] = v;

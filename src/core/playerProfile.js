@@ -28,6 +28,7 @@ export function incrementCharactersCreated(value) {
   };
 }
 
+// eslint-disable-next-line no-unused-vars
 export function isAdvancedCreationUnlocked(_value) {
   return true;
 }

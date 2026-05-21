@@ -3,10 +3,7 @@
 // Parses user text input to determine game actions
 // =================================================================
 
-import {
-  getAccessibleLocationIds,
-  resolveTravelLocationId,
-} from "../world/WorldDataRegistry.js";
+import {getAccessibleLocationIds, resolveTravelLocationId,} from "../world/WorldDataRegistry.js";
 
 /**
  * Parses user input text and extracts game actions
@@ -706,8 +703,6 @@ function parseMove(input, gameState) {
     targetLocation: candidate,
     originalInput: input,
   };
-
-  return null;
 }
 
 /**

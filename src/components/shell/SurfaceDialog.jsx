@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import {useCallback, useEffect, useRef} from "react";
 
 export default function SurfaceDialog({
   isOpen,
@@ -13,7 +13,10 @@ export default function SurfaceDialog({
   const dialogRef = useRef(null);
   const previousFocusRef = useRef(null);
   const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   const stableClose = useCallback(() => onCloseRef.current?.(), []);
 

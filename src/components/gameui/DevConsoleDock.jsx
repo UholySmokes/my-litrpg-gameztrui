@@ -1,18 +1,11 @@
-import React, {
-  useDeferredValue,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { getLocationById } from "../../world/WorldDataRegistry.js";
+import React, {useDeferredValue, useEffect, useId, useMemo, useRef, useState,} from "react";
+import {getLocationById} from "../../world/WorldDataRegistry.js";
 import {
-  QUICK_COMMANDS,
+  buildDevConsoleSessionLog,
   COMMAND_HINTS,
   DEV_CONSOLE_COMMANDS,
-  buildDevConsoleSessionLog,
   executeDevConsoleCommand,
+  QUICK_COMMANDS,
   toNumber,
 } from "./devConsoleModel.js";
 
@@ -87,7 +80,7 @@ export default function DevConsoleDock({
     };
   }, [isReduced]);
 
-  const player = state?.player || {};
+  const player = useMemo(() => state?.player || {}, [state?.player]);
   const locationId = state?.world?.location?.current || state?.world?.location || null;
   const location = locationId ? getLocationById(locationId) : null;
   const sessionLog = useMemo(() => buildDevConsoleSessionLog(state), [state]);

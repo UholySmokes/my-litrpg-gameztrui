@@ -4,6 +4,7 @@
  * @param {object} _action - The action object (unused)
  * @returns {{ newState: object, description: string, changes: object }|{ earlyReturn: object }}
  */
+// eslint-disable-next-line no-unused-vars
 export function handleRest(state, _action) {
   if (state.combat?.status === "active") {
     return {

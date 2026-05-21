@@ -787,6 +787,7 @@ export function castPreparedMagic(state, action) {
   return castMagic(state, { ...action, usePrepared: true });
 }
 
+// eslint-disable-next-line no-unused-vars
 export function sustainMagic(state, action) {
   const player = state?.player || {};
   const magic = normalizeUnifiedMagicState(player.magic, { player });

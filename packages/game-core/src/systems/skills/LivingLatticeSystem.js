@@ -212,6 +212,7 @@ function normalizeTemplate(skill) {
   return template;
 }
 
+// eslint-disable-next-line no-unused-vars
 function readTemplateMeta(skill) {
   const template = normalizeTemplate(skill);
   const meta = template.meta;

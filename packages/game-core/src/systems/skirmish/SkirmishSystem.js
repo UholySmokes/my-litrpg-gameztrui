@@ -1,6 +1,6 @@
-import { DataRegistry } from "../../data/DataRegistry.js";
-import { createEnemy } from "../../entities/Enemy.js";
-import { getItemData } from "../../entities/ItemRegistry.js";
+import {DataRegistry} from "../../data/DataRegistry.js";
+import {createEnemy} from "../../entities/Enemy.js";
+import {getItemData} from "../../entities/ItemRegistry.js";
 import {
   combatBoardToSimulation,
   combatBoardUnitToEntity,
@@ -8,30 +8,20 @@ import {
   entityToPlayer,
   playerToEntity,
 } from "../../simulation/bridge/GameStateAdapter.js";
-import { serializeEvents } from "../../simulation/logging/CombatLogSerializer.ts";
-import {
-  resolveCommand,
-  setSimulationSkillResolver,
-} from "../../simulation/combat/ActionResolver.ts";
-import { SimBridge } from "../../simulation/bridge/SimulationContext.js";
-import { getSkillById } from "../skills/SkillRegistry.js";
-import { endCombatPhase, handleEnemyDefeatPhase } from "../combat/combatAftermath.js";
-import { random } from "../../utils/DeterministicRandom.js";
-import {
-  createDefaultCombatState,
-  isSkirmishCombat,
-  SKIRMISH_MODE,
-} from "./SkirmishState.js";
+import {serializeEvents} from "../../simulation/logging/CombatLogSerializer.ts";
+import {resolveCommand, setSimulationSkillResolver,} from "../../simulation/combat/ActionResolver.ts";
+import {SimBridge} from "../../simulation/bridge/SimulationContext.js";
+import {getSkillById} from "../skills/SkillRegistry.js";
+import {endCombatPhase, handleEnemyDefeatPhase} from "../combat/combatAftermath.js";
+import {random} from "../../utils/DeterministicRandom.js";
+import {createDefaultCombatState, isSkirmishCombat, SKIRMISH_MODE,} from "./SkirmishState.js";
 import {
   ALLY_POSITION_PRIORITY,
   ENEMY_POSITION_PRIORITY,
   getSquadProfileForClass,
   resolveSquadProfileId,
 } from "./SkirmishSquadProfiles.js";
-import {
-  getSkirmishEncounterPool,
-  resolveEncounterZoneId,
-} from "../../world/WorldEncounterProfiles.js";
+import {getSkirmishEncounterPool, resolveEncounterZoneId,} from "../../world/WorldEncounterProfiles.js";
 
 const MAX_BOARD_SLOTS = 9;
 const MAX_COMBAT_LOG = 200;
@@ -1106,7 +1096,7 @@ function executeResolvedCommand(state, board, command, { itemEffect = null } = {
   };
 }
 
-function useSkillCommand(state, skillId = null, requestedTargetId = null) {
+function skirmishSkillCommand(state, skillId = null, requestedTargetId = null) {
   if (!isSkirmishCombat(state?.combat)) {
     return { success: false, reason: "Skirmish is not active.", state };
   }
@@ -1151,9 +1141,10 @@ export function playerAttackSkirmish(state, enemyIndex = 0, skillId = null) {
     return { success: false, reason: "Skirmish is not active.", state };
   }
 
+  // eslint-disable-next-line no-unused-vars
   const board = state.combat.board;
   const targetFromIndex = (state.combat?.enemies || [])[enemyIndex]?.combatantId || null;
-  return useSkillCommand(state, skillId, targetFromIndex);
+  return skirmishSkillCommand(state, skillId, targetFromIndex);
 }
 
 export function moveSkirmishUnit(state, lane, slot) {

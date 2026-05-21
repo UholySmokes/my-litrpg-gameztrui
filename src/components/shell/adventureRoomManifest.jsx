@@ -24,9 +24,10 @@ import {
   getAdventureOnboardingContext,
   isAdventureSurfaceUnlocked,
 } from "../../core/creationOnboarding.js";
-import { isDevourerCorePlayer } from "../../systems/archetype/devourerCore.js";
-import { isDevourerCoreRoomAvailable } from "./devourerRoomAvailability.js";
+import {isDevourerCorePlayer} from "../../systems/archetype/devourerCore.js";
+import {isDevourerCoreRoomAvailable} from "./devourerRoomAvailability.js";
 
+// eslint-disable-next-line react-refresh/only-export-components
 function RoomSection({ eyebrow, title, children }) {
   return (
     <section className="surface-section">
@@ -39,6 +40,7 @@ function RoomSection({ eyebrow, title, children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 function BattleTheaterIdle({ combatState }) {
   const enemies = Array.isArray(combatState?.enemies)
     ? combatState.enemies.filter((enemy) => (enemy?.stats?.hp?.current || 0) > 0)

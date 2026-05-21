@@ -1,19 +1,12 @@
+import {getAuthToken, getChronicleSessionHeaders, getDevAuthHeaders,} from "./AuthService.js";
+import {normalizeNarrationPayload} from "./narrationContract.js";
 import {
-  getAuthToken,
-  getChronicleSessionHeaders,
-  getDevAuthHeaders,
-} from "./AuthService.js";
-import { normalizeNarrationPayload } from "./narrationContract.js";
-import {
-  resolveAllowExternalApiBaseUrl,
   resolveAllowedApiHosts,
+  resolveAllowExternalApiBaseUrl,
   resolveApiBaseCandidates,
   sanitizeEndpoint,
 } from "./apiEndpointResolution.js";
-import {
-  buildTraceHeaders,
-  createRequestTraceContext,
-} from "../observability/requestTrace.js";
+import {buildTraceHeaders, createRequestTraceContext,} from "../observability/requestTrace.js";
 
 const DEFAULT_TIMEOUT_MS = 135000;
 const DEV_DEFAULT_TIMEOUT_MS = 150000;
@@ -652,7 +645,7 @@ export async function generateNarrative(
       continue;
     }
     if (endpointUnavailable) {
-      continue;
+      // Endpoint unavailable, skip
     }
   }
 
@@ -831,7 +824,7 @@ export async function generateNarrativeStream(
       }
       if (selectedEndpoints) break;
       if (lastStartError) {
-        continue;
+        // Error occurred, continue to next iteration
       }
     }
 

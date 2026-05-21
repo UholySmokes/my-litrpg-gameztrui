@@ -1,14 +1,16 @@
-/* global require, process, fs, path, console, Math */
- 
+/* global process, fs */
+
 // Magic Physics Simulator - Unified version using new ManaBalance/ManaSystem
 // CLI: node magic_physics_sim.js [--scenarios=magic_physics_scenarios.json] [--runs=1000] [--output=results.json]
 // Now resolves inconsistencies with canonical resolution formulas
 
-import { readFileSync, writeFileSync } from 'node:fs';
-import path from 'node:path';
-import { canonicalize, FORM_DATA, UNIFIED_FORMS } from './src/systems/magic/constants.js';
-import computeResolution from './src/systems/magic/ManaBalance.js';
+import {readFileSync} from 'node:fs';
+import {canonicalize} from './src/systems/magic/constants.js';
 import ManaSystem from './src/systems/magic/ManaSystem.js';
+
+const args = process.argv.slice(2);
+const scenariosPath = args.find(a => a.includes('--scenarios='))?.split('=')[1] || './magic_physics_scenarios.json';
+const scenariosData = JSON.parse(readFileSync(scenariosPath, 'utf8'));
 
 class MagicSimulator {
   constructor(scenario) {
@@ -126,9 +128,9 @@ function simScenario(scenarioStr, runs = 1000) {
   const avgResonance = resonanceGains.reduce((a,b)=>a+b,0) / resonanceGains.length || 0;
   const avgManaCost = manaCosts.reduce((a,b)=>a+b,0) / manaCosts.length || 0;
 
-  return { 
-    scenarioId: scenario.id, 
-    runs, 
+  return {
+    scenarioId: scenario.id,
+    runs,
     avgDamageMult: avgDamage,
     successPct: (successes / runs) * 100,
     backfirePct: (backfires / runs) * 100,

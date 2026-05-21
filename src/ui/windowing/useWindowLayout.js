@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useState } from "react";
-import { layoutPresets } from "./layoutPresets.js";
+import {useCallback, useMemo, useState} from "react";
+import {layoutPresets} from "./layoutPresets.js";
 
 const STORAGE_KEYS = {
   creation: "layout_characterCreation",
@@ -27,7 +27,7 @@ const writeLayout = (mode, layout) => {
   try {
     localStorage.setItem(key, JSON.stringify(layout));
   } catch {
-    return;
+    // Ignore localStorage errors
   }
 };
 
@@ -47,7 +47,7 @@ const writeSharedPins = (pins) => {
   try {
     localStorage.setItem(SHARED_PIN_KEY, JSON.stringify(pins));
   } catch {
-    return;
+    // Ignore localStorage errors
   }
 };
 

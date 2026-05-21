@@ -11,18 +11,18 @@ import {
   moveSkirmishUnit,
   selectSkirmishTarget,
   selectSkirmishUnit,
-  useSkirmishItem,
+  skirmishUseItem,
   waitSkirmishTurn,
 } from "../../systems/skirmish/SkirmishSystem.js";
-import { isSkirmishCombat } from "../../systems/skirmish/SkirmishState.js";
-import { applyAutoTitleUnlocks } from "../../systems/titles/TitleApplication.js";
+import {isSkirmishCombat} from "../../systems/skirmish/SkirmishState.js";
+import {applyAutoTitleUnlocks} from "../../systems/titles/TitleApplication.js";
 import {
   abandonDungeonRun,
   advanceDungeonRoom,
   completeCurrentDungeonRoom,
   startDungeonRun,
 } from "../../systems/dungeon/DungeonRuntime.js";
-import { normalizeGameState } from "../StateNormalizer.js";
+import {normalizeGameState} from "../StateNormalizer.js";
 
 export function handleCombatAction(state, action, helpers) {
   const {
@@ -115,7 +115,7 @@ export function handleCombatAction(state, action, helpers) {
       const { itemId } = action.payload || {};
       const combatState = ensureCombatStructure(state);
       if (combatState.status !== "active" || !isSkirmishCombat(combatState)) return state;
-      const result = useSkirmishItem({ ...state, combat: combatState }, itemId);
+      const result = skirmishUseItem({...state, combat: combatState}, itemId);
       if (!result.success) return result.state || state;
       const postCombatState = applyAutoTitleUnlocks(processEnemyTurns(result.state), {
         announce: true,

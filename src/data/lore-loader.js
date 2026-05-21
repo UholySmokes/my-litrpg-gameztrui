@@ -1,11 +1,12 @@
 // src/data/lore-loader.js - Load and normalize Hermes-generated lore for game state
+/* global process */
 import fs from 'fs';
 import path from 'path';
 
 const ROOT = import.meta.dirname ? new URL('.', import.meta.url).pathname : process.cwd();
 const LORE_DIR = path.join(ROOT, 'data/lore');
 
-export function loadLoreFiles(pattern = '*.json') {
+export function loadLoreFiles() {
   if (!fs.existsSync(LORE_DIR)) return {};
   const files = fs.readdirSync(LORE_DIR).filter(f => f.endsWith('.json'));
   const lore = {};

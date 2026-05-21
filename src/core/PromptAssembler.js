@@ -4,25 +4,17 @@
 // =================================================================
 
 import {
+  buildOpeningSceneNarrativeSeed,
   describeOpeningScene,
   getOpeningSceneById,
   listOpeningSceneChoices,
-  buildOpeningSceneNarrativeSeed,
 } from "../data/OpeningScenes.js";
-import {
-  getLocationById,
-  getZoneById,
-  resolveLocationId,
-} from "../world/WorldDataRegistry.js";
-import { getOpeningArcByOathOriginId } from "../world/OpeningArcRegistry.js";
-import { resolvePlayerArchetypeSystem } from "../systems/archetype/resolvePlayerArchetypeSystem.js";
-import { isDevourerCorePlayer } from "../systems/archetype/devourerCore.js";
-import { toNumber } from "../utils/shared.js";
-import {
-  PROMPT_MODES,
-  getModeDirective,
-  getSafetyDirective,
-} from "./promptTemplates.js";
+import {getLocationById, getZoneById, resolveLocationId,} from "../world/WorldDataRegistry.js";
+import {getOpeningArcByOathOriginId} from "../world/OpeningArcRegistry.js";
+import {resolvePlayerArchetypeSystem} from "../systems/archetype/resolvePlayerArchetypeSystem.js";
+import {isDevourerCorePlayer} from "../systems/archetype/devourerCore.js";
+import {toNumber} from "../utils/shared.js";
+import {getModeDirective, getSafetyDirective, PROMPT_MODES,} from "./promptTemplates.js";
 
 const MAX_HISTORY_ENTRIES = 20;
 const MAX_HISTORY_CHARS = 4000;
@@ -1735,6 +1727,7 @@ export function buildInitialPrompt(gameState = {}) {
   const openingChoicePending = Boolean(
     gameState?.world?.vars?.openingSceneChoicePending,
   );
+  // eslint-disable-next-line no-unused-vars
   const selectedOpeningChoiceId =
     gameState?.world?.vars?.openingSceneChoiceId || null;
   const openingChoices = sceneId ? listOpeningSceneChoices(sceneId) : [];

@@ -1,26 +1,16 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import ProgressBar from "../ui/ProgressBar.jsx";
 import GameQuickActions from "../gameui/GameQuickActions.jsx";
-import {
-  DEFAULT_START_LOCATION_ID,
-  getLocationById,
-  getZoneById,
-} from "../../world/WorldDataRegistry.js";
-import { buildPlayerIdentity } from "./shellState.js";
+import {DEFAULT_START_LOCATION_ID, getLocationById, getZoneById,} from "../../world/WorldDataRegistry.js";
+import {buildPlayerIdentity} from "./shellState.js";
 import SurfaceDialog from "./SurfaceDialog.jsx";
 import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../../ui/panels/ActionSuggestionsPanel.jsx";
-import {
-  buildAdventureRoomManifest,
-  filterOpenAdventureRooms,
-  splitAdventureRooms,
-} from "./adventureRoomManifest.jsx";
-import { buildArchetypeSystemViewModel } from "../archetypeSystem/archetypeSystemViewModel.js";
-import {
-  deriveAdventureOnboardingTier,
-  getAdventureOnboardingContext,
-} from "../../core/creationOnboarding.js";
+import {buildAdventureRoomManifest, filterOpenAdventureRooms, splitAdventureRooms,} from "./adventureRoomManifest.jsx";
+import {buildArchetypeSystemViewModel} from "../archetypeSystem/archetypeSystemViewModel.js";
+import {deriveAdventureOnboardingTier, getAdventureOnboardingContext,} from "../../core/creationOnboarding.js";
 
+// eslint-disable-next-line no-unused-vars
 function formatMeter(current, max) {
   return `${Number(current || 0)}/${Number(max || 0)}`;
 }
@@ -232,7 +222,9 @@ const topMeters = [
     const currentStatus = combatState?.status || "inactive";
     const previousStatus = previousCombatStatusRef.current;
     if (currentStatus === "active" && previousStatus !== "active") {
-      setActiveRoomId((current) => (current === "battle" ? current : "battle"));
+      // Use setTimeout to avoid setState during render
+      const timeoutId = setTimeout(() => setActiveRoomId("battle"), 0);
+      return () => clearTimeout(timeoutId);
     }
     previousCombatStatusRef.current = currentStatus;
   }, [combatState?.status]);

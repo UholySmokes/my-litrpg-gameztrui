@@ -1,15 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { seedWorldAfterCharacterCreation } from "../../world/WorldInitializer.js";
-import { getLocationById, getZoneById } from "../../world/WorldDataRegistry.js";
-import { createInitialChronicleState } from "../../core/ChronicleRuntime.js";
-import { clearCharacterCreationDraft } from "./characterCreationDraft.js";
-import { QuestManager } from "../../systems/quest/QuestManager.js";
-import {
-  incrementCharactersCreated,
-  isAdvancedCreationUnlocked,
-} from "../../core/playerProfile.js";
-import { evaluateCharacterReadiness } from "./characterReadiness.js";
-import { getOpeningArcByOathOriginId } from "../../world/OpeningArcRegistry.js";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {seedWorldAfterCharacterCreation} from "../../world/WorldInitializer.js";
+import {getLocationById, getZoneById} from "../../world/WorldDataRegistry.js";
+import {createInitialChronicleState} from "../../core/ChronicleRuntime.js";
+import {clearCharacterCreationDraft} from "./characterCreationDraft.js";
+import {QuestManager} from "../../systems/quest/QuestManager.js";
+import {incrementCharactersCreated, isAdvancedCreationUnlocked,} from "../../core/playerProfile.js";
+import {evaluateCharacterReadiness} from "./characterReadiness.js";
+import {getOpeningArcByOathOriginId} from "../../world/OpeningArcRegistry.js";
 
 const TRANSITION_DURATION_MS = 2500;
 
@@ -331,7 +328,7 @@ export function useGameUiCharacterCreationFlow({
       osc.start(now);
       osc.stop(now + audioProfile.duration + 0.05);
     } catch {
-      return;
+      // Ignore audio errors
     }
   }, [isTransitioning, state?.player?.class]);
 

@@ -1,6 +1,7 @@
 import {
   buildCombatMagicSkill as legacyBuildCombatMagicSkill,
   castMagic as legacyCastMagic,
+  castPhysicsMagic,
   castPreparedMagic as legacyCastPreparedMagic,
   normalizeUnifiedMagicState,
   prepareMagic as legacyPrepareMagic,
@@ -18,7 +19,7 @@ import {
   magicRefine as legacyMagicRefine,
   processEssenceEcologyTurn as legacyProcessEssenceEcologyTurn,
 } from "../magic/EssenceWeavingSystem.js";
-import { appendSystemMessages } from "../../core/narrativeLog.js";
+import {appendSystemMessages} from "../../core/narrativeLog.js";
 
 export const ABILITY_ENGINE_VERSION = 1;
 export const ABILITY_FAMILIES = Object.freeze([
@@ -448,6 +449,8 @@ export function executeAbilityAction(state, action) {
         legacyCastPreparedMagic(preparedState, translateLegacyMagicAction(action)),
         preparedState,
       );
+    case "magic_physics_cast":
+      return castPhysicsMagic(preparedState, action);
     default:
       return { ok: false, reason: `Unhandled ability action: ${action?.type}`, state: preparedState };
   }

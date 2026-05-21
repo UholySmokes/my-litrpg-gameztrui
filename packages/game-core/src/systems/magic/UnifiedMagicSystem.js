@@ -1,3 +1,9 @@
+import {
+  MAGIC_SCHOOLS,
+  normalizePhysicsMagicState as normalizePhysicsMagicStateRaw,
+  resolvePhysicsMagicCast
+} from "./PhysicsMagicEngine.js";
+
 const MAGIC_ESSENCES = [
   "fire",
   "water",
@@ -390,6 +396,7 @@ export function normalizeUnifiedMagicState(rawMagic, {player, state} = {}) {
         ? { ...magic.reserves }
         : {},
     charges: Array.isArray(magic?.charges) ? [...magic.charges] : [],
+    physics: normalizePhysicsMagicStateRaw(magic?.physics),
   };
 }
 
@@ -1020,6 +1027,57 @@ export function translateLegacyMagicAction(action) {
     default:
       return action;
   }
+}
+
+export function castPhysicsMagic(state, action) {
+  const player = state?.player || {};
+  const magic = normalizeUnifiedMagicState(player.magic, {player, state});
+
+  const school = action?.school && action.school in MAGIC_SCHOOLS ? action.school : "thermomancy";
+  const scale = action?.scale || 1;
+  const reversesEntropy = action?.reversesEntropy === true;
+  const topologicalShift = action?.topologicalShift || 0;
+
+  const castRequest = {
+    school,
+    scale,
+    reversesEntropy,
+    topologicalShift,
+    geometry: action?.geometry,
+  };
+
+  const result = resolvePhysicsMagicCast(magic.physics, castRequest);
+
+  if (!result.ok) {
+    return {
+      ok: false,
+      reason: result.reason,
+      state,
+    };
+  }
+
+  const nextMagic = {
+    ...magic,
+    physics: result.nextState,
+  };
+
+  const syncedPlayer = syncPlayerMagicState(player, nextMagic, state);
+
+  return {
+    ok: true,
+    school: result.school,
+    requiredEnergy: result.requiredEnergy,
+    efficiency: result.efficiency,
+    stabilityRisk: result.stabilityRisk,
+    state: {
+      ...state,
+      player: syncedPlayer,
+    },
+  };
+}
+
+export function getPhysicsSchools() {
+  return MAGIC_SCHOOLS;
 }
 
 export {MAGIC_ESSENCES, FALLBACK_FORM_DEFINITIONS};

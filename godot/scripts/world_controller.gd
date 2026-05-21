@@ -1157,13 +1157,14 @@ func _configure_dev_console() -> void:
 	_dev_console_panel.add_child(_dev_scroll_container)
 
 	for cmd_name in DEV_CONSOLE_COMMANDS.keys():
-		var cmd := DEV_CONSOLE_COMMANDS[cmd_name]
+		var command_name := String(cmd_name)
+		var cmd: Dictionary = DEV_CONSOLE_COMMANDS[cmd_name]
 		var widget: Control
 		match cmd.get("type", "button"):
 			"button":
 				widget = Button.new()
-				widget.text = cmd.get("label", cmd_name)
-				widget.pressed.connect(func(): dev_execute_command(cmd_name))
+				widget.text = cmd.get("label", command_name)
+				widget.pressed.connect(func(): dev_execute_command(command_name))
 			"spinbox":
 				var sb := SpinBox.new()
 				sb.min_value = float(cmd.get("min", 0))
@@ -1171,17 +1172,17 @@ func _configure_dev_console() -> void:
 				sb.step = float(cmd.get("step", 1))
 				sb.value = float(cmd.get("default", sb.min_value))
 				sb.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				sb.value_changed.connect(func(val): dev_execute_command(cmd_name, val))
+				sb.value_changed.connect(func(val): dev_execute_command(command_name, val))
 				widget = sb
 			"checkbox":
 				widget = CheckBox.new()
-				widget.text = cmd.get("label", cmd_name)
-				widget.toggled.connect(func(pressed): dev_execute_command(cmd_name, pressed))
+				widget.text = cmd.get("label", command_name)
+				widget.toggled.connect(func(pressed): dev_execute_command(command_name, pressed))
 			_:
 				continue
-		widget.name = cmd_name.capitalize()
+		widget.name = command_name.capitalize()
 		_dev_commands_container.add_child(widget)
-		_command_widgets[cmd_name] = widget
+		_command_widgets[command_name] = widget
 
 	# Random function button
 	_dev_random_button.text = "Run Random Function (5 options)"
@@ -1538,7 +1539,7 @@ func dev_execute_command(cmd_name: String, value: Variant = null) -> void:
 			character["inventory"] = []
 		"max_inventory":
 			character["inventory_slots"] = 99
-		_,:
+		_:
 			_append_dev_console_status("Dev command '%s' stubbed for expansion." % cmd_name)
 			return
 	_current_character_data = character

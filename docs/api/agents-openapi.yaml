@@ -1,0 +1,523 @@
+openapi: "3.1.0"
+info:
+  title: Void Verse AI Agent API
+  description: |
+    LitRPG AI agent system — replaces Firebase Genkit with direct REST API calls
+    to supported LLM providers (OpenAI, OpenRouter, Cerebras, Google Gemini).
+
+    Each agent has a defined system prompt, temperature, and expected input schema.
+    Agents are stateless — all context must be provided in the request body.
+  version: "1.0.0"
+  contact:
+    name: Void Verse Dev Team
+servers:
+  - url: https://api.void-verse.com/v1
+    description: Production
+  - url: http://127.0.0.1:54321/functions/v1
+    description: Local Supabase
+paths:
+  /agents:
+    get:
+      summary: List available agents
+      description: Returns metadata for all registered AI agents (id, name, temperature, input keys).
+      operationId: listAgents
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Agent list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AgentListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+  /agents/run:
+    post:
+      summary: Run an AI agent
+      description: |
+        Executes the specified agent with the given input and model parameters.
+        Supports provider fallback chains — if the primary provider fails,
+        the next configured provider is tried automatically.
+      operationId: runAgent
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RunAgentRequest"
+      responses:
+        "200":
+          description: Agent execution result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RunAgentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /narrate:
+    post:
+      summary: Narrate (synchronous)
+      description: |
+        Generates an immediate narration from the given game state and context.
+        The response contains story text, mood, suggestions, and scene memory
+        in a single synchronous call.
+      operationId: narrate
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NarrateRequest"
+      responses:
+        "200":
+          description: Narration result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NarrateResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /narrate-start:
+    post:
+      summary: Start async narration
+      description: |
+        Initiates an asynchronous narration run. Returns immediately with
+        a threadId and runId. Poll /narrate-poll to retrieve the result.
+      operationId: narrateStart
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NarrateRequest"
+      responses:
+        "200":
+          description: Narration started — poll for result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NarrateStartResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /narrate-poll:
+    get:
+      summary: Poll narration result
+      description: |
+        Retrieves the result of a previously started narration run.
+        Returns HTTP 202 (Accepted) if still running, 200 if complete.
+      operationId: narratePoll
+      security: []
+      parameters:
+        - name: threadId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: runId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Narration complete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NarrateResponse"
+        "202":
+          description: Still running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    enum: [true]
+                  status:
+                    type: string
+                    enum: [running]
+                  done:
+                    type: boolean
+                    enum: [false]
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          description: Run not found
+        "500":
+          $ref: "#/components/responses/InternalError"
+  /story/event:
+    post:
+      summary: Shortcut for /narrate
+      $ref: "#/paths/~1narrate/post"
+  /story/start:
+    post:
+      summary: Shortcut for /narrate-start
+      $ref: "#/paths/~1narrate-start/post"
+  /story/poll:
+    get:
+      summary: Shortcut for /narrate-poll
+      $ref: "#/paths/~1narrate-poll/get"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Supabase Auth JWT
+  schemas:
+    # ─── Agent Schemas ──────────────────────────────────────
+    AgentInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          example: narrator
+        name:
+          type: string
+          example: NarratorAgent
+        temperature:
+          type: number
+          format: float
+          example: 1.0
+        inputKeys:
+          type: array
+          items:
+            type: string
+          example: ["game_state", "reaction_context"]
+    AgentListResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        provider:
+          type: string
+          example: void-verse-edge
+        agents:
+          type: array
+          items:
+            $ref: "#/components/schemas/AgentInfo"
+    RunAgentRequest:
+      type: object
+      required:
+        - agent
+      properties:
+        agent:
+          type: string
+          description: Agent ID (e.g. narrator, quest, combat)
+          example: narrator
+        input:
+          type: object
+          description: Agent-specific input data
+        model:
+          type: string
+          description: Preferred model override
+          example: gpt-5.4-mini
+        temperature:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 2
+          description: Override agent default temperature
+        topP:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+    RunAgentResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        provider:
+          type: string
+          example: void-verse-edge
+        backend:
+          type: string
+          description: Which provider handled the request
+          example: openai
+        fallbackUsed:
+          type: boolean
+        fallbackFrom:
+          type: string
+          nullable: true
+        agent:
+          type: string
+        agentName:
+          type: string
+        model:
+          type: string
+        temperature:
+          type: number
+        text:
+          type: string
+        structured:
+          type: object
+          nullable: true
+        outputHash:
+          type: string
+    # ─── Narration Schemas ──────────────────────────────────
+    NarrateRequest:
+      type: object
+      properties:
+        prompt:
+          type: string
+          description: Narration prompt text
+        mode:
+          type: string
+          enum: [exploration, combat, dialogue, system-event, scene-transition]
+          default: exploration
+          description: Narration mode — determines agent selection and suggestion defaults
+        gameState:
+          type: object
+          description: Current game state snapshot
+        npcContext:
+          type: object
+          description: NPC context for dialogue agents
+        reactionContext:
+          type: object
+          description: Reaction/focus context
+        model:
+          type: string
+        temperature:
+          type: number
+          format: float
+        topP:
+          type: number
+          format: float
+    NarrateResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        story:
+          type: string
+          description: Narration text
+        narrative:
+          type: string
+          description: Alias for story
+        mood:
+          type: string
+          enum: [neutral, tense, triumphant, mysterious, serene, desperate]
+        suggestions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Suggestion"
+          description: Suggested player actions (max 3)
+        sceneMemory:
+          $ref: "#/components/schemas/SceneMemory"
+        choiceMeta:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChoiceMeta"
+        outputHash:
+          type: string
+        mode:
+          type: string
+        agentId:
+          type: string
+        backend:
+          type: string
+        provider:
+          type: string
+        fallbackUsed:
+          type: boolean
+        fallbackFrom:
+          type: string
+          nullable: true
+        model:
+          type: string
+        status:
+          type: string
+          enum: [completed]
+    NarrateStartResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        threadId:
+          type: string
+          format: uuid
+        runId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [completed]
+        done:
+          type: boolean
+          enum: [true]
+        story:
+          type: string
+        narrative:
+          type: string
+        mood:
+          type: string
+        suggestions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Suggestion"
+        sceneMemory:
+          $ref: "#/components/schemas/SceneMemory"
+        choiceMeta:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChoiceMeta"
+        outputHash:
+          type: string
+        backend:
+          type: string
+        provider:
+          type: string
+        fallbackUsed:
+          type: boolean
+        fallbackFrom:
+          type: string
+          nullable: true
+        model:
+          type: string
+    Suggestion:
+      oneOf:
+        - type: string
+          example: "explore area"
+        - type: object
+          properties:
+            t:
+              type: string
+              description: Text label
+            w:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 1
+              description: Weight
+    SceneMemory:
+      type: object
+      properties:
+        locationLabel:
+          type: string
+        zoneLabel:
+          type: string
+        immediateObjective:
+          type: string
+        presentEntities:
+          type: array
+          items:
+            type: string
+        activeThreats:
+          type: array
+          items:
+            type: string
+        unresolvedHooks:
+          type: array
+          items:
+            type: string
+        lastConsequence:
+          type: string
+        familiarEntities:
+          type: array
+          items:
+            type: string
+        partyEntities:
+          type: array
+          items:
+            type: string
+        socialSummary:
+          type: string
+    ChoiceMeta:
+      type: object
+      properties:
+        intent:
+          type: string
+        category:
+          type: string
+          enum: [observe, social, progress, recovery, power, risk]
+        urgency:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+        groundedInState:
+          type: boolean
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                enum: [false]
+              errorCode:
+                type: string
+                enum: [UNAUTHENTICATED]
+              message:
+                type: string
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                enum: [false]
+              errorCode:
+                type: string
+              message:
+                type: string
+    MethodNotAllowed:
+      description: HTTP method not supported
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                enum: [false]
+              errorCode:
+                type: string
+                enum: [METHOD_NOT_ALLOWED]
+              message:
+                type: string
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ok:
+                type: boolean
+                enum: [false]
+              errorCode:
+                type: string
+                enum: [UNEXPECTED_ERROR]
+              message:
+                type: string

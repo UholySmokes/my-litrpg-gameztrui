@@ -105,3 +105,4 @@ godot/android/build/local.properties
 godot/android/build/libs/
 
 .vercel
+/notion

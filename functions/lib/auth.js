@@ -14,8 +14,8 @@ let cachedSupabaseModule = undefined;
 
 function isProductionEnvironment() {
 	const projectId = process.env.GOOGLE_CLOUD_PROJECT || process.env.GCLOUD_PROJECT || "";
-	const vercelEnv = String(process.env.VERCEL_ENV || "").trim().toLowerCase();
-	return PRODUCTION_PROJECT_IDS.includes(projectId) || vercelEnv === "production";
+  const nodeEnv = String(process.env.NODE_ENV || "").trim().toLowerCase();
+  return PRODUCTION_PROJECT_IDS.includes(projectId) || nodeEnv === "production";
 }
 
 function isFunctionsEmulatorEnvironment() {

@@ -124,13 +124,6 @@ npm run dev:stack
 | `npm run simulate:quick` | Quick run (10 iterations, no logs) |
 | `npm run simulate:full` | Full run (100 iterations) |
 
-### Vercel Workflow
-The project uses Vercel for preview and production web deployments.
-- `npm run vercel:link`: Link to the canonical Vercel project.
-- `npm run vercel:pull`: Pull environment variables and settings.
-- `npm run vercel:build`: Build Vercel output locally.
-- `npm run vercel:deploy:preview`: Deploy prebuilt output as a preview.
-
 ### Godot & Android
 The project supports two Android delivery tracks:
 1. **PWA**: `npm run build:pwa`

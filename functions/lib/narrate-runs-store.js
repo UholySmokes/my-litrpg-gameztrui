@@ -26,7 +26,6 @@ function getTtlMs() {
 
 function isReadonlyServerlessRuntime() {
 	return Boolean(
-		getOptionalEnv("VERCEL") ||
 		getOptionalEnv("AWS_LAMBDA_FUNCTION_NAME") ||
 		getOptionalEnv("LAMBDA_TASK_ROOT"),
 	);

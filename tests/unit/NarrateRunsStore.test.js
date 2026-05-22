@@ -1,8 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
+import {afterEach, beforeEach, describe, expect, it} from "@jest/globals";
 import fs from "fs";
 import os from "os";
 import path from "path";
-import { createRequire } from "module";
+import {createRequire} from "module";
 
 const require = createRequire(import.meta.url);
 const narrateRunsStore = require("../../functions/lib/narrate-runs-store.js");
@@ -15,7 +15,7 @@ function makeTempPath() {
 describe("narrate-runs-store file backend", () => {
   const originalBackend = process.env.GAME_DB_STORAGE;
   const originalFilePath = process.env.NARRATE_RUNS_FILE_PATH;
-  const originalVercel = process.env.VERCEL;
+
   const originalTmpDir = process.env.TMPDIR;
 
   beforeEach(() => {
@@ -33,12 +33,6 @@ describe("narrate-runs-store file backend", () => {
       process.env.NARRATE_RUNS_FILE_PATH = originalFilePath;
     } else {
       delete process.env.NARRATE_RUNS_FILE_PATH;
-    }
-
-    if (typeof originalVercel === "string") {
-      process.env.VERCEL = originalVercel;
-    } else {
-      delete process.env.VERCEL;
     }
 
     if (typeof originalTmpDir === "string") {
@@ -180,10 +174,10 @@ describe("narrate-runs-store file backend", () => {
   });
 
   it("uses a writable temp path on readonly serverless runtimes", async () => {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "narrate-runs-vercel-"));
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "narrate-runs-serverless-"));
     const expectedPath = path.join(tempDir, "void-verse-data", "narrate-runs.json");
     delete process.env.NARRATE_RUNS_FILE_PATH;
-    process.env.VERCEL = "1";
+    process.env.NODE_ENV = "production";
     process.env.TMPDIR = tempDir;
 
     await narrateRunsStore.createNarrateRun({

@@ -1,9 +1,8 @@
-import { useState, useEffect, Suspense, lazy } from "react";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
-import { getCurrentUser, onAuthStateChange } from "./core/AuthService.js";
-import { isWebGameplayEnabled } from "./core/WebGameplayGate.js";
-import { ThemeDock, ThemeProvider } from "./context/ThemeContext.jsx";
+import {lazy, Suspense, useEffect, useState} from "react";
+
+import {getCurrentUser, onAuthStateChange} from "./core/AuthService.js";
+import {isWebGameplayEnabled} from "./core/WebGameplayGate.js";
+import {ThemeDock, ThemeProvider} from "./context/ThemeContext.jsx";
 import EntryShell from "./components/shell/EntryShell.jsx";
 import "./index.css";
 import "./App.css";
@@ -124,15 +123,10 @@ function AppContent() {
 
 // Wrap with ThemeProvider
 function App() {
-  const shouldLoadVercelScripts =
-    import.meta.env.PROD && import.meta.env.VITE_VERCEL_ANALYTICS !== "false";
-
   return (
     <ThemeProvider>
       <ThemeDock />
       <AppContent />
-      {shouldLoadVercelScripts ? <Analytics /> : null}
-      {shouldLoadVercelScripts ? <SpeedInsights /> : null}
     </ThemeProvider>
   );
 }

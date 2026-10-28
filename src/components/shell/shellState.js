@@ -117,3 +117,7 @@ export function buildPlayerIdentity(player = null) {
     level: Number(player?.level || 1) || 1,
   };
 }
+
+export function getPlayerGold(player) {
+  return player?.currency?.goldCoins ?? player?.gold ?? 0;
+}

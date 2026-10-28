@@ -1,7 +1,7 @@
-import React from 'react';
+import './ProgressBar.css';
 
 export default function ProgressBar({ current, max, label, color = '#4ade80', tooltip = '' }) {
-  const percentage = max > 0 ? Math.min((current / max) * 100, 100) : 0;
+  const percentage = max > 0 ? Math.max(0, Math.min((current / max) * 100, 100)) : 0;
   return (
     <div className="progress-container" title={tooltip}>
       <div className="progress-label">

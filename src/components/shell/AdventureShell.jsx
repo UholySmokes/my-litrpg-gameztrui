@@ -2,7 +2,7 @@ import {useEffect, useMemo, useRef, useState} from "react";
 import ProgressBar from "../ui/ProgressBar.jsx";
 import GameQuickActions from "../gameui/GameQuickActions.jsx";
 import {DEFAULT_START_LOCATION_ID, getLocationById, getZoneById,} from "../../world/WorldDataRegistry.js";
-import {buildPlayerIdentity} from "./shellState.js";
+import {buildPlayerIdentity, getPlayerGold} from "./shellState.js";
 import SurfaceDialog from "./SurfaceDialog.jsx";
 import CommandTerminalPanel from "../../ui/panels/CommandTerminalPanel.jsx";
 import ActionSuggestionsPanel from "../../ui/panels/ActionSuggestionsPanel.jsx";
@@ -163,7 +163,7 @@ const topMeters = [
     { label: "XP", current: player?.xp?.current ?? 0, max: player?.xp?.max ?? 1, color: '#eab308', tooltip: 'Experience - Progress toward milestone thresholds' },
   ];
   if (onboardingTier >= 2) {
-    const gold = player?.currency?.goldCoins ?? player?.player?.gold ?? 0;
+    const gold = getPlayerGold(player);
     topMeters.push({
       label: "Gold",
       current: gold,

@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "scripts": {
     "ai:setup": "node scripts/ai-setup.mjs",
@@ -114,7 +114,7 @@
     "@voidverse/game-core": "workspace:*",
     "@voidverse/game-schemas": "workspace:*",
     "dotenv": "^17.2.4",
-    "firebase": "^12.9.0",
+    "firebase": "^12.11.0",
     "genkit": "^1.32.0",
     "js-yaml": "^4.1.1",
     "openai": "^6.25.0",
